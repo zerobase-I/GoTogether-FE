@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { Children } from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App.tsx';
+import Auth from './pages/Auth.jsx';
+
+import SignUp from './pages/SignUp.jsx';
 import NotFound from '../src/pages/NotFound.jsx';
 import ChatList from '../src/pages/ChatList.jsx';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
@@ -16,27 +19,45 @@ import Filter from './pages/Filter.jsx';
 import ChatRoom from './pages/ChatRoom.jsx';
 import EditProfile from './pages/EditProfile.jsx';
 import Review from './pages/Review.jsx';
+import Login from './pages/Login.jsx';
+import FirstPage from './FirstPage.jsx';
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <App />,
+    element: <FirstPage />,
     errorElement: <NotFound />,
     children: [
-      { index: true, path: '/', element: <Home /> },
-      { path: '/chatlist', element: <ChatList /> },
-      { path: '/mypage', element: <MyPage /> },
-      { path: '/travelrequestlist', element: <TravelRequestList /> },
-      { path: '/postList', element: <PostList /> },
-      { path: '/filter', element: <Filter /> },
-      { path: 'createpost', element: <CreatePost /> },
-      { path: '/chatroom', element: <ChatRoom /> },
-      { path: '/editprofile', element: <EditProfile /> },
-      { path: '/reviewdetail', element: <ReviewDetail /> },
-      { path: 'alarm', element: <Alarm /> },
-      { path: '/review', element: <Review /> },
-      { path: 'settings', element: <Setting /> },
+      { path: '', element: <Auth /> },
+      {
+        path: 'login',
+        element: <Login />,
+      },
+      {
+        path: 'signup',
+        element: <SignUp />,
+      },
+    ],
+  },
 
+  {
+    path: 'home',
+    element: <App />,
+    children: [
+      { path: 'home', element: <App /> },
+      { path: '', element: <Home /> }, // 상대 경로 사용
+      { path: 'chatlist', element: <ChatList /> },
+      { path: 'mypage', element: <MyPage /> },
+      { path: 'travelrequestlist', element: <TravelRequestList /> },
+      { path: 'postList', element: <PostList /> },
+      { path: 'filter', element: <Filter /> },
+      { path: 'createpost', element: <CreatePost /> },
+      { path: 'chatroom', element: <ChatRoom /> },
+      { path: 'editprofile', element: <EditProfile /> },
+      { path: 'reviewdetail', element: <ReviewDetail /> },
+      { path: 'alarm', element: <Alarm /> },
+      { path: 'review', element: <Review /> },
+      { path: 'settings', element: <Setting /> },
       { path: '*', element: <NotFound /> },
     ],
   },

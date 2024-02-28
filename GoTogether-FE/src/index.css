@@ -2,8 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@import 'App.css';
-
 #root {
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   max-width: 1200px;

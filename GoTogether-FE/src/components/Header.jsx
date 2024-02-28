@@ -6,7 +6,7 @@ const Header = () => {
   return (
     <header className="flex justify-between  ">
       <h1 className="text-2xl">
-        <Link to="/">같이 가요</Link>
+        <Link to="/home">같이 가요</Link>
       </h1>
       <Link to="settings">
         <button className="transition ease-in-out hover:rotate-360">
