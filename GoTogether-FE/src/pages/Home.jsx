@@ -2,7 +2,6 @@ import React from 'react';
 import UserInfo from '../components/UserInfo';
 import SearchBox from '../components/SearchBox';
 import PostBox from '../components/PostBox';
-import Modal from '../components/Modal';
 
 const Home = () => {
   return (
@@ -11,7 +10,7 @@ const Home = () => {
         <UserInfo />
         <SearchBox />
       </article>
-      <Modal />
+
       <PostBox />
     </main>
   );
