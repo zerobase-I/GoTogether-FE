@@ -44,8 +44,8 @@ const router = createBrowserRouter([
     path: 'home',
     element: <App />,
     children: [
-      { path: 'home', element: <App /> },
-      { path: '', element: <Home /> }, // 상대 경로 사용
+      { path: '', element: <App /> },
+      { path: 'home', element: <Home /> },
       { path: 'chatlist', element: <ChatList /> },
       { path: 'mypage', element: <MyPage /> },
       { path: 'travelrequestlist', element: <TravelRequestList /> },
