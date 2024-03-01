@@ -3,13 +3,13 @@ import { TbMessageCircle2Filled } from 'react-icons/tb';
 import { MdPersonPin } from 'react-icons/md';
 import { IoIosPeople } from 'react-icons/io';
 import { NavLink } from 'react-router-dom';
-import styles from '../style';
+import styles from '../../style';
 
 const Navbar = () => {
   return (
-    <nav className="w-full btm-nav  bg-gray-500">
+    <nav className="w-full btm-nav  bg-gray-500 fixed bottom-0 mt-10">
       <NavLink
-        to="/home"
+        to="home"
         className={`${({ isActive }) => (isActive ? `active bg-red-500` : '')} ${styles.menuBtn}`}
       >
         <button type="button" className="w-full h-full hober:bg-red-700">
