@@ -9,7 +9,7 @@ const MyPage = () => {
       <article>
         <UserInfo />
         <UserInfoDetail />
-        <section className="mt-20 border-t">
+        <section className="mt-9 border-t">
           <h3>
             <span className="text-xl block mt-5">지난 동행</span>
           </h3>
