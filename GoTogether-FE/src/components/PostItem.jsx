@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const PostItem = () => {
   return (
-    <section className=" mb-4 mt-8  shadow-lg shadow-blue-500/30 rounded-md hover:scale-105 transition-all">
+    <section className=" mb-4 mt-8  shadow-lg shadow-blue-500/30 rounded-md">
       <Link to="/home/postlist">
         <div className="flex flex-col">
           <div className="flex ">

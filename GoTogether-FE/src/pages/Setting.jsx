@@ -16,7 +16,7 @@ const Setting = () => {
 
     <>
     <div className="container mx-auto p-3">
-      <h1 className="text-3xl font-bold flex justify-start">설정</h1>
+      <h1 className="text-3xl font-bold flex mt-3 justify-start">설정</h1>
        {/* <div className="border-t border-gray-500 my-4 w-44"></div> */}
     <div className="max-w-md mx-auto mt-8">
      
