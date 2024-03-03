@@ -22,6 +22,6 @@
     // "allowJs" 설정을 추가하여 jsx 확장자 파일을 import할 수 있다.
     "allowJs": true
   },
-  "include": ["src", "../server.js"],
+  "include": ["src", "../server.js", "src/main.tsx"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

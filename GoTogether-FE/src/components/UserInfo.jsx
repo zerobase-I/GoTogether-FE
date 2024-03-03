@@ -4,15 +4,17 @@ import { HiOutlinePencilSquare } from 'react-icons/hi2';
 import { GiCrossMark } from 'react-icons/gi';
 import { BiSolidAlarmExclamation } from 'react-icons/bi';
 import { Link } from 'react-router-dom';
+import { TbPencilSearch } from 'react-icons/tb';
 
 const UserInfo = () => {
   return (
     <section className="flex justify-between mb-2">
       <div className="flex items-end">
         <div className="avatar">
-          <div className="w-40 rounded-full md:w-60">
+          <div className="w-40 rounded-full md:w-60 relative">
             <Link to="/home/editprofile">
               <img src="https://i.namu.wiki/i/1L_8d7FSBchLDnx7zLaxWs-HvUa6wQzLy2trSu0fGIqjWYQDWjEIEyxxoNJyDaIq_FF1QKFsu8nMNpDbJn_QSQ.webp" />
+              <TbPencilSearch className="absolute top-28 right-8 md:absolute md:top-44 md:right-10 text-2xl" />
             </Link>
           </div>
         </div>

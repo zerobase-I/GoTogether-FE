@@ -4,8 +4,8 @@ import App from './App.tsx';
 import Auth from './pages/Auth.jsx';
 
 import SignUp from './pages/SignUp.jsx';
-import NotFound from '../src/pages/NotFound.jsx';
-import ChatList from '../src/pages/ChatList.jsx';
+import NotFound from './pages/NotFound.jsx';
+import ChatList from './pages/ChatList.jsx';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import TravelRequestList from './pages/TravelRequestList.jsx';
 import Home from './pages/Home.jsx';
