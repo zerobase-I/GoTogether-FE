@@ -15,7 +15,7 @@ const CreatePost = () => {
   };
 
   return (
-    <main className="flex flex-col ">
+    <main className="flex flex-col mx-4">
       <form action="/" method="post" name="createpost" acceptCharset="UTF-8">
         <section className="mt-2 mb-10 border-t border-b">
           <Link to="" className="w-full h-6 mb-10 ">
@@ -33,7 +33,6 @@ const CreatePost = () => {
 
         <section className="flex flex-col items-center mt-3  ">
           <span className="text-xl w-full text-left font-semibold">
-            {' '}
             나라와 도시를 선택하세요
           </span>
           <div className="">
