@@ -37,6 +37,7 @@
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-react-hooks": "^4.3.0",
     "eslint-plugin-react-refresh": "^0.4.5",
+    "msw": "^2.2.2",
     "postcss": "^8.4.35",
     "typescript": "^5.2.2",
     "vite": "^5.1.4"
@@ -45,5 +46,10 @@
   "main": "index.js",
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
+  }
 }

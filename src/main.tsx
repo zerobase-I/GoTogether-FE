@@ -22,6 +22,18 @@ import Review from './pages/Review.jsx';
 import Login from './pages/Login.jsx';
 import FirstPage from './FirstPage.jsx';
 
+async function enableMocking() {
+  if (process.env.NODE_ENV !== 'development') {
+    return;
+  }
+
+  const { worker } = await import('./mocks/browsers');
+
+  // `worker.start()` returns a Promise that resolves
+  // once the Service Worker is up and ready to intercept requests.
+  return worker.start();
+}
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -63,8 +75,16 @@ const router = createBrowserRouter([
   },
 ]);
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
+/* ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <RouterProvider router={router} />
   </React.StrictMode>,
-);
+); */
+
+enableMocking().then(() => {
+  ReactDOM.createRoot(document.getElementById('root')!).render(
+    <React.StrictMode>
+      <RouterProvider router={router} />
+    </React.StrictMode>,
+  );
+});
