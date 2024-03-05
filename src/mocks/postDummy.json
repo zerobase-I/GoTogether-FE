@@ -1,0 +1,71 @@
+[
+  {
+    "memberId": 1,
+    "travelCountry": "한국",
+    "travelCity": "서울",
+    "startDate": "23-03-10",
+    "finishDate": "23-03-18",
+    "gender": "동성",
+    "minimumAge": "21",
+    "maximumAge": "23",
+    "recruitsPeople": "7",
+    "estimatedTravelExpense": "80000",
+    "category": "여행",
+    "title": "서울맛집 찾아봐요",
+    "content": "부산의 위치와 특징 부산은 한반도 남동부에 위치한 광역시로, 대한민국에서 제2의 도시이자 최대의 해양 도시입니다. 부산항은 아시아 최대 규모의 항구 중 하나입니다",
+    "image": [
+      {
+        "imageId": 1
+      },
+      {
+        "imageId": 2
+      }
+    ]
+  },
+  {
+    "memberId": 2,
+    "travelCountry": "한국",
+    "travelCity": "부산",
+    "startDate": "23-03-05",
+    "finishDate": "23-03-07",
+    "gender": "동성",
+    "minimumAge": "21",
+    "maximumAge": "23",
+    "recruitsPeople": "7",
+    "estimatedTravelExpense": "80000",
+    "category": "여행",
+    "title": "같이 부산 맛집 뿌실분 구합니다",
+    "content": "부산의 위치와 특징 부산은 한반도 남동부에 위치한 광역시로, 대한민국에서 제2의 도시이자 최대의 해양 도시입니다. 부산항은 아시아 최대 규모의 항구 중 하나입니다",
+    "image": [
+      {
+        "imageId": 1
+      },
+      {
+        "imageId": 2
+      }
+    ]
+  },
+  {
+    "memberId": 3,
+    "travelCountry": "미국",
+    "travelCity": "로스엔젤레스",
+    "startDate": "23-03-16",
+    "finishDate": "23-03-21",
+    "gender": "동성",
+    "minimumAge": "21",
+    "maximumAge": "23",
+    "recruitsPeople": "7",
+    "estimatedTravelExpense": "80000",
+    "category": "여행",
+    "title": "미국 여행을 떠나요~",
+    "content": "법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙",
+    "image": [
+      {
+        "imageId": 1
+      },
+      {
+        "imageId": 2
+      }
+    ]
+  }
+]

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom/client';
-import App from './App.tsx';
+import App from './routes/App.tsx';
 import Auth from './pages/Auth.jsx';
 
 import SignUp from './pages/SignUp.jsx';
@@ -20,7 +20,7 @@ import ChatRoom from './pages/ChatRoom.jsx';
 import EditProfile from './pages/EditProfile.jsx';
 import Review from './pages/Review.jsx';
 import Login from './pages/Login.jsx';
-import FirstPage from './FirstPage.jsx';
+import FirstPage from './routes/FirstPage.jsx';
 
 async function enableMocking() {
   if (process.env.NODE_ENV !== 'development') {
@@ -61,10 +61,10 @@ const router = createBrowserRouter([
       { path: 'chatlist', element: <ChatList /> },
       { path: 'mypage', element: <MyPage /> },
       { path: 'travelrequestlist', element: <TravelRequestList /> },
-      { path: 'postList', element: <PostList /> },
+      { path: 'postLists/:id', element: <PostList /> },
       { path: 'filter', element: <Filter /> },
       { path: 'createpost', element: <CreatePost /> },
-      { path: 'chatroom', element: <ChatRoom /> },
+      { path: 'chatroom/:id', element: <ChatRoom /> },
       { path: 'editprofile', element: <EditProfile /> },
       { path: 'reviewdetail', element: <ReviewDetail /> },
       { path: 'alarm', element: <Alarm /> },
