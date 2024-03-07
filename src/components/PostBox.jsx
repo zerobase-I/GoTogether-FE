@@ -17,9 +17,8 @@ const PostBox = () => {
     <article>
       {isLoading && <p>Loading 중 입니다.</p>}
       {error && <p>{error.message}</p>}
-      {console.log(postsData)}
       {postsData &&
-        postsData.map((data) => <PostItem key={data.memberId} post={data} />)}
+        postsData.map((data) => <PostItem key={data.id} post={data} />)}
     </article>
   );
 };

@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
-const EditorQuill = () => {
+const EditorQuill = ({ onTextChange }) => {
   const [quillValue, setQuillValue] = useState('');
 
   const handleQuillChange = (content, delta, source, editor) => {
     setQuillValue(editor.getContents());
+    onTextChange(editor.getContents().ops[0].insert);
   };
 
   return (
@@ -27,7 +28,6 @@ export default EditorQuill;
 
 const modules = {
   toolbar: [
-    ['image'],
     [{ header: [1, 2, false] }],
     ['bold', 'italic', 'underline', 'strike', 'blockquote'],
     [

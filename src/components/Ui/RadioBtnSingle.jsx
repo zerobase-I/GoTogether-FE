@@ -1,15 +1,14 @@
 import React from 'react';
 
-const RadioBtnSingle = ({ option, name, onChange }) => {
+const RadioBtnSingle = ({ option, name, onChange, checked }) => {
   return (
     <label className="">
       <input
         type="radio"
-        value="1"
+        value={option}
         className="peer hidden"
         name={name}
         required
-        checked
         onChange={onChange}
       />
 

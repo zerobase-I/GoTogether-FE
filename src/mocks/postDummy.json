@@ -1,6 +1,6 @@
 [
   {
-    "memberId": 1,
+    "id": 1,
     "travelCountry": "한국",
     "travelCity": "서울",
     "startDate": "23-03-10",
@@ -23,7 +23,7 @@
     ]
   },
   {
-    "memberId": 2,
+    "id": 2,
     "travelCountry": "한국",
     "travelCity": "부산",
     "startDate": "23-03-05",
@@ -46,7 +46,7 @@
     ]
   },
   {
-    "memberId": 3,
+    "id": 3,
     "travelCountry": "미국",
     "travelCity": "로스엔젤레스",
     "startDate": "23-03-16",
@@ -61,7 +61,7 @@
     "content": "법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙",
     "image": [
       {
-        "imageId": 1
+        "imageId": "https://i.namu.wiki/i/1L_8d7FSBchLDnx7zLaxWs-HvUa6wQzLy2trSu0fGIqjWYQDWjEIEyxxoNJyDaIq_FF1QKFsu8nMNpDbJn_QSQ.webp"
       },
       {
         "imageId": 2
