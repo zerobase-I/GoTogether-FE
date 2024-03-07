@@ -19,13 +19,31 @@ const getPostList = http.get('/api/post/list', async () => {
   await delay(1000);
   return HttpResponse.json(res);
 });
+let postId = 4;
 
 const createPostList = http.post('/api/post', async ({ request }) => {
   const requestBody = await request.formData();
+
   const newPost = {
+    id: postId,
+    travelCountry: '일본',
+    travelCity: '도쿄',
+    startDate: '03-06-2024',
+    finishDate: '03-08-2024',
+    gender: '동일 성별',
+    minimumAge: '18',
+    maximumAge: '25',
+    recruitsPeople: '8',
+    estimatedTravelExpense: '30000',
+    category: '전시회/공연',
+    title: '여행을 떠나여',
+    content: 'ㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎ',
+    image:
+      'https://i.namu.wiki/i/1L_8d7FSBchLDnx7zLaxWs-HvUa6wQzLy2trSu0fGIqjWYQDWjEIEyxxoNJyDaIq_FF1QKFsu8nMNpDbJn_QSQ.webp',
     ...requestBody,
   };
 
+  postId++;
   Data = [...postData, newPost];
   await delay(1000);
   console.log(Data);

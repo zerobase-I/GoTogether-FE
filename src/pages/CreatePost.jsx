@@ -6,7 +6,7 @@ import RadioBtn from '../components/RadioBtn';
 import RadioBtnSingle from '../components/Ui/RadioBtnSingle';
 import EditorQuill from '../components/EditorQuill';
 import { categoryList } from '../components/config/data';
-import { createPost } from '../api/post';
+import { createPost } from '../api/postApi';
 import SelectCountry from '../components/SelectCountry';
 import moment from 'moment';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -15,13 +15,13 @@ import { ImageUpload2 } from '../api/ImageUpload2';
 
 const date = new Date();
 const formatDate = moment(date.toDateString()).format('MM-DD-YYYY');
-let id = 4;
+let postId = 4;
 
 const CreatePost = () => {
   const queryClient = useQueryClient();
   const [success, setSuccess] = useState(); // 업로드 성공/ 실패 상태
   const [inputs, setInputs] = useState({
-    id: id,
+    id: postId,
     travelCountry: '한국',
     travelCity: '서울',
     startDate: formatDate,
@@ -39,7 +39,7 @@ const CreatePost = () => {
   const formRef = useRef();
 
   const createPostMutation = useMutation({
-    queryFn: ({ inputValue }) => createPost({ inputValue }),
+    mutationFn: (inputs) => createPost(inputs),
     onSuccess: () => queryClient.invalidateQueries(['post']),
   });
 
@@ -83,22 +83,35 @@ const CreatePost = () => {
     const formData = new FormData();
 
     for (const key in inputs) {
-      formData.append(key, inputs[key]);
+      if (key === 'image' && inputs.image.length) {
+        for (let i = 0; i < inputs.image.length; i++) {
+          formData.append('image', inputs.image[i]);
+        }
+      } else {
+        formData.append(key, inputs[key]);
+      }
     }
+
+    /*     for (let key of formData.keys()) {
+      console.log('key : ' + key);
+    }
+
+    for (let value of formData.values()) {
+      console.log('value : ' + value);
+    } */
+    console.log(formData);
 
     try {
       // 서버로 POST 요청 보내기
-      await createPostMutation.mutate(
-        { formData },
-        {
-          onSuccess: () => {
-            setSuccess('성공적으로 게시글이 등록되었습니다.');
-            setTimeout(() => {
-              setSuccess(null);
-            }, 5000);
-          },
+      createPostMutation.mutate(formData, {
+        onSuccess: () => {
+          setSuccess('성공적으로 게시글이 등록되었습니다.');
+
+          setTimeout(() => {
+            setSuccess(null);
+          }, 5000);
         },
-      );
+      });
       console.log('데이터 업로드 성공');
     } catch (error) {
       console.error('데이터 업로드 실패', error);
@@ -150,6 +163,7 @@ const CreatePost = () => {
               max={100}
               required
               onChange={handleChangeInfo}
+              name="minimumAge"
             />
             <input
               type="number"
@@ -159,6 +173,7 @@ const CreatePost = () => {
               max={100}
               required
               onChange={handleChangeInfo}
+              name="maximumAge"
             />
           </div>
         </section>
@@ -235,15 +250,6 @@ const CreatePost = () => {
             <span className="mb-4">
               글 최상단에 보여질 이미지를 설정해 보세요!
             </span>
-            {/*     <input
-              type="file"
-              accept="image/*"
-              className="file-input file-input-bordered file-input-primary w-full max-w-xs"
-              htmlFor="upLoadFIle"
-              name="image"
-              onChange={handleFileUpload}
-              multiple
-            /> */}
             <ImageUpload2 onFileChange={handleFileChange} />
           </label>
         </section>

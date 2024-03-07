@@ -10,10 +10,11 @@ export const getPosts = async () => {
   }
 };
 
-export const createPost = async ({ inputValue }) => {
+export const createPost = async (inputValue) => {
   try {
     // 서버에 데이터를 보내는 비동기 작업 수행
-    const response = await axios.post('/api/post', { inputValue });
+    const response = await axios.post('/api/post', inputValue);
+    console.log(response);
     return response.data; // 성공 시 반환할 데이터
   } catch (error) {
     throw new Error('게시글 작성 실패'); // 실패 시 에러 처리

@@ -1,7 +1,7 @@
 import React from 'react';
 import PostItem from './PostItem';
 import { useQuery } from '@tanstack/react-query';
-import { getPosts } from '../api/post';
+import { getPosts } from '../api/postApi';
 
 const PostBox = () => {
   const {
