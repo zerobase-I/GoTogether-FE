@@ -1,13 +1,33 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+
+const fetchAuth = async () => {
+  const response = await fetch('/api/auth');
+  if (!response.ok) {
+    throw new Error('네트워크 오류: 목데이터를 불러올 수 없습니다.');
+  }
+  return response.json();
+};
 
 const Auth = () => {
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ['auth'],
+    queryFn: fetchAuth
+  });
+
+
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>Error: 데이터를 불러올 수 없습니다.</div>;
+
   return (
-    <div className="flex justify-center min-h-screen items-center px-4 sm:px-6 lg:px-8 bg-[url('./assets/같이가요Login.jpg')] bg-cover">
+    <div className="flex justify-center min-h-screen items-center px-4 sm:px-6 lg:px-8 bg-[url('/src/assets/AuthBackGround.jpg')] bg-cover">
       <div className="max-w-md w-full">
         {/* 첫페이지 LOGO  */}
         <div className="relative top-0 left-0 right-0 m-auto mb-28">
-          <img className="mx-auto h-auto w-102" src="/src/assets/GoTogetherLogo.png" alt="같이가요 로고" />
+      
+            <img className="mx-auto h-auto mb-44 w-102" src="/src/assets/GoTogetherLogo.png" alt="같이가요 로고" />
+      
         </div>
 
         <div className="relative text-center animate-bounce">
@@ -19,7 +39,6 @@ const Auth = () => {
         </div>
 
         <button className="btn mb-2 rounded-md relative block w-full px-3 py-1 border-none bg-yellow-300 text-black rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">카카오 로그인</button>
-        <button className="btn mb-2 rounded-md relative block w-full px-3 py-1 border-none bg-black text-white rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">Apple로 로그인</button>
         <Link to="/login">
         <button className="btn mb-2 rounded-md relative block w-full px-3 py-1 border-none text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">이메일로 로그인</button>
         </Link>
