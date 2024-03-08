@@ -22,7 +22,7 @@ const ReviewDetail = () => {
 
           <div className="flex justify-end pr-10 w-1/4">
             <div className="flex">
-              <Link to="/home/reviewdetail">
+              <Link to="/reviewdetail">
                 <AiOutlineTrademark className="text-2xl" />
               </Link>
             </div>

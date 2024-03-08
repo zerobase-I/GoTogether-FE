@@ -25,27 +25,10 @@ import FirstPage from './FirstPage.jsx';
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <FirstPage />,
+    element: <App />,
     errorElement: <NotFound />,
     children: [
-      { path: '', element: <Auth /> },
-      {
-        path: 'login',
-        element: <Login />,
-      },
-      {
-        path: 'signup',
-        element: <SignUp />,
-      },
-    ],
-  },
-
-  {
-    path: 'home',
-    element: <App />,
-    children: [
-      { path: '', element: <App /> },
-      { path: 'home', element: <Home /> },
+      { path: '', element: <Home /> },
       { path: 'chatlist', element: <ChatList /> },
       { path: 'mypage', element: <MyPage /> },
       { path: 'travelrequestlist', element: <TravelRequestList /> },
@@ -59,6 +42,23 @@ const router = createBrowserRouter([
       { path: 'review', element: <Review /> },
       { path: 'settings', element: <Setting /> },
       { path: '*', element: <NotFound /> },
+    ],
+  },
+
+  {
+    path: 'member',
+    element: <FirstPage />,
+    errorElement: <NotFound />,
+    children: [
+      { path: '', element: <Auth /> },
+      {
+        path: 'login',
+        element: <Login />,
+      },
+      {
+        path: 'signup',
+        element: <SignUp />,
+      },
     ],
   },
 ]);
