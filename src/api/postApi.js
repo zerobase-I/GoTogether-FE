@@ -20,3 +20,13 @@ export const createPost = async (inputValue) => {
     throw new Error('게시글 작성 실패'); // 실패 시 에러 처리
   }
 };
+
+export const EditPost = async (inputValue) => {
+  try {
+    const response = await axios.put('/api/post/:id', inputValue);
+
+    return response.data;
+  } catch (error) {
+    throw new Error('게시글 수정 실패');
+  }
+};

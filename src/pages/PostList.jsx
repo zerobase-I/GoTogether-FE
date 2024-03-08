@@ -22,8 +22,31 @@ const PostList = () => {
     },
   } = useLocation();
 
+  const handleEditClick = (e) => {
+    console.log('Edit 버튼 클릭');
+    //1. 수정 페이지로 이동
+  };
+
+  const handleDeleteClick = (e) => {
+    console.log('delete 버튼 클릭');
+  };
+
   return (
-    <article className="mx-7">
+    <article className="mx-4 mt-4">
+      <div className="flex justify-between mb-4 text-gray-500">
+        <div>
+          <span className="mr-2">작성자</span>
+          <span>글작성날짜</span>
+        </div>
+        <div>
+          <button onClick={handleEditClick} className="mr-2 text-gray-500">
+            수정
+          </button>
+          <button onClick={handleDeleteClick} className="text-gray-500">
+            삭제
+          </button>
+        </div>
+      </div>
       <div className="card bg-base-100 shadow-xl mx-1">
         <figure className="h-50 w-full">
           <img src="https://via.placeholder.com/300" alt="샘플이미지" />

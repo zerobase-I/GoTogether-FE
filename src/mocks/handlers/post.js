@@ -28,23 +28,21 @@ const createPostList = http.post('/api/post', async ({ request }) => {
   return HttpResponse.json(newPost, { status: 201 });
 });
 
-const createFile = http.post('/upload', async ({ request }) => {
-  const data = await request.formData();
-  const file = data.get('file');
+const putPostList = http.put('/api/post/:id', async ({ request, params }) => {
+  const { id } = params;
+  const newPost = await request.json();
 
-  if (!file) {
-    return new HttpResponse('Missing document', { status: 400 });
-  }
-
-  if (!(file instanceof File)) {
-    return new HttpResponse('Uploaded document is not a File', {
-      status: 400,
-    });
-  }
-
-  return HttpResponse.json({
-    contents: await file.text(),
-  });
+  console.log('Updating post "%s" with:', id, newPost);
 });
 
-export const postHandlers = [getPostList, createPostList, createFile];
+const deletePostList = http.delete('/api/post/:id', ({ params }) => {
+  const { id } = params;
+  console.log('Deleting user with ID "%s"', id);
+});
+
+export const postHandlers = [
+  getPostList,
+  createPostList,
+  putPostList,
+  deletePostList,
+];
