@@ -15,13 +15,13 @@ import { ImageUpload2 } from '../api/ImageUpload2';
 
 const date = new Date();
 const formatDate = moment(date.toDateString()).format('MM-DD-YYYY');
-let postId = 4;
+
+let formDataTest = {};
 
 const CreatePost = () => {
   const queryClient = useQueryClient();
   const [success, setSuccess] = useState(); // 업로드 성공/ 실패 상태
   const [inputs, setInputs] = useState({
-    id: postId,
     travelCountry: '한국',
     travelCity: '서울',
     startDate: formatDate,
@@ -91,14 +91,21 @@ const CreatePost = () => {
         formData.append(key, inputs[key]);
       }
     }
-
-    /*     for (let key of formData.keys()) {
+    /* 
+    for (let key of formData.keys()) {
       console.log('key : ' + key);
     }
 
     for (let value of formData.values()) {
       console.log('value : ' + value);
     } */
+
+    for (const [key, value] of formData.entries()) {
+      formDataTest[key] = value;
+    }
+
+    console.log(formDataTest);
+
     console.log(formData);
 
     try {

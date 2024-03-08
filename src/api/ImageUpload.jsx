@@ -1,5 +1,6 @@
 import { useState } from 'react';
-
+/* ImageUpload2.jsx 사용 중  */
+/* 이 코드는 현재 사용 X */
 export const ImageUpload = () => {
   const [uploadImgUrl, setUploadImgUrl] = useState('');
 

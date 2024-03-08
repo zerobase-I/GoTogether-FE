@@ -14,7 +14,7 @@ const PostBox = () => {
   });
 
   return (
-    <article>
+    <article className="mb-20">
       {isLoading && <p>Loading 중 입니다.</p>}
       {error && <p>{error.message}</p>}
       {postsData &&
