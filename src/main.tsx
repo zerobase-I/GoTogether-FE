@@ -22,6 +22,7 @@ import Review from './pages/Review.jsx';
 import Login from './pages/Login.jsx';
 import FirstPage from './FirstPage.jsx';
 
+/* routing 경로 수정 */
 const router = createBrowserRouter([
   {
     path: '/',
