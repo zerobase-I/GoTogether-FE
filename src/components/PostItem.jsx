@@ -10,7 +10,7 @@ const PostItem = ({
   return (
     <section
       className=" mb-4 mt-8  shadow-lg shadow-blue-500/30 rounded-md cursor-pointer"
-      onClick={() => navigate(`/home/postlists/${id}`, { state: { post } })}
+      onClick={() => navigate(`/postlists/${id}`, { state: { post } })}
     >
       <div className="flex flex-col">
         <div className="flex ">

@@ -29,7 +29,7 @@ const SearchBox = () => {
         <FaRegHeart className="text-2xl mr-2" />
       </button>
       <button>
-        <Link to="/home/filter">
+        <Link to="/filter">
           <TbZoomInAreaFilled className="text-2xl" />
         </Link>
       </button>
