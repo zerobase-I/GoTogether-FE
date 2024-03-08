@@ -12,7 +12,7 @@ const UserInfo = () => {
       <div className="flex items-end">
         <div className="avatar">
           <div className="w-40 rounded-full md:w-60 relative">
-            <Link to="/home/editprofile">
+            <Link to="/editprofile">
               <img src="https://i.namu.wiki/i/1L_8d7FSBchLDnx7zLaxWs-HvUa6wQzLy2trSu0fGIqjWYQDWjEIEyxxoNJyDaIq_FF1QKFsu8nMNpDbJn_QSQ.webp" />
               <TbPencilSearch className="absolute top-28 right-8 md:absolute md:top-44 md:right-10 text-2xl" />
             </Link>
@@ -22,7 +22,7 @@ const UserInfo = () => {
           <span className="text-xl self-start">홍길동</span>
           <div className="flex">
             <GiCrossMark className="text-2xl mr-2" />
-            <Link to="/home/reviewdetail">
+            <Link to="/reviewdetail">
               <AiOutlineTrademark className="text-2xl" />
             </Link>
           </div>
@@ -30,10 +30,10 @@ const UserInfo = () => {
       </div>
 
       <div className="flex items-end">
-        <Link to="/home/alarm">
+        <Link to="/alarm">
           <BiSolidAlarmExclamation className="text-2xl mr-2" />
         </Link>
-        <Link to="/home/createpost">
+        <Link to="/createpost">
           <HiOutlinePencilSquare className="text-2xl" />
         </Link>
       </div>
