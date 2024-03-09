@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const loginUser = async (email, password) => {
+const loginUser = async (email, password) => {
   const response = await fetch('/api/auth/signIn', {
     method: 'POST',
     headers: {
@@ -15,3 +15,5 @@ export const loginUser = async (email, password) => {
     throw new Error('Invalid email or password');
   }
 };
+
+export default loginUser;

@@ -22,6 +22,7 @@ import Review from './pages/Review.jsx';
 import Login from './pages/Login.jsx';
 import FirstPage from './FirstPage.jsx';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { RecoilRoot } from "recoil";
 
 async function enableMocking() {
   if (process.env.NODE_ENV !== 'development') {
@@ -38,27 +39,10 @@ async function enableMocking() {
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <FirstPage />,
+    element: <App />,
     errorElement: <NotFound />,
     children: [
-      { path: '', element: <Auth /> },
-      {
-        path: 'login',
-        element: <Login />,
-      },
-      {
-        path: 'signup',
-        element: <SignUp />,
-      },
-    ],
-  },
-
-  {
-    path: 'home',
-    element: <App />,
-    children: [
-      { path: '', element: <App /> },
-      { path: 'home', element: <Home /> },
+      { path: '', element: <Home /> },
       { path: 'chatlist', element: <ChatList /> },
       { path: 'mypage', element: <MyPage /> },
       { path: 'travelrequestlist', element: <TravelRequestList /> },
@@ -74,6 +58,23 @@ const router = createBrowserRouter([
       { path: '*', element: <NotFound /> },
     ],
   },
+
+  {
+    path: 'member',
+    element: <FirstPage />,
+    errorElement: <NotFound />,
+    children: [
+      { path: '', element: <Auth /> },
+      {
+        path: 'login',
+        element: <Login />,
+      },
+      {
+        path: 'signup',
+        element: <SignUp />,
+      },
+    ],
+  },
 ]);
 
 enableMocking().then(() => {
@@ -81,10 +82,12 @@ enableMocking().then(() => {
 
   // ReactDOM.createRoot로 앱을 렌더링하기 전에 QueryClientProvider로 감싸줍니다.
   ReactDOM.createRoot(document.getElementById('root')!).render(
-    <React.StrictMode>
-      <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
-      </QueryClientProvider>
-    </React.StrictMode>,
+    <RecoilRoot>
+      <React.StrictMode>
+        <QueryClientProvider client={queryClient}>
+          <RouterProvider router={router} />
+        </QueryClientProvider>
+      </React.StrictMode>
+    </RecoilRoot>
   );
 });

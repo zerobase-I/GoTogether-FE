@@ -1,53 +1,50 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
-import { useMutation } from '@tanstack/react-query';
+import { useRecoilState } from 'recoil';
+import { tokenState } from '/src/Recoil/TokenAtom';
 
-const fetchLogin = async () => {
-  const response = await fetch('/api/auth/signIn');
-  if (!response.ok) {
-    throw new Error('네트워크 오류: 목데이터를 불러올 수 없습니다.');
-  }
-  return response.json();
-};
 
 const Login = () => {
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ['login'], // queryKey를 배열로 변경
-    queryFn: fetchLogin
-  });
-
+  const [token, setToken] = useRecoilState(tokenState);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  
+
+  const fetchLogin = async ({ email, password }) => {
+  const response = await fetch('/api/auth/signIn', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ email, password }),
+  });
+
+  if (!response.ok) {
+    throw new Error('로그인에 실패했습니다.');
+  }
+
+  return response.json();
+};
+
   const handleLogin = async (e) => {
     e.preventDefault();
-    // 가상의 로그인 요청을 보냄
-    const response = await fetch('/api/auth/signIn', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, password }),
-    });
-    const data = await response.json();
-    if (response.ok) {
-      // 로그인 성공
-      console.log('로그인 성공:', data);
-      // 알림창을 띄움
+
+    try {
+      // 로그인 처리 코드
+      const data = await fetchLogin({ email, password });
+      setToken(data.token); // 토큰 업데이트
       alert('로그인 성공!');
-      // 로그인 성공 후 /home/home 으로 이동
-      window.location.href = '/home/home'; // 이동할 경로를 지정
-    } else {
-      // 로그인 실패
-      setError(data.message);
+      console.log('토큰:', data.token);
+    } catch (error) {
+      console.error('로그인 오류:', error);
+      setError('로그인 중 오류가 발생했습니다.');
     }
-};
+  };
+
   return (
     <>
        <div className="min-h-screen flex justify-center bg-white py-12 px-4 sm:px-6 lg:px-8">
-        <Link to="/">
+        <Link to="/member ">
           <div className="absolute left-6 top-14 w-5">
             <img src="/src/assets/left-arrow.png" alt="왼쪽 화살표"/> 
           </div>
