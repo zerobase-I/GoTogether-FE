@@ -39,7 +39,7 @@ const Auth = () => {
         </div>
 
         <button className="btn mb-2 rounded-md relative block w-full px-3 py-1 border-none bg-yellow-300 text-black rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">카카오 로그인</button>
-        <Link to="/login">
+        <Link to="/member/login">
         <button className="btn mb-2 rounded-md relative block w-full px-3 py-1 border-none text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">이메일로 로그인</button>
         </Link>
         <div className="flex justify-between align-middle items-center mt-10">
@@ -47,7 +47,7 @@ const Auth = () => {
           <p className="font-medium text-xl">or</p>
           <div className="border-t border-white my-4 w-44"></div>
         </div>
-       <Link to="/signup" className="mt-10 m-autoa flex justify-center">
+       <Link to="/member/signup" className="mt-10 m-autoa flex justify-center">
           <button className="btn mb-2 rounded-md relative block w-36 px-3 py-1 border-none text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">회원가입</button>
         </Link>
         <div className="text-white mt-14 text-left text-base">로그인 시 같이가요의 <span className="underline">개인정보처리방침</span> 및 <span className="underline">이용약관</span>에<br />동의하시는 것으로 간주합니다.</div>

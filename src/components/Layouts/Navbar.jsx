@@ -9,7 +9,7 @@ const Navbar = () => {
   return (
     <nav className="w-full btm-nav  bg-gray-500 fixed bottom-0 mt-10">
       <NavLink
-        to="home"
+        to=""
         className={`${({ isActive }) => (isActive ? `active bg-red-500` : '')} ${styles.menuBtn}`}
       >
         <button type="button" className="w-full h-full hober:bg-red-700">

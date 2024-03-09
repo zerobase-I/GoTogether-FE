@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link,useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { useMutation } from '@tanstack/react-query';
+import { isLoginSelector, TokenAtom } from '../Recoil/personalToken.js';
+import axios from 'axios';
+import { useSetRecoilState, useRecoilValue } from 'recoil';
 
 const fetchLogin = async () => {
   const response = await fetch('/api/auth/signIn');
@@ -20,34 +23,33 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  
-  const handleLogin = async (e) => {
+  const setAccessToken = useSetRecoilState(TokenAtom);
+  const navigate = useNavigate();
+  const isLogin = useRecoilValue(isLoginSelector);
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-    // 가상의 로그인 요청을 보냄
-    const response = await fetch('/api/auth/signIn', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, password }),
+    axios.post('/api/auth/signIn', { email: email, pw: password }).then((res) => {
+      console.log(res.data);
+      setAccessToken(res.data.accessToken);
+      navigate('/');
     });
-    const data = await response.json();
-    if (response.ok) {
-      // 로그인 성공
-      console.log('로그인 성공:', data);
-      // 알림창을 띄움
-      alert('로그인 성공!');
-      // 로그인 성공 후 /home/home 으로 이동
-      window.location.href = '/home/home'; // 이동할 경로를 지정
-    } else {
-      // 로그인 실패
-      setError(data.message);
-    }
-};
+  };
+  useEffect(() => {
+    if (isLogin) {
+    return
+  } else { 
+    navigate('/member/login')
+  } }, []);
+  
+
+
+
+
   return (
     <>
        <div className="min-h-screen flex justify-center bg-white py-12 px-4 sm:px-6 lg:px-8">
-        <Link to="/">
+        <Link to="/member">
           <div className="absolute left-6 top-14 w-5">
             <img src="/src/assets/left-arrow.png" alt="왼쪽 화살표"/> 
           </div>
@@ -58,7 +60,7 @@ const Login = () => {
               이메일로 로그인
             </h2>
           </div>
-          <form className="mt-8 space-y-6" onSubmit={handleLogin}>
+          <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
             <div className="rounded-full shadow-sm -space-y-px">
               <div>
                 <p className="flex items-start text-blue-500 text-xs">이메일 주소</p>
