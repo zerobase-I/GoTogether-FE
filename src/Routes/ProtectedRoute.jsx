@@ -1,21 +1,14 @@
-import { Navigate, useLocation } from "react-router";
-import { useRecoilValue } from "recoil";
-import { isLoginSelector } from "../Recoil/TokenAtom";
-import App from './App.tsx';
+import React from 'react';
+// import { useRecoilValue } from 'recoil';
+// import { isLoginSelector } from '../Recoil/TokenAtom.js';
+import { Outlet, Navigate } from 'react-router-dom';
 
-const ProtectedRoute = () => {
-  const isLogin = useRecoilValue(isLoginSelector);
-  const currentLocation = useLocation();
-  
-  return isLogin ? (
-    <App />
-  ) : (
-    <Navigate
-      to={"/login"}
-      replace
-      state={{ redirecredFrom: currentLocation }}
-    />
-  );
-};
+const ProtectedRoute = ({ children }) => {
+    // const isLogin = useRecoilValue(isLoginSelector);
+    const isLogin = false;
+    // const navigate = useNavigate();
+
+    return isLogin ? children: <Navigate to='/member'/>;
+}
 
 export default ProtectedRoute;
