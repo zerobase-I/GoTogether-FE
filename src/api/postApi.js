@@ -3,12 +3,23 @@ import axios from 'axios';
 export const getPosts = async () => {
   try {
     const response = await axios.get('/api/post/list');
-    console.log(response.data);
+
     return response.data;
   } catch (error) {
     console.error(error);
   }
 };
+
+/* export const getPostDetail = async (postId) => {
+  try {
+    const response = await axios.get(`/api/post/${postId}`);
+    console.log(response);
+
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+}; */
 
 export const createPost = async (inputValue) => {
   try {
@@ -21,9 +32,25 @@ export const createPost = async (inputValue) => {
   }
 };
 
-export const EditPost = async (inputValue) => {
+export const updatePost = async (inputValue, postId) => {
+  console.log(postId);
+  console.log(inputValue);
   try {
-    const response = await axios.put('/api/post/:id', inputValue);
+    const response = await axios.put(`/api/post/${postId}`, inputValue);
+
+    console.log(response);
+
+    return response.data;
+  } catch (error) {
+    throw new Error('게시글 수정 실패');
+  }
+};
+
+export const deletePost = async (postId) => {
+  try {
+    const response = await axios.delete(`/api/post/${postId}`);
+
+    console.log(response);
 
     return response.data;
   } catch (error) {

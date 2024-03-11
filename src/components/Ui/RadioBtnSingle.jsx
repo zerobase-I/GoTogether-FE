@@ -1,6 +1,6 @@
 import React from 'react';
 
-const RadioBtnSingle = ({ option, name, onChange, checked }) => {
+const RadioBtnSingle = ({ option, name, onChange, beforeGender }) => {
   return (
     <label className="">
       <input

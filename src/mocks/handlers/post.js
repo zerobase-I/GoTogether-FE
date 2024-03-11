@@ -1,11 +1,11 @@
 import { http, HttpResponse, delay } from 'msw';
 import postData from '../postDummy.json';
 
-let Data = postData;
-let postId = 4;
+let allPosts = postData;
+let postId = 3;
 
 const getPostList = http.get('/api/post/list', async () => {
-  let res = [...Data];
+  let res = [...allPosts];
 
   await delay(1000);
   return HttpResponse.json(res);
@@ -22,22 +22,48 @@ const createPostList = http.post('/api/post', async ({ request }) => {
 
   newPost.id = postId++;
 
-  Data = [...Data, newPost];
+  allPosts = [...allPosts, newPost];
   await delay(1000);
-  console.log(Data);
+
   return HttpResponse.json(newPost, { status: 201 });
 });
 
 const putPostList = http.put('/api/post/:id', async ({ request, params }) => {
+  const formData = await request.formData();
   const { id } = params;
-  const newPost = await request.json();
 
-  console.log('Updating post "%s" with:', id, newPost);
+  const newPost = {};
+  for (const [key, value] of formData.entries()) {
+    newPost[key] = value;
+  }
+
+  allPosts[id] = newPost;
+  allPosts[id].id = +id;
+
+  console.log(allPosts);
+  await delay(1000);
+  return HttpResponse.json(newPost, { status: 201 });
 });
 
-const deletePostList = http.delete('/api/post/:id', ({ params }) => {
+const deletePostList = http.delete('/api/post/:id', async ({ params }) => {
   const { id } = params;
-  console.log('Deleting user with ID "%s"', id);
+
+  console.log(id);
+
+  const deletedPost = allPosts.find((item) => item.id === +id);
+
+  if (!deletedPost) {
+    return new HttpResponse(null, { status: 404 });
+  }
+
+  const newPost = allPosts.filter((post) => post.id !== +id);
+  console.log(newPost);
+
+  allPosts = [...newPost];
+
+  await delay(1000);
+
+  return HttpResponse.json(deletedPost);
 });
 
 export const postHandlers = [

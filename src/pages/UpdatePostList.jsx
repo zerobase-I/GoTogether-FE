@@ -1,21 +1,21 @@
-import { Link, useNavigate } from 'react-router-dom';
-import { VscZoomIn } from 'react-icons/vsc';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import moment from 'moment';
 import React, { useEffect, useState } from 'react';
+import { getPosts, updatePost } from '../api/postApi';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { VscZoomIn } from 'react-icons/vsc';
+import SelectCountry from '../components/SelectCountry';
 import ReactCalendar from '../components/ReactCalendar';
 import RadioBtn from '../components/RadioBtn';
 import RadioBtnSingle from '../components/Ui/RadioBtnSingle';
 import EditorQuill from '../components/EditorQuill';
-import { categoryList } from '../components/config/data';
-import { createPost } from '../api/postApi';
-import SelectCountry from '../components/SelectCountry';
-import moment from 'moment';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { ImageUpload2 } from '../api/ImageUpload2';
+import { categoryList } from '../components/config/data';
 
 const date = new Date();
 const formatDate = moment(date.toDateString()).format('MM-DD-YYYY');
 
-const CreatePost = () => {
+const UpdatePostList = () => {
   const queryClient = useQueryClient();
   const [success, setSuccess] = useState(); // 업로드 성공/ 실패 상태
   const [inputs, setInputs] = useState({
@@ -34,8 +34,41 @@ const CreatePost = () => {
     image: [],
   });
 
+  const {
+    state: { id: postId },
+  } = useLocation();
+
+  const {
+    isLoading,
+    error,
+    data: postData,
+  } = useQuery({
+    queryKey: ['post'],
+    queryFn: getPosts,
+  });
+
+  /*   {
+    isLoading && console.log('loading');
+  }
+  {
+    error && console.log('error');
+  }
+  {
+    postData && console.log(postData);
+    postData && console.log(postData[postId]);
+  } */
+
+  /* inputs 출력 테스트 코드 */
+  useEffect(() => {
+    console.log(inputs); // 상태가 업데이트된 후에 실행됨
+    if (postData) {
+      inputs.minimumAge = postData[postId].minimumAge;
+      inputs.maximumAge = postData[postId].maximumAge;
+    }
+  }, []); // inputs 상태가 변경될 때마다 실행
+
   const createPostMutation = useMutation({
-    mutationFn: (inputs) => createPost(inputs),
+    mutationFn: (inputs) => updatePost(inputs, postId),
     onSuccess: () => queryClient.invalidateQueries(['post']),
   });
 
@@ -60,11 +93,6 @@ const CreatePost = () => {
       content: text,
     }));
   };
-
-  /* inputs 출력 테스트 코드 */
-  useEffect(() => {
-    console.log(inputs); // 상태가 업데이트된 후에 실행됨
-  }, [inputs]); // inputs 상태가 변경될 때마다 실행
 
   const handleChangeInfo = (e) => {
     const { name, value } = e.target;
@@ -98,8 +126,8 @@ const CreatePost = () => {
       // 서버로 POST 요청 보내기
       createPostMutation.mutate(formData, {
         onSuccess: () => {
-          setSuccess('성공적으로 게시글이 등록되었습니다.');
-          alert('성공적으로 게시글이 등록되었습니다 ');
+          setSuccess('성공적으로 게시글이 수정되었습니다.');
+          alert('성공적으로 게시글이 수정되었습니다 ');
           goToHome();
           setTimeout(() => {
             setSuccess(null);
@@ -116,7 +144,7 @@ const CreatePost = () => {
     <main className="flex flex-col mx-4">
       <form onSubmit={handleSubmit}>
         <section className="mt-2 mb-10 border-t border-b">
-          <Link to="" className="w-full h-6 mb-10 ">
+          <Link to="/guide" className="w-full h-6 mb-10 ">
             <div className="flex justify-center items-center">
               <span className="text-xl font-bold">
                 {' '}
@@ -129,8 +157,17 @@ const CreatePost = () => {
           </Link>
         </section>
 
-        <SelectCountry onChange={handleChangeInfo} />
-        <ReactCalendar onDateChange={handleDateChange} />
+        <SelectCountry
+          onChange={handleChangeInfo}
+          beforeCountry={postData && postData[postId].travelCountry}
+          beforeCity={postData && postData[postId].travelCity}
+        />
+        <ReactCalendar
+          onDateChange={handleDateChange}
+          /* 날짜 수정시 자동선택 구현해야함() */
+          startDate={postData && postData[postId].startDate}
+          finishDate={postData && postData[postId].finishDate}
+        />
 
         <section className="mb-2">
           <span className="text-xl text-left font-semibold w-max block ">
@@ -141,6 +178,7 @@ const CreatePost = () => {
             option2="동일 성별"
             name="gender"
             onChange={handleChangeInfo}
+            beforeGender={postData && postData[postId].gender}
           />
         </section>
 
@@ -158,6 +196,7 @@ const CreatePost = () => {
               required
               onChange={handleChangeInfo}
               name="minimumAge"
+              value={inputs.minimumAge}
             />
             <input
               type="number"
@@ -168,6 +207,7 @@ const CreatePost = () => {
               required
               onChange={handleChangeInfo}
               name="maximumAge"
+              value={inputs.maximumAge}
             />
           </div>
         </section>
@@ -232,6 +272,11 @@ const CreatePost = () => {
             maxLength="40"
             name="title"
             onChange={handleChangeInfo}
+            value={
+              postData && postData[postId].title
+                ? postData[postId].title
+                : inputs.title
+            }
           />
           <EditorQuill onTextChange={handleQuillTextChange} />
         </section>
@@ -249,11 +294,11 @@ const CreatePost = () => {
         </section>
         <p>{success}</p>
         <button type="submit" className="btn btn-outline btn-info w-full mb-20">
-          등록하기
+          수정하기
         </button>
       </form>
     </main>
   );
 };
 
-export default CreatePost;
+export default UpdatePostList;

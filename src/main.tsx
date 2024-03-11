@@ -21,6 +21,7 @@ import EditProfile from './pages/EditProfile.jsx';
 import Review from './pages/Review.jsx';
 import Login from './pages/Login.jsx';
 import FirstPage from './routes/FirstPage.jsx';
+import UpdatePostList from './pages/UpdatePostList.jsx';
 
 async function enableMocking() {
   if (process.env.NODE_ENV !== 'development') {
@@ -46,6 +47,7 @@ const router = createBrowserRouter([
       { path: 'mypage', element: <MyPage /> },
       { path: 'travelrequestlist', element: <TravelRequestList /> },
       { path: 'postLists/:id', element: <PostList /> },
+      { path: 'updatePostList/:id', element: <UpdatePostList /> },
       { path: 'filter', element: <Filter /> },
       { path: 'createpost', element: <CreatePost /> },
       { path: 'chatroom/:id', element: <ChatRoom /> },

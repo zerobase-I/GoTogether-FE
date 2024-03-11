@@ -14,7 +14,11 @@ const PostItem = ({
     >
       <div className="flex flex-col">
         <div className="flex ">
-          <img src="https://via.placeholder.com/100" alt="샘플이미지" />
+          <img
+            src={image && image[0] && `${image[0].imageId}`}
+            alt="샘플이미지"
+            width="100px"
+          />
           <div className="flex flex-col items-start justify-between">
             <div>
               <h3 className="text-base md:text-2xl ml-4 mt-4 font-semibold">

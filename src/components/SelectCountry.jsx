@@ -12,9 +12,11 @@ const OPTIONS_CITY = [
   { key: '서울', value: '서울' },
   { key: '강릉', value: '강릉' },
   { key: '가평/양평', value: '가평/양평' },
+  { key: '부산', value: '부산' },
+  { key: '로스엔젤레스', value: '로스엔젤레스' },
 ];
 
-const SelectCountry = ({ onChange }) => {
+const SelectCountry = ({ onChange, beforeCountry, beforeCity }) => {
   return (
     <section className="flex flex-col items-center">
       <span className="text-xl w-full text-left font-semibold">
@@ -30,6 +32,8 @@ const SelectCountry = ({ onChange }) => {
             name="travelCountry"
             required
             onChange={onChange}
+            value={OPTIONS_COUNTRY.value}
+            defaultValue={beforeCountry}
           >
             {OPTIONS_COUNTRY.map((item) => (
               <option value={item.value} key={item.key}>
@@ -48,6 +52,8 @@ const SelectCountry = ({ onChange }) => {
             name="travelCity"
             required
             onChange={onChange}
+            value={OPTIONS_CITY.value}
+            defaultValue={beforeCity}
           >
             {OPTIONS_CITY.map((item) => (
               <option value={item.value} key={item.key}>
