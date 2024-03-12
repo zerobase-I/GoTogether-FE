@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 const AlarmBox = () => {
   return (
     <section className=" mb-4 mt-8 mx-4  shadow-lg shadow-blue-500/30 rounded-md ">
-      <Link to="/home/review">
+      <Link to="/review">
         <div className="flex flex-col">
           <div className="flex justify-between">
             <img

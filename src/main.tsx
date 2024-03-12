@@ -44,6 +44,7 @@ const router = createBrowserRouter([
     errorElement: <NotFound />,
     children: [
       { path: '', element: <Home /> },
+      { path: '', element: <Home /> },
       { path: 'chatlist', element: <ChatList /> },
       { path: 'mypage', element: <MyPage /> },
       { path: 'travelrequestlist', element: <TravelRequestList /> },
