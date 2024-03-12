@@ -1,5 +1,6 @@
 import { http, HttpResponse, delay } from 'msw';
-
+import { TokenAtom } from '/src/Recoil/TokenAtom.js';
+import { useSetRecoilState } from 'recoil';
 
 //////////////////////////////////////가상 계정으로 로그인/////////////////////////////////////////////////////////////
 
@@ -7,30 +8,24 @@ const virtualAccounts = [
   {
     id: 1,
     email: 'zerobase@naver.com',
-    password: 'password1234'
+    password: 'password1234',
   }
 ];
 
 // 로그인 핸들러에 가상 계정 정보 추가
-const getVirtualLoginHandler = http.get('/api/auth/signIn', async (req, res, ctx) => {
-  await delay(1000); // 가상의 지연 추가
-  return res(ctx.json(virtualAccounts)); // 가상의 계정 정보를 반환
-});
 
-const postVirtualLoginHandler = http.post('/api/auth/signIn', async ({ request }) => {
-  const { email, password } = await request.json();
+const postVirtualLoginHandler = http.post('/api/auth/signIn', (req, res, ctx) => {
+  const { email, password } = req.body;
+  console.log(`Received login request with email: ${email}, password: ${password}`); // 디버깅 메시지 추가
+
   const account = virtualAccounts.find(acc => acc.email === email && acc.password === password);
 
   if (account) {
-    // 로그인 성공 시 필요한 동작
-    return HttpResponse.ok({ message: '로그인 성공' });
+    return res(ctx.status(200), ctx.json({ accessToken: 'mockAccessToken' }));
   } else {
-    // 로그인 실패 시 필요한 동작
-    return HttpResponse.unauthorized({ message: '이메일 또는 비밀번호가 올바르지 않습니다.' });
+    return res(ctx.status(401), ctx.json({ message: '이메일 또는 비밀번호가 올바르지 않습니다.' }));
   }
 });
-
-
 
 //////////////////////////////////////Login.jsx와 MSW 연결////////////////////////////////////////////////////////////////
 
@@ -47,18 +42,12 @@ const loginPageImage = [
 let Data = loginPageImage;
 
 
-const getLoginHandler = http.get('/api/auth/signIn', async () => {
-  let res = [...Data];
-
-  await delay(1000);
-  return HttpResponse.json(res);
-});
-
 const postLoginHandler = http.post('/api/auth/signIn', async ({ request }) => {
-  const { email, password } = await request.json();
+  const { email, password, token } = await request.json();
   const newPost = {
     email: email, // 올바른 변수를 사용하여 초기화
-    password: password // 올바른 변수를 사용하여 초기화
+    password: password,
+    token: token// 올바른 변수를 사용하여 초기화
   };
 
   Data = [...Data, newPost];
@@ -67,19 +56,21 @@ const postLoginHandler = http.post('/api/auth/signIn', async ({ request }) => {
 });
 
 const loginLeftArrowHandlers = http.get('/src/assets/left-arrow.png', (req, res, ctx) => {
-  // 로고 이미지를 제공하는 핸들러
+  return res(
+    ctx.set('Content-Type', 'image/png'),
+    ctx.status(200),
+    ctx.body(/* 이미지 바이너리 데이터 */)
+  );
 });
 
 const getIndexCSS = http.get('/src/index.css', async (req, res, ctx) => {
-  // 여기에 응답을 구성할 수 있습니다.
-  // 현재는 간단히 빈 응답을 반환합니다.
+  return res(
+    ctx.status(200),
+    ctx.text('/* CSS 코드 */')
+  );
 });
 
 
-const getLoginJSX = http.get('/src/pages/Login.jsx', async (req, res, ctx) => {
-  // 여기에 응답을 구성할 수 있습니다.
-  // 현재는 간단히 빈 응답을 반환합니다.
-});
 
-export const loginPageHandlers = [getLoginHandler,postLoginHandler,getVirtualLoginHandler,postVirtualLoginHandler];
-export const additionalLoginHandlers = [loginLeftArrowHandlers, getIndexCSS, getLoginJSX];
+export const loginPageHandlers = [postLoginHandler,postVirtualLoginHandler];
+export const additionalLoginHandlersler = [loginLeftArrowHandlers, getIndexCSS];

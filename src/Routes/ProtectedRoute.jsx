@@ -1,14 +1,19 @@
-import React from 'react';
-// import { useRecoilValue } from 'recoil';
-// import { isLoginSelector } from '../Recoil/TokenAtom.js';
-import { Outlet, Navigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useRecoilValue } from 'recoil';
+import { isLoggedInSelector } from '/src/Recoil/TokenAtom';
+import { useNavigate } from 'react-router-dom';
 
 const ProtectedRoute = ({ children }) => {
-    // const isLogin = useRecoilValue(isLoginSelector);
-    const isLogin = false;
-    // const navigate = useNavigate();
+  const isLoggedIn = useRecoilValue(isLoggedInSelector);
+  const navigate = useNavigate();
 
-    return isLogin ? children: <Navigate to='/member'/>;
-}
+  useEffect(() => {
+    if (!isLoggedIn) {
+      navigate('/member');
+    }
+  }, [isLoggedIn, navigate]);
+
+  return children;
+};
 
 export default ProtectedRoute;

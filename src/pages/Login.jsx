@@ -1,52 +1,36 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
-import { tokenState } from '/src/Recoil/TokenAtom';
-
+import { Link, useNavigate } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
+import { TokenAtom } from '/src/Recoil/TokenAtom';
+import axios from 'axios';
 
 const Login = () => {
-  const [token, setToken] = useRecoilState(tokenState);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-
-  const fetchLogin = async ({ email, password }) => {
-  const response = await fetch('/api/auth/signIn', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ email, password }),
-  });
-
-  if (!response.ok) {
-    throw new Error('로그인에 실패했습니다.');
-  }
-
-  return response.json();
-};
+  const setAccessToken = useSetRecoilState(TokenAtom);
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
     try {
-      // 로그인 처리 코드
-      const data = await fetchLogin({ email, password });
-      setToken(data.token); // 토큰 업데이트
-      alert('로그인 성공!');
-      console.log('토큰:', data.token);
+      const response = await axios.post('/api/auth/signIn', { email, password });
+      const { accessToken } = response.data;
+      localStorage.setItem('accessToken', accessToken);
+      setAccessToken(accessToken); // 전역 상태 업데이트
+      alert('로그인 완료')
+      navigate('/'); // 로그인 성공 후 메인 페이지로 이동
     } catch (error) {
-      console.error('로그인 오류:', error);
-      setError('로그인 중 오류가 발생했습니다.');
+      setError("이메일 또는 비밀번호가 올바르지 않습니다.");
     }
   };
 
   return (
     <>
-       <div className="min-h-screen flex justify-center bg-white py-12 px-4 sm:px-6 lg:px-8">
-        <Link to="/member ">
+      <div className="min-h-screen flex justify-center bg-white py-12 px-4 sm:px-6 lg:px-8">
+        <Link to="/member">
           <div className="absolute left-6 top-14 w-5">
-            <img src="/src/assets/left-arrow.png" alt="왼쪽 화살표"/> 
+            <img src="/src/assets/left-arrow.png" alt="왼쪽 화살표" />
           </div>
         </Link>
         <div className="max-w-md w-full space-y-8">
@@ -59,13 +43,13 @@ const Login = () => {
             <div className="rounded-full shadow-sm -space-y-px">
               <div>
                 <p className="flex items-start text-blue-500 text-xs">이메일 주소</p>
-                <input 
-                  id="email-address" 
-                  name="email" 
-                  type="email" 
-                  autoComplete="email" 
-                  required 
-                  className="text-xl mb-2 relative block w-full px-3 py-1 border-b-2 border-gray-600 bg-transparent text-black rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm" 
+                <input
+                  id="email-address"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  required
+                  className="text-xl mb-2 relative block w-full px-3 py-1 border-b-2 border-gray-600 bg-transparent text-black rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
                   placeholder="이메일 주소"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -73,22 +57,22 @@ const Login = () => {
               </div>
               <div>
                 <p className="mt-28 flex items-start text-blue-500 text-xs">비밀번호</p>
-                <input 
-                  id="password" 
-                  name="password" 
-                  type="password" 
-                  autoComplete="current-password" 
-                  required 
-                  className="text-xl mb-2 relative block w-full px-3 py-1 border-b-2 border-gray-600 bg-transparent text-black rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm" 
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  autoComplete="current-password"
+                  required
+                  className="text-xl mb-2 relative block w-full px-3 py-1 border-b-2 border-gray-600 bg-transparent text-black rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
                   placeholder="비밀번호"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
-            </div>    
+            </div>
             <div className="flex items-center justify-between">
               <div className="flex items-center">
-                <input id="remember_me" name="remember_me" type="checkbox" className="h-5 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"/>
+                <input id="remember_me" name="remember_me" type="checkbox" className="h-5 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded" />
                 <label htmlFor="remember_me" className="ml-2 block text-sm text-gray-900">
                   Remember me
                 </label>
@@ -101,8 +85,8 @@ const Login = () => {
             </div>
             {error && <p className="text-red-500">{error}</p>}
             <div>
-              <button 
-                type="submit" 
+              <button
+                type="submit"
                 className="group relative w-full flex justify-center items-center h-14 py-2 px-4 border-none text-xl font-medium rounded-md text-white bg-gray-500 hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700"
               >
                 <span className="absolute left-0 inset-y-0 flex items-center pl-3">
@@ -120,6 +104,5 @@ const Login = () => {
     </>
   );
 };
-
 
 export default Login;

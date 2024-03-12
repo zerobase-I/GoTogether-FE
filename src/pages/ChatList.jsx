@@ -23,7 +23,7 @@ const ChatList = () => {
   return (
   <div className="container mx-auto my-8">
     <h1 className="text-2xl flex justify-start ml-5 font-bold mb-4">참여중인 채팅방</h1>
-    <Link to="/home/chatroom" className="grid gap-4">
+    <Link to="/chatroom" className="grid gap-4">
       {data && data.length > 0 && data.map(room => (
         <div
           key={room.chatRoomId}
