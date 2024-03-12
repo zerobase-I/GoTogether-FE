@@ -17,27 +17,6 @@ const formatDate = moment(date.toDateString()).format('MM-DD-YYYY');
 
 const UpdatePostList = () => {
   const queryClient = useQueryClient();
-  const [success, setSuccess] = useState(); // 업로드 성공/ 실패 상태
-  const [inputs, setInputs] = useState({
-    travelCountry: '한국',
-    travelCity: '서울',
-    startDate: formatDate,
-    finishDate: formatDate,
-    gender: '',
-    minimumAge: '18',
-    maximumAge: '100',
-    recruitsPeople: '6',
-    estimatedTravelExpense: '',
-    category: '',
-    title: '',
-    content: '',
-    image: [],
-  });
-
-  const {
-    state: { id: postId },
-  } = useLocation();
-
   const {
     isLoading,
     error,
@@ -47,25 +26,56 @@ const UpdatePostList = () => {
     queryFn: getPosts,
   });
 
-  /*   {
-    isLoading && console.log('loading');
-  }
-  {
-    error && console.log('error');
-  }
-  {
-    postData && console.log(postData);
-    postData && console.log(postData[postId]);
-  } */
+  const [success, setSuccess] = useState(); // 업로드 성공/ 실패 상태
+  const {
+    state: { id: postId },
+  } = useLocation();
 
-  /* inputs 출력 테스트 코드 */
+  const [inputs, setInputs] = useState({
+    travelCountry: '',
+    travelCity: '',
+    startDate: '',
+    finishDate: '',
+    gender: '',
+    minimumAge: '',
+    maximumAge: '',
+    recruitsPeople: '',
+    estimatedTravelExpense: '',
+    category: '',
+    title: '',
+    content: '',
+    image: [],
+  });
+
+  console.log(inputs);
+
   useEffect(() => {
-    console.log(inputs); // 상태가 업데이트된 후에 실행됨
-    if (postData) {
-      inputs.minimumAge = postData[postId].minimumAge;
-      inputs.maximumAge = postData[postId].maximumAge;
-    }
-  }, []); // inputs 상태가 변경될 때마다 실행
+    isLoading && console.log('Loading중입니다.');
+    error && console.log(error.message);
+
+    postData &&
+      setInputs({
+        travelCountry: postData && postData[postId].travelCountry,
+        travelCity: postData && postData[postId].travelCity,
+        startDate: postData && postData[postId].finishDate,
+        finishDate: formatDate,
+        gender: postData && postData[postId].gender,
+        minimumAge: postData && postData[postId].minimumAge,
+        maximumAge: postData && postData[postId].maximumAge,
+        recruitsPeople: postData && postData[postId].recruitsPeople,
+        estimatedTravelExpense:
+          postData && postData[postId].estimatedTravelExpense,
+        category: postData && postData[postId].category,
+        title: postData && postData[postId].title,
+        content: postData && postData[postId].content,
+        image: postData && postData[postId].image,
+      });
+  }, [isLoading, error, postId, postData]); // inputs 상태가 변경될 때마다 실행
+
+  // inputs 변경시 테스트 코드
+  useEffect(() => {
+    console.log(inputs);
+  }, [inputs]);
 
   const createPostMutation = useMutation({
     mutationFn: (inputs) => updatePost(inputs, postId),
@@ -101,7 +111,6 @@ const UpdatePostList = () => {
   };
 
   const navigate = useNavigate();
-
   const goToHome = () => {
     navigate('/');
   };
@@ -122,6 +131,8 @@ const UpdatePostList = () => {
       }
     }
 
+    console.log(formData);
+
     try {
       // 서버로 POST 요청 보내기
       createPostMutation.mutate(formData, {
@@ -141,7 +152,7 @@ const UpdatePostList = () => {
   };
 
   return (
-    <main className="flex flex-col mx-4">
+    <main className="flex flex-col mx-4 mt-4">
       <form onSubmit={handleSubmit}>
         <section className="mt-2 mb-10 border-t border-b">
           <Link to="/guide" className="w-full h-6 mb-10 ">
@@ -159,9 +170,10 @@ const UpdatePostList = () => {
 
         <SelectCountry
           onChange={handleChangeInfo}
-          beforeCountry={postData && postData[postId].travelCountry}
-          beforeCity={postData && postData[postId].travelCity}
+          beforeCountry={inputs.travelCountry}
+          beforeCity={inputs.travelCity}
         />
+
         <ReactCalendar
           onDateChange={handleDateChange}
           /* 날짜 수정시 자동선택 구현해야함() */
@@ -255,6 +267,7 @@ const UpdatePostList = () => {
               onChange={handleChangeInfo}
               name="estimatedTravelExpense"
               step="1000"
+              value={inputs.estimatedTravelExpense}
             />
           </div>
         </section>
@@ -272,13 +285,12 @@ const UpdatePostList = () => {
             maxLength="40"
             name="title"
             onChange={handleChangeInfo}
-            value={
-              postData && postData[postId].title
-                ? postData[postId].title
-                : inputs.title
-            }
+            value={inputs.title}
           />
-          <EditorQuill onTextChange={handleQuillTextChange} />
+          <EditorQuill
+            onTextChange={handleQuillTextChange}
+            value={inputs.content}
+          />
         </section>
 
         <section className="mb-16">
@@ -289,7 +301,10 @@ const UpdatePostList = () => {
             <span className="mb-4">
               글 최상단에 보여질 이미지를 설정해 보세요!
             </span>
-            <ImageUpload2 onFileChange={handleFileChange} />
+            <ImageUpload2
+              onFileChange={handleFileChange}
+              value={inputs.image}
+            />
           </label>
         </section>
         <p>{success}</p>

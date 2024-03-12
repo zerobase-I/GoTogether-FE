@@ -22,7 +22,7 @@ const createPostList = http.post('/api/post', async ({ request }) => {
 
   newPost.id = postId++;
 
-  allPosts = [...allPosts, newPost];
+  allPosts = [newPost, ...allPosts];
   await delay(1000);
 
   return HttpResponse.json(newPost, { status: 201 });

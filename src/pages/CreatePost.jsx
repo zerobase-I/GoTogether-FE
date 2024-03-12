@@ -113,7 +113,7 @@ const CreatePost = () => {
   };
 
   return (
-    <main className="flex flex-col mx-4">
+    <main className="flex flex-col mx-4 mt-4">
       <form onSubmit={handleSubmit}>
         <section className="mt-2 mb-10 border-t border-b">
           <Link to="" className="w-full h-6 mb-10 ">

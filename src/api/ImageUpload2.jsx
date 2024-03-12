@@ -1,10 +1,14 @@
 import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-export const ImageUpload2 = ({ onFileChange }) => {
-  const [files, setFiles] = useState(null);
+export const ImageUpload2 = ({ onFileChange, value }) => {
+  const [files, setFiles] = useState();
   const [progress, setProgress] = useState({ started: false, pc: 0 });
   const [msg, setMsg] = useState(null);
+
+  useEffect(() => {
+    setFiles(value);
+  }, []);
 
   const handleInputChange = (e) => {
     console.log(e.target.files);
