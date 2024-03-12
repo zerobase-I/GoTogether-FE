@@ -22,6 +22,9 @@ import Review from './pages/Review.jsx';
 import Login from './pages/Login.jsx';
 import FirstPage from './routes/FirstPage.jsx';
 import UpdatePostList from './pages/UpdatePostList.jsx';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { RecoilRoot } from 'recoil';
+import ProtectedRoute from './routes/ProtectedRoute.jsx';
 
 async function enableMocking() {
   if (process.env.NODE_ENV !== 'development') {
@@ -35,13 +38,17 @@ async function enableMocking() {
   return worker.start();
 }
 
-/* routing 경로 수정 */
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <App />,
+    element: (
+      <ProtectedRoute>
+        <App />
+      </ProtectedRoute>
+    ),
     errorElement: <NotFound />,
     children: [
+      { path: '', element: <Home /> },
       { path: '', element: <Home /> },
       { path: 'chatlist', element: <ChatList /> },
       { path: 'mypage', element: <MyPage /> },
@@ -78,16 +85,18 @@ const router = createBrowserRouter([
   },
 ]);
 
-/* ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <RouterProvider router={router} />
-  </React.StrictMode>,
-); */
-
 enableMocking().then(() => {
+  const queryClient = new QueryClient(); // QueryClient 생성
+
+  // ReactDOM.createRoot로 앱을 렌더링하기 전에 QueryClientProvider로 감싸줍니다.
   ReactDOM.createRoot(document.getElementById('root')!).render(
-    <React.StrictMode>
-      <RouterProvider router={router} />
-    </React.StrictMode>,
+    <RecoilRoot>
+      <React.StrictMode>
+        <QueryClientProvider client={queryClient}>
+          <RouterProvider router={router} />
+        </QueryClientProvider>
+      </React.StrictMode>
+      ,
+    </RecoilRoot>,
   );
 });
