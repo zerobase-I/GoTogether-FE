@@ -1,7 +1,5 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
-import { getPosts, updatePost } from '../api/postApi';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { VscZoomIn } from 'react-icons/vsc';
 import SelectCountry from '../components/SelectCountry';
@@ -11,21 +9,16 @@ import RadioBtnSingle from '../components/Ui/RadioBtnSingle';
 import EditorQuill from '../components/EditorQuill';
 import { ImageUpload2 } from '../api/ImageUpload2';
 import { categoryList } from '../components/config/data';
+import usePosts from '../components/hooks/usePosts';
 
 const date = new Date();
 const formatDate = moment(date.toDateString()).format('MM-DD-YYYY');
 
 const UpdatePostList = () => {
-  const queryClient = useQueryClient();
   const {
-    isLoading,
-    error,
-    data: postData,
-  } = useQuery({
-    queryKey: ['post'],
-    queryFn: getPosts,
-  });
-
+    postQuery: { isLoading, error, data: postData },
+  } = usePosts();
+  const { createUpdatePostMutation } = usePosts();
   const [success, setSuccess] = useState(); // 업로드 성공/ 실패 상태
   const {
     state: { id: postId },
@@ -76,11 +69,6 @@ const UpdatePostList = () => {
   useEffect(() => {
     console.log(inputs);
   }, [inputs]);
-
-  const createPostMutation = useMutation({
-    mutationFn: (inputs) => updatePost(inputs, postId),
-    onSuccess: () => queryClient.invalidateQueries(['post']),
-  });
 
   const handleDateChange = (dates) => {
     setInputs(() => ({
@@ -135,7 +123,7 @@ const UpdatePostList = () => {
 
     try {
       // 서버로 POST 요청 보내기
-      createPostMutation.mutate(formData, {
+      createUpdatePostMutation.mutate(formData, {
         onSuccess: () => {
           setSuccess('성공적으로 게시글이 수정되었습니다.');
           alert('성공적으로 게시글이 수정되었습니다 ');

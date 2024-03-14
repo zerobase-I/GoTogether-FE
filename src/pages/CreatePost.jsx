@@ -6,17 +6,16 @@ import RadioBtn from '../components/RadioBtn';
 import RadioBtnSingle from '../components/Ui/RadioBtnSingle';
 import EditorQuill from '../components/EditorQuill';
 import { categoryList } from '../components/config/data';
-import { createPost } from '../api/postApi';
 import SelectCountry from '../components/SelectCountry';
 import moment from 'moment';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { ImageUpload2 } from '../api/ImageUpload2';
+import usePosts from '../components/hooks/usePosts';
 
 const date = new Date();
 const formatDate = moment(date.toDateString()).format('MM-DD-YYYY');
 
 const CreatePost = () => {
-  const queryClient = useQueryClient();
+  const { createUpdatePostMutation } = usePosts();
   const [success, setSuccess] = useState(); // 업로드 성공/ 실패 상태
   const [inputs, setInputs] = useState({
     travelCountry: '한국',
@@ -34,10 +33,21 @@ const CreatePost = () => {
     image: [],
   });
 
-  const createPostMutation = useMutation({
-    mutationFn: (inputs) => createPost(inputs),
-    onSuccess: () => queryClient.invalidateQueries(['post']),
-  });
+  const navigate = useNavigate();
+  const goToHome = () => {
+    navigate('/');
+  };
+
+  /* inputs 출력 테스트 코드 */
+  useEffect(() => {
+    console.log(inputs); // 상태가 업데이트된 후에 실행됨
+  }, [inputs]); // inputs 상태가 변경될 때마다 실행
+
+  const handleChangeInfo = (e) => {
+    const { name, value } = e.target;
+
+    setInputs({ ...inputs, [name]: value });
+  };
 
   const handleDateChange = (dates) => {
     setInputs(() => ({
@@ -61,23 +71,6 @@ const CreatePost = () => {
     }));
   };
 
-  /* inputs 출력 테스트 코드 */
-  useEffect(() => {
-    console.log(inputs); // 상태가 업데이트된 후에 실행됨
-  }, [inputs]); // inputs 상태가 변경될 때마다 실행
-
-  const handleChangeInfo = (e) => {
-    const { name, value } = e.target;
-
-    setInputs({ ...inputs, [name]: value });
-  };
-
-  const navigate = useNavigate();
-
-  const goToHome = () => {
-    navigate('/');
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log('submit 이벤트 발생');
@@ -96,7 +89,7 @@ const CreatePost = () => {
 
     try {
       // 서버로 POST 요청 보내기
-      createPostMutation.mutate(formData, {
+      createUpdatePostMutation.mutate(formData, {
         onSuccess: () => {
           setSuccess('성공적으로 게시글이 등록되었습니다.');
           alert('성공적으로 게시글이 등록되었습니다 ');

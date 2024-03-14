@@ -14,14 +14,19 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('/api/auth/signIn', { email, password });
+      // post 요청 보내면 token이 응답값으로 온다.
+      const response = await axios.post('/api/auth/signIn', {
+        email,
+        password,
+      });
       const { accessToken } = response.data;
-      localStorage.setItem('accessToken', accessToken);
+      /* localStorage.setItem('accessToken', accessToken); */
+      localStorage.setItem('accessToken', 'test 후 이 코드 제거');
       setAccessToken(accessToken); // 전역 상태 업데이트
-      alert('로그인 완료')
+      alert('로그인 완료');
       navigate('/'); // 로그인 성공 후 메인 페이지로 이동
     } catch (error) {
-      setError("이메일 또는 비밀번호가 올바르지 않습니다.");
+      setError('이메일 또는 비밀번호가 올바르지 않습니다.');
     }
   };
 
@@ -42,7 +47,9 @@ const Login = () => {
           <form className="mt-8 space-y-6" onSubmit={handleLogin}>
             <div className="rounded-full shadow-sm -space-y-px">
               <div>
-                <p className="flex items-start text-blue-500 text-xs">이메일 주소</p>
+                <p className="flex items-start text-blue-500 text-xs">
+                  이메일 주소
+                </p>
                 <input
                   id="email-address"
                   name="email"
@@ -56,7 +63,9 @@ const Login = () => {
                 />
               </div>
               <div>
-                <p className="mt-28 flex items-start text-blue-500 text-xs">비밀번호</p>
+                <p className="mt-28 flex items-start text-blue-500 text-xs">
+                  비밀번호
+                </p>
                 <input
                   id="password"
                   name="password"
@@ -72,13 +81,24 @@ const Login = () => {
             </div>
             <div className="flex items-center justify-between">
               <div className="flex items-center">
-                <input id="remember_me" name="remember_me" type="checkbox" className="h-5 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded" />
-                <label htmlFor="remember_me" className="ml-2 block text-sm text-gray-900">
+                <input
+                  id="remember_me"
+                  name="remember_me"
+                  type="checkbox"
+                  className="h-5 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                />
+                <label
+                  htmlFor="remember_me"
+                  className="ml-2 block text-sm text-gray-900"
+                >
                   Remember me
                 </label>
               </div>
               <div className="text-sm">
-                <a href="#" className="font-medium text-blue-500 hover:text-indigo-500">
+                <a
+                  href="#"
+                  className="font-medium text-blue-500 hover:text-indigo-500"
+                >
                   Forgot your password?
                 </a>
               </div>
@@ -90,9 +110,23 @@ const Login = () => {
                 className="group relative w-full flex justify-center items-center h-14 py-2 px-4 border-none text-xl font-medium rounded-md text-white bg-gray-500 hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700"
               >
                 <span className="absolute left-0 inset-y-0 flex items-center pl-3">
-                  <svg className="h-5 w-5 text-black group-hover:text-blue-300" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                    <path fillRule="evenodd" d="M10 12a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
-                    <path fillRule="evenodd" d="M4 8V6a4 4 0 118 0v2h1a1 1 0 011 1v7a1 1 0 01-1 1H4a1 1 0 01-1-1v-7a1 1 0 011-1h1zm4-3a2 2 0 10-4 0v2h4V5z" clipRule="evenodd" />
+                  <svg
+                    className="h-5 w-5 text-black group-hover:text-blue-300"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10 12a2 2 0 100-4 2 2 0 000 4z"
+                      clipRule="evenodd"
+                    />
+                    <path
+                      fillRule="evenodd"
+                      d="M4 8V6a4 4 0 118 0v2h1a1 1 0 011 1v7a1 1 0 01-1 1H4a1 1 0 01-1-1v-7a1 1 0 011-1h1zm4-3a2 2 0 10-4 0v2h4V5z"
+                      clipRule="evenodd"
+                    />
                   </svg>
                 </span>
                 로그인

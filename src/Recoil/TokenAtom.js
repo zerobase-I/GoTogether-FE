@@ -1,8 +1,9 @@
 import { atom, selector } from 'recoil';
 
 export const TokenAtom = atom({
-  key: "TokenAtom",
-  default: null,
+  key: 'TokenAtom',
+  /*   default: null, */
+  default: 'test후 이 코드 제거 위 코드 사용',
 });
 
 // 로그인 상태 확인을 위한 셀렉터

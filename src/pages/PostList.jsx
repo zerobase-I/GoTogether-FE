@@ -1,11 +1,17 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { deletePost } from '../api/postApi';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import usePosts from '../components/hooks/usePosts';
+import useAccompany from '../components/hooks/useAccompany';
+
+import { postAccompany, postCancelAccompany } from '../api/accompany';
+
+//임시 데이터 : 로그인한 유저 고유정보 email
+// 게시글 1번 - 본인작성게시물 가정
+const LOGIN_INFO = 'BBBB@naver.com';
+// 로그인정보 전역상태로 저장시 지울예정
 
 const PostList = () => {
-  const queryClient = useQueryClient();
-
+  const { deletePostMutation } = usePosts();
   const {
     state: {
       post: {
@@ -23,20 +29,74 @@ const PostList = () => {
         content,
         image,
         id,
+        memberId,
+        userEmail,
       },
     },
   } = useLocation();
 
   const navigate = useNavigate();
-
   const goToHome = () => {
     navigate('/');
   };
 
-  const deletePostMutation = useMutation({
-    mutationFn: (postId) => deletePost(postId),
-    onSuccess: () => queryClient.invalidateQueries(['post']),
-  });
+  // 요청을 보냈나?
+  //true: 보냄 / false: 안보냄
+  // 내 게시물일 경우 ? 채팅방으로(버튼텍스트)
+  const [isRequest, setIsRequest] = useState(false);
+  const [isMyPost, setIsMyPost] = useState(false);
+
+  const {
+    getRequestListQuery: { isLoading, error, data: requestList },
+  } = useAccompany();
+
+  isLoading && console.log(isLoading);
+  error && console.log(error.message);
+
+  useEffect(() => {
+    // 사용자가 게시글 페이지 처음 들어왔을경우,  버튼의 초기 상태를 알아야함
+    // 본인 게시글(채팅방으로) / 동행요청 / 요청취소
+
+    // 4. 게시글이 내 게시물일 경우, "채팅방으로" 버튼으로 보여야 함
+    if (LOGIN_INFO === userEmail) {
+      setIsMyPost(true);
+      return;
+    }
+
+    //1. 내가 보낸 동행 요청 목록을 get한다.
+    // 1-1. 요청 목록에서 requestedMemberId (게시글 작성자 고유 아이디) 값을 얻는다.
+    //2. 현재 페이지의 게시글 작성자의 id와 비교한다.
+    const isMatched =
+      requestList &&
+      requestList.filter((item) => item.requestedMemberId === memberId);
+
+    //2-1.  게시글 작성자의 id 와  비교해서 같은게 있으면, 동행 요청 버튼이 "동행 취소" 버튼으로 보여야함
+    //3. 같은게 없으면, "동행 요청 버튼으로 보여야 함"
+    if (isMatched && isMatched.length) {
+      setIsRequest(true);
+    } else {
+      setIsRequest(false);
+    }
+  }, [requestList, memberId, userEmail]);
+
+  const handleRequestBtnClick = (e) => {
+    //     1. 버튼이 "동행 요청" 일 경우,
+    // 1-1. 동행요청 post 요청을 보낸다.
+    // 1-2. 동행 요청 페이지에서 해당 동행 요청 내역이 확인 가능해야 한다.
+
+    //     2. 버튼이 "동행 취소" 일 경우, 동행취소 post 요청을 보낸다.
+    // 2-1. 동행 요청 페이지에서 해당 동행 요청 내역이 보이면 안된다.
+    console.log('동행요청 버튼 클릭');
+    console.log(e.target.innerText === '동행요청');
+
+    if (e.target.innerText === '동행요청') {
+      postAccompany(id, memberId);
+      setIsRequest(false);
+    } else {
+      postCancelAccompany(requestList && requestList.id);
+      setIsRequest(true);
+    }
+  };
 
   const handleEditClick = () => {
     console.log('Edit 버튼 클릭');
@@ -136,9 +196,34 @@ const PostList = () => {
           </div>
         </div>
       </div>
-      <button type="submit" className="btn btn-outline btn-info w-full mb-20">
-        동행 요청
-      </button>
+      {isMyPost && (
+        <button
+          type="submit"
+          className="btn btn-outline  btn-success w-full mb-20 "
+          onClick={() => navigate(`/chatroom/${id}`)}
+        >
+          채팅방으로
+        </button>
+      )}
+      {isMyPost || isRequest || (
+        <button
+          type="submit"
+          className="btn btn-outline btn-error w-full mb-20 "
+          onClick={handleRequestBtnClick}
+        >
+          요청취소
+        </button>
+      )}
+      {isMyPost ||
+        (isRequest && (
+          <button
+            type="submit"
+            className="btn btn-outline btn-info w-full mb-20"
+            onClick={handleRequestBtnClick}
+          >
+            동행요청
+          </button>
+        ))}
     </article>
   );
 };

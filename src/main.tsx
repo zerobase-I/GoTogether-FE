@@ -96,7 +96,6 @@ enableMocking().then(() => {
           <RouterProvider router={router} />
         </QueryClientProvider>
       </React.StrictMode>
-      ,
     </RecoilRoot>,
   );
 });

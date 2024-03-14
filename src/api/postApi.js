@@ -10,16 +10,17 @@ export const getPosts = async () => {
   }
 };
 
-/* export const getPostDetail = async (postId) => {
+export const getPostDetail = async (postId) => {
+  //console.log(postId); // 1
   try {
     const response = await axios.get(`/api/post/${postId}`);
-    console.log(response);
+    const data = response.data;
 
-    return response.data;
+    return data;
   } catch (error) {
     console.error(error);
   }
-}; */
+};
 
 export const createPost = async (inputValue) => {
   try {

@@ -1,6 +1,8 @@
 [
   {
     "id": 0,
+    "memberId": "A",
+    "userEmail": "AAAA@naver.com",
     "travelCountry": "한국",
     "travelCity": "서울",
     "startDate": "23-03-10",
@@ -24,6 +26,8 @@
   },
   {
     "id": 1,
+    "memberId": "B",
+    "userEmail": "BBBB@naver.com",
     "travelCountry": "한국",
     "travelCity": "부산",
     "startDate": "23-03-05",
@@ -47,6 +51,8 @@
   },
   {
     "id": 2,
+    "memberId": "C",
+    "userEmail": "CCCC@naver.com",
     "travelCountry": "미국",
     "travelCity": "로스앤젤레스",
     "startDate": "23-03-16",
