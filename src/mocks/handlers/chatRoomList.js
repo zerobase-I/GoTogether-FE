@@ -93,7 +93,7 @@ let Data = chatRoomDto;
 
 
 
-const getChatRoomList = http.get('/api/chat-room/list', async () => {
+const getChatRoomList = http.get('/api/chat-room/my-list', async () => {
   let res = [...Data];
 
   await delay(1000);
@@ -103,7 +103,7 @@ const getChatRoomList = http.get('/api/chat-room/list', async () => {
 
 
 
-const postChatRoomList = http.post('/api/chat-room/list', async ({ request }) => {
+const postChatRoomList = http.post('/api/chat-room/my-list', async ({ request }) => {
   const body = await request.json();
   const newPost = {
     name: newPost.name,

@@ -54,5 +54,35 @@ const getAuthJSX = http.get('/src/pages/Auth.jsx', async (req, res, ctx) => {
   // 현재는 간단히 빈 응답을 반환합니다.
 });
 
-export const authPageHandlers = [getAuthHandler,postAuthHandler];
+
+////////////////////////////////////////////////회원가입 핸들러//////////////////////////////////////////////////////
+const checkEmailDuplicateHandler = http.post('/api/check-email', async ({ request }) => {
+  const { email } = await request.json();
+  // 여기서 이메일 중복 여부를 검사하는 로직을 구현합니다.
+  // 예시로, 항상 중복되지 않음을 응답합니다.
+  await delay(1000);
+  return HttpResponse.json({ isDuplicate: false });
+});
+
+// 이메일 인증 코드 발송 핸들러
+const sendEmailVerificationCodeHandler = http.post('/api/send-verification-code', async ({ request }) => {
+  const { email } = await request.json();
+  // 인증 코드를 발송하는 로직을 모의합니다.
+  // 예시로, 인증 코드 '123456'을 발송했다고 응답합니다.
+  await delay(1000);
+  return HttpResponse.json({ code: '123456' });
+});
+
+// 회원가입 요청 핸들러
+const signUpHandler = http.post('/api/signup', async ({ request }) => {
+  const newUser = await request.json();
+  // 회원가입 로직을 모의합니다.
+  // 예시로, 사용자 정보를 그대로 반환하며, 회원가입이 성공했다고 가정합니다.
+  await delay(1000);
+  return HttpResponse.json(newUser);
+});
+
+
+
+export const authPageHandlers = [getAuthHandler,postAuthHandler,checkEmailDuplicateHandler,sendEmailVerificationCodeHandler,signUpHandler];
 export const additionalauthPageHandlers = [authStyleLogoHandlers, authStyleBgHandlers, getIndexCSS, getAuthJSX];
