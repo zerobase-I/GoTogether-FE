@@ -25,44 +25,46 @@ const Login = () => {
       console.error('사용자 정보를 가져오는 중 오류 발생:', error);
       throw new Error('사용자 정보를 가져오는데 실패했습니다.');
     }
-}
-
-   async function onLoginSuccess(response) {
-  try {
-    const { accessToken } = response.data; // 응답에서 accessToken 추출
-    const userDetails = await fetchUserDetails(accessToken); // 수정: accessToken 사용
-    console.log('User Details:', userDetails); // 콘솔에 사용자 상세 정보 출력
-    setAccessToken({ accessToken });
-    setUserInfo(userDetails);// Recoil 상태 업데이트
-    localStorage.setItem('accessToken', accessToken);
-    localStorage.setItem('userDetails', JSON.stringify(userDetails)); // 로컬 스토리지에 사용자 상세 정보 저장
-    navigate('/'); // 메인 페이지로 이동
-  } catch (error) {
-    console.error('Error fetching user details:', error);
-    setError("사용자 정보를 가져오는 데 실패했습니다.");
   }
-}
 
-
-const handleLogin = async (e) => {
-  e.preventDefault(); // 폼 제출에 의한 페이지 리로드 방지
-  try {
-    const response = await axios.post('/api/auth/signIn', { email, password });
-    if (response.data.accessToken) {
-      // 로그인 성공
-      console.log('Response Data:', response.data); // 콘솔에 accessToken 출력
-      localStorage.setItem('accessToken', response.data.accessToken); // localStorage에 accessToken 저장
-      await onLoginSuccess(response); // 로그인 성공 처리 함수 호출
-    } else {
-      // 로그인 실패
-      console.log('Login failed:', response.data.message);
-      setError("이메일 또는 비밀번호가 올바르지 않습니다."); // 사용자에게 오류 메시지 표시
+  async function onLoginSuccess(response) {
+    try {
+      const { accessToken } = response.data; // 응답에서 accessToken 추출
+      const userDetails = await fetchUserDetails(accessToken); // 수정: accessToken 사용
+      console.log('User Details:', userDetails); // 콘솔에 사용자 상세 정보 출력
+      setAccessToken({ accessToken });
+      setUserInfo(userDetails); // Recoil 상태 업데이트
+      localStorage.setItem('accessToken', accessToken);
+      localStorage.setItem('userDetails', JSON.stringify(userDetails)); // 로컬 스토리지에 사용자 상세 정보 저장
+      navigate('/'); // 메인 페이지로 이동
+    } catch (error) {
+      console.error('Error fetching user details:', error);
+      setError('사용자 정보를 가져오는 데 실패했습니다.');
     }
-  } catch (error) {
-    console.error("Login Error:", error); // 로그인 오류 시 콘솔에 오류 출력
-    setError("이메일 또는 비밀번호가 올바르지 않습니다."); // 사용자에게 오류 메시지 표시
   }
-};
+
+  const handleLogin = async (e) => {
+    e.preventDefault(); // 폼 제출에 의한 페이지 리로드 방지
+    try {
+      const response = await axios.post('/api/auth/signIn', {
+        email,
+        password,
+      });
+      if (response.data.accessToken) {
+        // 로그인 성공
+        console.log('Response Data:', response.data); // 콘솔에 accessToken 출력
+        localStorage.setItem('accessToken', response.data.accessToken); // localStorage에 accessToken 저장
+        await onLoginSuccess(response); // 로그인 성공 처리 함수 호출
+      } else {
+        // 로그인 실패
+        console.log('Login failed:', response.data.message);
+        setError('이메일 또는 비밀번호가 올바르지 않습니다.'); // 사용자에게 오류 메시지 표시
+      }
+    } catch (error) {
+      console.error('Login Error:', error); // 로그인 오류 시 콘솔에 오류 출력
+      setError('이메일 또는 비밀번호가 올바르지 않습니다.'); // 사용자에게 오류 메시지 표시
+    }
+  };
 
   return (
     <>
@@ -81,7 +83,9 @@ const handleLogin = async (e) => {
           <form className="mt-8 space-y-6" onSubmit={handleLogin}>
             <div className="rounded-full shadow-sm -space-y-px">
               <div>
-                <p className="flex items-start text-blue-500 text-xs">이메일 주소</p>
+                <p className="flex items-start text-blue-500 text-xs">
+                  이메일 주소
+                </p>
                 <input
                   id="email-address"
                   name="email"
@@ -95,7 +99,9 @@ const handleLogin = async (e) => {
                 />
               </div>
               <div>
-                <p className="mt-28 flex items-start text-blue-500 text-xs">비밀번호</p>
+                <p className="mt-28 flex items-start text-blue-500 text-xs">
+                  비밀번호
+                </p>
                 <input
                   id="password"
                   name="password"
@@ -111,13 +117,24 @@ const handleLogin = async (e) => {
             </div>
             <div className="flex items-center justify-between">
               <div className="flex items-center">
-                <input id="remember_me" name="remember_me" type="checkbox" className="h-5 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded" />
-                <label htmlFor="remember_me" className="ml-2 block text-sm text-gray-900">
+                <input
+                  id="remember_me"
+                  name="remember_me"
+                  type="checkbox"
+                  className="h-5 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                />
+                <label
+                  htmlFor="remember_me"
+                  className="ml-2 block text-sm text-gray-900"
+                >
                   Remember me
                 </label>
               </div>
               <div className="text-sm">
-                <a href="#" className="font-medium text-blue-500 hover:text-indigo-500">
+                <a
+                  href="#"
+                  className="font-medium text-blue-500 hover:text-indigo-500"
+                >
                   Forgot your password?
                 </a>
               </div>
@@ -129,9 +146,23 @@ const handleLogin = async (e) => {
                 className="group relative w-full flex justify-center items-center h-14 py-2 px-4 border-none text-xl font-medium rounded-md text-white bg-gray-500 hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700"
               >
                 <span className="absolute left-0 inset-y-0 flex items-center pl-3">
-                  <svg className="h-5 w-5 text-black group-hover:text-blue-300" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                    <path fillRule="evenodd" d="M10 12a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
-                    <path fillRule="evenodd" d="M4 8V6a4 4 0 118 0v2h1a1 1 0 011 1v7a1 1 0 01-1 1H4a1 1 0 01-1-1v-7a1 1 0 011-1h1zm4-3a2 2 0 10-4 0v2h4V5z" clipRule="evenodd" />
+                  <svg
+                    className="h-5 w-5 text-black group-hover:text-blue-300"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10 12a2 2 0 100-4 2 2 0 000 4z"
+                      clipRule="evenodd"
+                    />
+                    <path
+                      fillRule="evenodd"
+                      d="M4 8V6a4 4 0 118 0v2h1a1 1 0 011 1v7a1 1 0 01-1 1H4a1 1 0 01-1-1v-7a1 1 0 011-1h1zm4-3a2 2 0 10-4 0v2h4V5z"
+                      clipRule="evenodd"
+                    />
                   </svg>
                 </span>
                 로그인

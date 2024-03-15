@@ -11,6 +11,15 @@ const getPostList = http.get('/api/post/list', async () => {
   return HttpResponse.json(res);
 });
 
+const getPostDetail = http.get('/api/post/:postId', async ({ params }) => {
+  const { postId } = params; //1
+  const res = [...allPosts].filter((post) => post.id === +postId);
+  console.log(res);
+
+  await delay(500);
+  return HttpResponse.json(res);
+});
+
 const createPostList = http.post('/api/post', async ({ request }) => {
   const formData = await request.formData();
 
@@ -61,13 +70,14 @@ const deletePostList = http.delete('/api/post/:id', async ({ params }) => {
 
   allPosts = [...newPost];
 
-  await delay(1000);
+  await delay(200);
 
-  return HttpResponse.json(deletedPost);
+  return HttpResponse.json(deletedPost, { status: 200 });
 });
 
 export const postHandlers = [
   getPostList,
+  getPostDetail,
   createPostList,
   putPostList,
   deletePostList,

@@ -1,17 +1,11 @@
 import React from 'react';
 import PostItem from './PostItem';
-import { useQuery } from '@tanstack/react-query';
-import { getPosts } from '../api/postApi';
+import usePosts from './hooks/usePosts';
 
 const PostBox = () => {
   const {
-    isLoading,
-    error,
-    data: postsData,
-  } = useQuery({
-    queryKey: ['posts'],
-    queryFn: getPosts,
-  });
+    postQuery: { isLoading, error, data: postsData },
+  } = usePosts();
 
   return (
     <article className="mb-20">
