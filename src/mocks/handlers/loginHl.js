@@ -29,7 +29,7 @@ const postVirtualLoginHandler = http.post('/api/auth/signIn', async({request}) =
   }
 });
 
-const getUserDetailsHandler = http.get('/api/user/details', (req, res, ctx) => {
+const getUserDetailsHandler = http.get('/api/member/myProfile', (req, res, ctx) => {
   const userDetails = {
     email: "zerobase@naver.com",
     password: "password1234",

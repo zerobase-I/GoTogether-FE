@@ -3,13 +3,17 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import usePosts from '../components/hooks/usePosts';
 import useAccompany from '../components/hooks/useAccompany';
 import { postAccompanyCancel, postAccompanyRequest } from '../api/accompany';
-
+import { useRecoilValue } from 'recoil';
+import { UserInfoAtom } from '/src/Recoil/UserInfoAtom';
 //임시 데이터 : 로그인한 유저 고유정보 email
 // 게시글 1번 - 본인작성게시물 가정
 const LOGIN_INFO = 'BBBB@naver.com';
 // 로그인정보 전역상태로 저장시 지울예정
 
 const PostList = () => {
+  const userInfo = useRecoilValue(UserInfoAtom);
+  console.log(userInfo);
+  
   const { deletePostMutation } = usePosts();
   const {
     state: {
