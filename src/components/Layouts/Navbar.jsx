@@ -7,7 +7,7 @@ import styles from '../../style';
 
 const Navbar = () => {
   return (
-    <nav className="w-full btm-nav  bg-gray-500 fixed bottom-0 mt-10">
+    <nav className="w-full btm-nav z-30  bg-gray-500 fixed bottom-0 mt-10">
       <NavLink
         to=""
         className={`${({ isActive }) => (isActive ? `active bg-red-500` : '')} ${styles.menuBtn}`}
