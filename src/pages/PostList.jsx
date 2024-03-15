@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import usePosts from '../components/hooks/usePosts';
 import useAccompany from '../components/hooks/useAccompany';
-
-import { postAccompany, postCancelAccompany } from '../api/accompany';
+import { postAccompanyCancel, postAccompanyRequest } from '../api/accompany';
 
 //임시 데이터 : 로그인한 유저 고유정보 email
 // 게시글 1번 - 본인작성게시물 가정
@@ -90,10 +89,10 @@ const PostList = () => {
     console.log(e.target.innerText === '동행요청');
 
     if (e.target.innerText === '동행요청') {
-      postAccompany(id, memberId);
+      postAccompanyRequest(id, memberId);
       setIsRequest(false);
     } else {
-      postCancelAccompany(requestList && requestList.id);
+      postAccompanyCancel(requestList && requestList.id);
       setIsRequest(true);
     }
   };
