@@ -13,3 +13,12 @@ export const signIn = async (email, password) => {
     throw error; // 오류 발생 시 오류 객체를 그대로 throw
   }
 };
+
+export const getUserDetails = async () => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/member/myProfile`);
+    return response.data; // 응답 데이터 반환
+  } catch (error) {
+    throw error; // 오류 발생 시 오류 객체를 그대로 throw
+  }
+};
