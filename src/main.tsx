@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom/client';
-import App from './routes/App.tsx';
+import App from './Routes/App.tsx';
 import Auth from './pages/Auth.jsx';
 
 import SignUp from './pages/SignUp.jsx';
@@ -20,11 +20,11 @@ import ChatRoom from './pages/ChatRoom.jsx';
 import EditProfile from './pages/EditProfile.jsx';
 import Review from './pages/Review.jsx';
 import Login from './pages/Login.jsx';
-import FirstPage from './routes/FirstPage.jsx';
+import FirstPage from './Routes/FirstPage.jsx';
 import UpdatePostList from './pages/UpdatePostList.jsx';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { RecoilRoot } from 'recoil';
-import ProtectedRoute from './routes/ProtectedRoute.jsx';
+import ProtectedRoute from './Routes/ProtectedRoute.jsx';
 
 async function enableMocking() {
   if (process.env.NODE_ENV !== 'development') {

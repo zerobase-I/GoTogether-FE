@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { TokenAtom } from '/src/Recoil/TokenAtom';
+import { UserInfoAtom } from '/src/Recoil/UserInfoAtom';
 import axios from 'axios';
 
 const Login = () => {
@@ -9,24 +10,59 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const setAccessToken = useSetRecoilState(TokenAtom);
+  const setUserInfo = useSetRecoilState(UserInfoAtom);
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
+  async function fetchUserDetails(accessToken) {
     try {
-      // post 요청 보내면 token이 응답값으로 온다.
+      const response = await axios.get('/api/user/details', {
+        headers: {
+          Authorization: `Bearer ${accessToken}`, // 헤더에 accessToken 추가
+        },
+      });
+      return response.data; // API 응답에서 사용자 정보 반환
+    } catch (error) {
+      console.error('사용자 정보를 가져오는 중 오류 발생:', error);
+      throw new Error('사용자 정보를 가져오는데 실패했습니다.');
+    }
+  }
+
+  async function onLoginSuccess(response) {
+    try {
+      const { accessToken } = response.data; // 응답에서 accessToken 추출
+      const userDetails = await fetchUserDetails(accessToken); // 수정: accessToken 사용
+      console.log('User Details:', userDetails); // 콘솔에 사용자 상세 정보 출력
+      setAccessToken({ accessToken });
+      setUserInfo(userDetails); // Recoil 상태 업데이트
+      localStorage.setItem('accessToken', accessToken);
+      localStorage.setItem('userDetails', JSON.stringify(userDetails)); // 로컬 스토리지에 사용자 상세 정보 저장
+      navigate('/'); // 메인 페이지로 이동
+    } catch (error) {
+      console.error('Error fetching user details:', error);
+      setError('사용자 정보를 가져오는 데 실패했습니다.');
+    }
+  }
+
+  const handleLogin = async (e) => {
+    e.preventDefault(); // 폼 제출에 의한 페이지 리로드 방지
+    try {
       const response = await axios.post('/api/auth/signIn', {
         email,
         password,
       });
-      const { accessToken } = response.data;
-      /* localStorage.setItem('accessToken', accessToken); */
-      localStorage.setItem('accessToken', 'test 후 이 코드 제거');
-      setAccessToken(accessToken); // 전역 상태 업데이트
-      alert('로그인 완료');
-      navigate('/'); // 로그인 성공 후 메인 페이지로 이동
+      if (response.data.accessToken) {
+        // 로그인 성공
+        console.log('Response Data:', response.data); // 콘솔에 accessToken 출력
+        localStorage.setItem('accessToken', response.data.accessToken); // localStorage에 accessToken 저장
+        await onLoginSuccess(response); // 로그인 성공 처리 함수 호출
+      } else {
+        // 로그인 실패
+        console.log('Login failed:', response.data.message);
+        setError('이메일 또는 비밀번호가 올바르지 않습니다.'); // 사용자에게 오류 메시지 표시
+      }
     } catch (error) {
-      setError('이메일 또는 비밀번호가 올바르지 않습니다.');
+      console.error('Login Error:', error); // 로그인 오류 시 콘솔에 오류 출력
+      setError('이메일 또는 비밀번호가 올바르지 않습니다.'); // 사용자에게 오류 메시지 표시
     }
   };
 

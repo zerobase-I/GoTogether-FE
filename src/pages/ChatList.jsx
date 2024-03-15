@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
 const fetchChatRooms = async () => {
-  const response = await fetch('/api/chat-room/list');
+  const response = await fetch('/api/chat-room/my-list');
   if (!response.ok) {
     throw new Error('네트워크 오류: 목데이터를 불러올 수 없습니다.');
   }
