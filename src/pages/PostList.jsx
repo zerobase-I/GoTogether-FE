@@ -3,14 +3,20 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import usePosts from '../components/hooks/usePosts';
 import useAccompany from '../components/hooks/useAccompany';
 import { postAccompanyCancel, postAccompanyRequest } from '../api/accompany';
+import { useRecoilValue } from 'recoil';
+import { UserInfoAtom } from '../Recoil/UserInfoAtom';
 
 //임시 데이터 : 로그인한 유저 고유정보 email
 // 게시글 1번 - 본인작성게시물 가정
-const LOGIN_INFO = 'BBBB@naver.com';
+// const LOGIN_INFO = 'BBBB@naver.com';
 // 로그인정보 전역상태로 저장시 지울예정
 
 const PostList = () => {
   const { deletePostMutation } = usePosts();
+  const userInfo = useRecoilValue(UserInfoAtom);
+  const loginUserEmail = userInfo.email;
+  console.log(loginUserEmail);
+
   const {
     state: {
       post: {
@@ -29,7 +35,7 @@ const PostList = () => {
         image,
         id,
         memberId,
-        userEmail,
+        userEmail, //post 작성자 email
       },
     },
   } = useLocation();
@@ -39,11 +45,8 @@ const PostList = () => {
     navigate('/');
   };
 
-  // 요청을 보냈나?
-  //true: 보냄 / false: 안보냄
-  // 내 게시물일 경우 ? 채팅방으로(버튼텍스트)
-  const [isRequest, setIsRequest] = useState(false);
-  const [isMyPost, setIsMyPost] = useState(false);
+  const [isRequest, setIsRequest] = useState(false); // 요청유무
+  const [isMyPost, setIsMyPost] = useState(false); //내 게시물 유무
 
   const {
     getRequestListQuery: { isLoading, error, data: requestList },
@@ -56,8 +59,8 @@ const PostList = () => {
     // 사용자가 게시글 페이지 처음 들어왔을경우,  버튼의 초기 상태를 알아야함
     // 본인 게시글(채팅방으로) / 동행요청 / 요청취소
 
-    // 4. 게시글이 내 게시물일 경우, "채팅방으로" 버튼으로 보여야 함
-    if (LOGIN_INFO === userEmail) {
+    // 1. 게시글이 내 게시물일 경우, "채팅방으로" 버튼으로 보여야 함
+    if (loginUserEmail === userEmail) {
       setIsMyPost(true);
       return;
     }
@@ -76,7 +79,7 @@ const PostList = () => {
     } else {
       setIsRequest(false);
     }
-  }, [requestList, memberId, userEmail]);
+  }, [requestList, memberId, userEmail, loginUserEmail]);
 
   const handleRequestBtnClick = (e) => {
     //     1. 버튼이 "동행 요청" 일 경우,
