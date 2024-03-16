@@ -1,8 +1,8 @@
 import React, { useState,useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSetRecoilState,useRecoilValue } from 'recoil';
-import { TokenAtom } from '/src/Recoil/TokenAtom';
-import { UserInfoAtom } from '/src/Recoil/UserInfoAtom';
+import { TokenAtom } from '/src/recoil/TokenAtom';
+import { UserInfoAtom } from '/src/recoil/UserInfoAtom';
 import { useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 
@@ -40,6 +40,7 @@ const Login = () => {
     localStorage.setItem('accessToken', accessToken);
     localStorage.setItem('userDetails', JSON.stringify(userDetails)); // 로컬 스토리지에 사용자 상세 정보 저장
     queryClient.setQueryData(['userInfo'], userDetails);
+    alert("로그인 완료 되었습니다.");
     navigate('/');
   } catch (error) {
     console.error('Error fetching user details:', error);

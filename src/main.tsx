@@ -25,9 +25,9 @@ import UpdatePostList from './pages/UpdatePostList.jsx';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { RecoilRoot } from 'recoil';
 
-import App from './Routes/App.js';
-import FirstPage from './Routes/FirstPage.jsx';
-import ProtectedRoute from './Routes/ProtectedRoute.jsx';
+import App from './routes/App.js';
+import FirstPage from './routes/FirstPage.jsx';
+import ProtectedRoute from './routes/ProtectedRoute.jsx';
 
 async function enableMocking() {
   if (process.env.NODE_ENV !== 'development') {
