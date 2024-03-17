@@ -130,12 +130,16 @@ const PostList = () => {
           <span>글작성날짜</span>
         </div>
         <div>
-          <button onClick={handleEditClick} className="mr-2 text-gray-500">
-            수정
-          </button>
-          <button onClick={handleDeleteClick} className="text-gray-500">
-            삭제
-          </button>
+          {isMyPost && (
+            <button onClick={handleEditClick} className="mr-2 text-gray-500">
+              수정
+            </button>
+          )}
+          {isMyPost && (
+            <button onClick={handleDeleteClick} className="text-gray-500">
+              삭제
+            </button>
+          )}
         </div>
       </div>
       <div className="card bg-base-100 shadow-xl mx-1">

@@ -15,7 +15,7 @@ const date = new Date();
 const formatDate = moment(date.toDateString()).format('MM-DD-YYYY');
 
 const CreatePost = () => {
-  const { createUpdatePostMutation } = usePosts();
+  const { createPostMutation } = usePosts();
   const [success, setSuccess] = useState(); // 업로드 성공/ 실패 상태
   const [inputs, setInputs] = useState({
     travelCountry: '한국',
@@ -89,7 +89,7 @@ const CreatePost = () => {
 
     try {
       // 서버로 POST 요청 보내기
-      createUpdatePostMutation.mutate(formData, {
+      createPostMutation.mutate(formData, {
         onSuccess: () => {
           setSuccess('성공적으로 게시글이 등록되었습니다.');
           alert('성공적으로 게시글이 등록되었습니다 ');

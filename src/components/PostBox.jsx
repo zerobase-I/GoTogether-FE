@@ -8,16 +8,14 @@ const PostBox = () => {
     postQuery: { isLoading, error, data: postsData },
   } = usePosts();
 
-  console.log(postsData && postsData.reverse());
-  console.log(postsData && postsData);
   return (
     <article className="mb-20">
       {isLoading && <Loading />}
       {error && <p>{error.message}</p>}
       {postsData &&
         postsData
-          .reverse()
-          .map((data) => <PostItem key={data.id} post={data} />)}
+          .map((data) => <PostItem key={data.id} post={data} />)
+          .reverse()}
     </article>
   );
 };

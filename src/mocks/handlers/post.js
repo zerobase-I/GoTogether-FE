@@ -32,7 +32,7 @@ const createPostList = http.post('/api/post', async ({ request }) => {
   newPost.id = postId++;
   console.log(newPost);
 
-  allPosts = [newPost, ...allPosts];
+  allPosts = [...allPosts, newPost];
   console.log(allPosts);
   await delay(1000);
 

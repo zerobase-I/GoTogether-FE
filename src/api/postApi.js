@@ -33,11 +33,11 @@ export const createPost = async (inputValue) => {
   }
 };
 
-export const updatePost = async (inputValue, postId) => {
-  console.log(postId);
-  console.log(inputValue);
+export const updatePost = async (inputValue) => {
+  const { inputs, postId } = inputValue;
+
   try {
-    const response = await axios.put(`/api/post/${postId}`, inputValue);
+    const response = await axios.put(`/api/post/${postId}`, inputs);
 
     console.log(response);
 

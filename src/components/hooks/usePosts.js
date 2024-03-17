@@ -1,6 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-import { createPost, deletePost, getPosts } from '../../api/postApi';
+import {
+  createPost,
+  deletePost,
+  getPosts,
+  updatePost,
+} from '../../api/postApi';
 
 const usePosts = () => {
   const queryClient = useQueryClient();
@@ -10,8 +15,13 @@ const usePosts = () => {
     queryFn: getPosts,
   });
 
-  const createUpdatePostMutation = useMutation({
+  const createPostMutation = useMutation({
     mutationFn: (inputs) => createPost(inputs),
+    onSuccess: () => queryClient.invalidateQueries(['posts']),
+  });
+
+  const UpdatePostMutation = useMutation({
+    mutationFn: (inputs, postId) => updatePost(inputs, postId),
     onSuccess: () => queryClient.invalidateQueries(['posts']),
   });
 
@@ -20,7 +30,12 @@ const usePosts = () => {
     onSuccess: () => queryClient.invalidateQueries(['posts']),
   });
 
-  return { postQuery, createUpdatePostMutation, deletePostMutation };
+  return {
+    postQuery,
+    createPostMutation,
+    UpdatePostMutation,
+    deletePostMutation,
+  };
 };
 
 export default usePosts;
