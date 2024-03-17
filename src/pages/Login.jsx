@@ -1,10 +1,11 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useSetRecoilState,useRecoilValue } from 'recoil';
-import { TokenAtom } from '/src/Recoil/TokenAtom';
-import { UserInfoAtom } from '/src/Recoil/UserInfoAtom';
+import { useSetRecoilState, useRecoilValue } from 'recoil';
+
 import { useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
+import { TokenAtom } from '../recoil/TokenAtom';
+import { UserInfoAtom } from '../recoil/UserInfoAtom';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -15,37 +16,36 @@ const Login = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-
   async function fetchUserDetails(accessToken) {
-  try {
-    const response = await axios.get('/api/member/myProfile', {
-      headers: {
-        Authorization: `Bearer ${accessToken}`, // 수정: 정확한 변수명 사용
-      },
-    });
-    return response.data; // API 응답에서 사용자 정보 반환
-  } catch (error) {
-    console.error('사용자 정보를 가져오는 중 오류 발생:', error);
-    throw new Error('사용자 정보를 가져오는데 실패했습니다.');
+    try {
+      const response = await axios.get('/api/member/myProfile', {
+        headers: {
+          Authorization: `Bearer ${accessToken}`, // 수정: 정확한 변수명 사용
+        },
+      });
+      return response.data; // API 응답에서 사용자 정보 반환
+    } catch (error) {
+      console.error('사용자 정보를 가져오는 중 오류 발생:', error);
+      throw new Error('사용자 정보를 가져오는데 실패했습니다.');
+    }
   }
-}
 
   async function onLoginSuccess(response) {
-  try {
-    const { accessToken } = response.data; // 응답에서 accessToken 추출
-    const userDetails = await fetchUserDetails(accessToken); // 수정: accessToken을 정확히 전달
-    console.log('User Details:', userDetails); // 콘솔에 사용자 상세 정보 출력
-    setAccessToken({ accessToken });
-    setUserInfo(userDetails); // Recoil 상태 업데이트
-    localStorage.setItem('accessToken', accessToken);
-    localStorage.setItem('userDetails', JSON.stringify(userDetails)); // 로컬 스토리지에 사용자 상세 정보 저장
-    queryClient.setQueryData(['userInfo'], userDetails);
-    navigate('/');
-  } catch (error) {
-    console.error('Error fetching user details:', error);
-    setError('사용자 정보를 가져오는 데 실패했습니다.');
+    try {
+      const { accessToken } = response.data; // 응답에서 accessToken 추출
+      const userDetails = await fetchUserDetails(accessToken); // 수정: accessToken을 정확히 전달
+      console.log('User Details:', userDetails); // 콘솔에 사용자 상세 정보 출력
+      setAccessToken({ accessToken });
+      setUserInfo(userDetails); // Recoil 상태 업데이트
+      localStorage.setItem('accessToken', accessToken);
+      localStorage.setItem('userDetails', JSON.stringify(userDetails)); // 로컬 스토리지에 사용자 상세 정보 저장
+      queryClient.setQueryData(['userInfo'], userDetails);
+      navigate('/');
+    } catch (error) {
+      console.error('Error fetching user details:', error);
+      setError('사용자 정보를 가져오는 데 실패했습니다.');
+    }
   }
-}
 
   const handleLogin = async (e) => {
     e.preventDefault(); // 폼 제출에 의한 페이지 리로드 방지
@@ -69,8 +69,6 @@ const Login = () => {
       setError('이메일 또는 비밀번호가 올바르지 않습니다.'); // 사용자에게 오류 메시지 표시
     }
   };
-
-
 
   return (
     <>

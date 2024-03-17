@@ -30,8 +30,10 @@ const createPostList = http.post('/api/post', async ({ request }) => {
   }
 
   newPost.id = postId++;
+  console.log(newPost);
 
   allPosts = [newPost, ...allPosts];
+  console.log(allPosts);
   await delay(1000);
 
   return HttpResponse.json(newPost, { status: 201 });
