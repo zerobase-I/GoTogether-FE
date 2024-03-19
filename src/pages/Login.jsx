@@ -1,8 +1,8 @@
 import React, { useState,useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSetRecoilState,useRecoilValue } from 'recoil';
-import { TokenAtom } from '/src/recoil/TokenAtom';
-import { UserInfoAtom } from '/src/recoil/UserInfoAtom';
+import { TokenAtom } from '/src/Recoil/TokenAtom';
+import { UserInfoAtom } from '/src/Recoil/UserInfoAtom';
 import { useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 
