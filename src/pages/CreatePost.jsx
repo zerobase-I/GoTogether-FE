@@ -10,11 +10,14 @@ import SelectCountry from '../components/SelectCountry';
 import moment from 'moment';
 import { ImageUpload2 } from '../api/ImageUpload2';
 import usePosts from '../components/hooks/usePosts';
+import { useRecoilValue } from 'recoil';
+import { TokenAtom } from '../recoil/TokenAtom';
 
 const date = new Date();
 const formatDate = moment(date.toDateString()).format('MM-DD-YYYY');
-
 const CreatePost = () => {
+  const ACCESSTOKEN = useRecoilValue(TokenAtom);
+  console.log(ACCESSTOKEN);
   const { createPostMutation } = usePosts();
   const [success, setSuccess] = useState(); // 업로드 성공/ 실패 상태
   const [inputs, setInputs] = useState({
@@ -95,16 +98,19 @@ const CreatePost = () => {
 
     try {
       // 서버로 POST 요청 보내기
-      createPostMutation.mutate(formData, {
-        onSuccess: () => {
-          setSuccess('성공적으로 게시글이 등록되었습니다.');
-          alert('성공적으로 게시글이 등록되었습니다 ');
-          goToHome();
-          setTimeout(() => {
-            setSuccess(null);
-          }, 1000);
+      createPostMutation.mutate(
+        { formData, ACCESSTOKEN },
+        {
+          onSuccess: () => {
+            setSuccess('성공적으로 게시글이 등록되었습니다.');
+            alert('성공적으로 게시글이 등록되었습니다 ');
+            goToHome();
+            setTimeout(() => {
+              setSuccess(null);
+            }, 1000);
+          },
         },
-      });
+      );
     } catch (error) {
       console.error('데이터 업로드 실패', error);
     }

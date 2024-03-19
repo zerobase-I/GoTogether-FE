@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import signUpAPI from '/src/api/signUpAPI.js';
 import { Link, useNavigate } from 'react-router-dom';
@@ -27,9 +27,9 @@ const SignUp = () => {
   const [verifiedEmail, setVerifiedEmail] = useState('');
   const [isNicknameChecked, setIsNicknameChecked] = useState('');
 
-
   const validatePassword = (password) => {
-    const regex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{10,20}$/;
+    const regex =
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{10,20}$/;
     return regex.test(password);
   };
 
@@ -46,11 +46,11 @@ const SignUp = () => {
     // 비밀번호 형식 검사
     const isValidPassword = validatePassword(password);
     if (!isValidPassword) {
-      setPasswordError("영문, 숫자, 특수문자를 포함한 10~20자리여야 합니다.");
+      setPasswordError('영문, 숫자, 특수문자를 포함한 10~20자리여야 합니다.');
     } else {
       setPasswordError('');
     }
-  }, [email, password, confirmPassword, name, nickname, address, phoneNumber,]); // 의존성 배열에 모든 필요한 상태를 추가합니다.
+  }, [email, password, confirmPassword, name, nickname, address, phoneNumber]); // 의존성 배열에 모든 필요한 상태를 추가합니다.
 
   const handlePhoneNumberChange = (e) => {
     const formattedNumber = formatPhoneNumber(e.target.value);
@@ -109,9 +109,11 @@ const SignUp = () => {
     };
 
     const formData = new FormData();
-    formData.append('request', new Blob([JSON.stringify(requestData)], { type: 'application/json' }));
+    formData.append(
+      'request',
+      new Blob([JSON.stringify(requestData)], { type: 'application/json' }),
+    );
 
-    
     if (image) {
       formData.append('profileImageUrl', image);
     }
@@ -139,7 +141,11 @@ const SignUp = () => {
       console.log(response.data);
       setIsEmailAvailable(isAvailable);
       setIsEmailChecked(isAvailable ? false : true);
-      alert(isAvailable ? '이미 사용중인 이메일입니다.' : '사용 가능한 이메일입니다.');
+      alert(
+        isAvailable
+          ? '이미 사용중인 이메일입니다.'
+          : '사용 가능한 이메일입니다.',
+      );
     } catch (error) {
       console.error('이메일 중복 체크 실패:', error);
     }
@@ -151,7 +157,7 @@ const SignUp = () => {
     setPasswordsMatch(newPassword === confirmPassword);
   };
 
- const handleConfirmPasswordChange = (e) => {
+  const handleConfirmPasswordChange = (e) => {
     const newConfirmPassword = e.target.value;
     setConfirmPassword(newConfirmPassword);
     setPasswordsMatch(password === newConfirmPassword);
@@ -164,14 +170,18 @@ const SignUp = () => {
       console.log(`닉네임 중복 확인 응답:`, response.data);
       setIsNicknameAvailable(isAvailable);
       setIsNicknameChecked(isAvailable ? false : true);
-      alert(isAvailable ? '이미 사용중인 닉네임입니다.' : '사용 가능한 닉네임입니다.');
+      alert(
+        isAvailable
+          ? '이미 사용중인 닉네임입니다.'
+          : '사용 가능한 닉네임입니다.',
+      );
     } catch (error) {
       console.error('닉네임 중복 체크 실패:', error);
       console.log(error.response.data);
     }
   };
 
-   const handleChangeEmail = (e) => {
+  const handleChangeEmail = (e) => {
     setEmail(e.target.value);
     if (verifiedEmail && e.target.value !== verifiedEmail) {
       setVerifiedEmail(''); // 인증된 이메일과 현재 입력된 이메일이 다르면 인증 상태 초기화
@@ -193,7 +203,7 @@ const SignUp = () => {
         <form className="mt-8  space-y-6" onSubmit={handleSubmit}>
           <div className="rounded-md shadow-sm -space-y-px">
             <div className="relative">
-              <div >
+              <div>
                 <h2 className="flex ml-3 text-xl text-blue-500">이메일</h2>
                 <label htmlFor="email" className="sr-only">
                   이메일 주소
@@ -220,17 +230,21 @@ const SignUp = () => {
                   중복 확인
                 </button>
               </div>
-               {isEmailChecked && <span className="text-blue-500 absolute top-10 right-5">✔</span>}
+              {isEmailChecked && (
+                <span className="text-blue-500 absolute top-10 right-5">
+                  ✔
+                </span>
+              )}
             </div>
             <div>
               <button
                 type="button"
                 className="mt-3 w-full inline-flex justify-center py-2 px-4 mb-7 border border-transparent shadow-sm text-sm font-medium rounded-lg text-white bg-blue-500"
                 onClick={handleRequestEmailVerification}
+                disabled={!isEmailChecked}
               >
                 이메일 인증 요청
               </button>
-             
             </div>
             <div>
               <h2 className="flex ml-3 text-xl text-blue-500">인증코드</h2>
@@ -257,7 +271,6 @@ const SignUp = () => {
               >
                 인증코드 확인
               </button>
-              
             </div>
             <div>
               <h2 className="flex ml-3 text-xl text-blue-500">비밀번호</h2>
@@ -274,7 +287,12 @@ const SignUp = () => {
                 value={password}
                 onChange={handlePasswordChange}
               />
-               <p className={`text-xs ${passwordError ? 'text-red-500' : 'text-gray-500'} text-right mb-7`}>{passwordError || "영문, 숫자, 특수문자를 포함한 10~20자리여야 합니다."}</p>
+              <p
+                className={`text-xs ${passwordError ? 'text-red-500' : 'text-gray-500'} text-right mb-7`}
+              >
+                {passwordError ||
+                  '영문, 숫자, 특수문자를 포함한 10~20자리여야 합니다.'}
+              </p>
             </div>
             <div>
               <h2 className="flex ml-3 text-xl text-blue-500">비밀번호 확인</h2>
@@ -291,7 +309,11 @@ const SignUp = () => {
                 value={confirmPassword}
                 onChange={handleConfirmPasswordChange}
               />
-              {!passwordsMatch && <p className="text-xs text-red-500 text-right mb-7">비밀번호가 일치하지 않습니다.</p>}
+              {!passwordsMatch && (
+                <p className="text-xs text-red-500 text-right mb-7">
+                  비밀번호가 일치하지 않습니다.
+                </p>
+              )}
             </div>
           </div>
           <div>
@@ -310,7 +332,7 @@ const SignUp = () => {
               onChange={(e) => setName(e.target.value)}
             />
           </div>
-          
+
           <div className="relative">
             <div>
               <h2 className="flex ml-3 text-xl text-blue-500">닉네임</h2>
@@ -334,9 +356,13 @@ const SignUp = () => {
                   중복 확인
                 </button>
               </div>
-              {isNicknameChecked && <span className="text-blue-500 absolute top-10 right-5">✔</span>}
+              {isNicknameChecked && (
+                <span className="text-blue-500 absolute top-10 right-5">
+                  ✔
+                </span>
+              )}
+            </div>
           </div>
-        </div>
 
           <div>
             <h2 className="flex ml-3 text-xl text-blue-500">주소</h2>
@@ -418,7 +444,9 @@ const SignUp = () => {
               />
             </div>
             <div>
-              <h2 className="flex ml-3 text-xl text-blue-500">자기소개 한마디!</h2>
+              <h2 className="flex ml-3 text-xl text-blue-500">
+                자기소개 한마디!
+              </h2>
               <label htmlFor="description" className="sr-only">
                 자기소개
               </label>
@@ -434,7 +462,10 @@ const SignUp = () => {
             </div>
           </div>
           <div>
-            <label htmlFor="image" className="block text-xl text-left ml-3 font-medium text-blue-500">
+            <label
+              htmlFor="image"
+              className="block text-xl text-left ml-3 font-medium text-blue-500"
+            >
               프로필 이미지
             </label>
             <input
@@ -450,7 +481,9 @@ const SignUp = () => {
               type="button"
               onClick={() => setGender('MALE')}
               className={`py-2 px-4 border border-transparent text-sm font-medium rounded-md ${
-                gender === 'MALE' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-900'
+                gender === 'MALE'
+                  ? 'bg-blue-500 text-white'
+                  : 'bg-gray-200 text-gray-900'
               } focus:outline-none`}
             >
               남자
@@ -459,7 +492,9 @@ const SignUp = () => {
               type="button"
               onClick={() => setGender('FEMALE')}
               className={`py-2 px-4 border border-transparent text-sm font-medium rounded-md ${
-                gender === 'FEMALE' ? 'bg-pink-500 text-white' : 'bg-gray-200 text-gray-900'
+                gender === 'FEMALE'
+                  ? 'bg-pink-500 text-white'
+                  : 'bg-gray-200 text-gray-900'
               } focus:outline-none`}
             >
               여자
@@ -469,7 +504,6 @@ const SignUp = () => {
             <button
               type="submit"
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-  
             >
               가입하기
             </button>

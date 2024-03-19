@@ -25,8 +25,9 @@ export const getPostDetail = async (postId) => {
 };
 
 export const createPost = async (inputValue) => {
-  console.log(inputValue);
-  console.log([...inputValue]);
+  const { formData, ACCESSTOKEN } = inputValue;
+  console.log(formData);
+  console.log(ACCESSTOKEN.accessToken);
 
   const newPost = {};
   for (const [key, value] of inputValue.entries()) {
@@ -36,9 +37,11 @@ export const createPost = async (inputValue) => {
 
   try {
     // 서버에 데이터를 보내는 비동기 작업 수행
-    const response = await axios.post(`${BASE_URL}/post`, newPost, {
+    const response = await axios.post(`${BASE_URL}/post`, formData, {
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'multipart/form-data',
+        Authorization: `Bearer ${ACCESSTOKEN.accessToken}`,
+        data: { formData: formData },
       },
     });
     console.log(response);
