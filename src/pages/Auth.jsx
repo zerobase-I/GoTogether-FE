@@ -2,23 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 
-const fetchAuth = async () => {
-  const response = await fetch('/api/auth');
-  if (!response.ok) {
-    throw new Error('네트워크 오류: 목데이터를 불러올 수 없습니다.');
-  }
-  return response.json();
-};
-
 const Auth = () => {
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ['auth'],
-    queryFn: fetchAuth,
-  });
-
-  if (isLoading) return <div>Loading...</div>;
-  if (isError) return <div>Error: 데이터를 불러올 수 없습니다.</div>;
-
   return (
     <div className="flex justify-center min-h-screen items-center px-4 sm:px-6 lg:px-8 bg-[url('/src/assets/AuthBackGround.jpg')] bg-cover">
       <div className="max-w-md w-full">
