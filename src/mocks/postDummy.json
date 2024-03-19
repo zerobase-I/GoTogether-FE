@@ -1,6 +1,7 @@
 [
   {
     "id": 0,
+    "chatRoomId":"0",
     "memberId": "A",
     "userEmail": "AAAA@naver.com",
     "travelCountry": "한국",
@@ -23,6 +24,7 @@
   },
   {
     "id": 1,
+    "chatRoomId":"1",
     "memberId": "B",
     "userEmail": "zerobase@naver.com",
     "travelCountry": "한국",
@@ -49,6 +51,7 @@
   {
     "id": 2,
     "memberId": "C",
+    "chatRoomId":"2",
     "userEmail": "CCCC@naver.com",
     "travelCountry": "미국",
     "travelCity": "로스앤젤레스",
