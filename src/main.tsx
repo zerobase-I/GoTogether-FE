@@ -29,16 +29,16 @@ import App from './Routes/App.js';
 import FirstPage from './Routes/FirstPage.jsx';
 import ProtectedRoute from './Routes/ProtectedRoute.jsx';
 
-async function enableMocking() {
-  if (process.env.NODE_ENV !== 'development') {
-    return;
-  }
+// async function enableMocking() {
+//   if (process.env.NODE_ENV !== 'development') {
+//     return;
+//   }
 
-  const { worker } = await import('./mocks/browsers');
+//   const { worker } = await import('./mocks/browsers');
 
 
-  return worker.start();
-}
+//   return worker.start();
+// }
 
 const router = createBrowserRouter([
   {
@@ -87,7 +87,7 @@ const router = createBrowserRouter([
   },
 ]);
 
-enableMocking().then(() => {
+// enableMocking().then(() => {
   const queryClient = new QueryClient(); // QueryClient 생성
 
   // ReactDOM.createRoot로 앱을 렌더링하기 전에 QueryClientProvider로 감싸줍니다.
@@ -100,4 +100,4 @@ enableMocking().then(() => {
       </React.StrictMode>
     </RecoilRoot>,
   );
-});
+// });
