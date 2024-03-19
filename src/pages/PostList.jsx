@@ -4,7 +4,7 @@ import usePosts from '../components/hooks/usePosts';
 import useAccompany from '../components/hooks/useAccompany';
 import { postAccompanyCancel, postAccompanyRequest } from '../api/accompany';
 import { useRecoilValue } from 'recoil';
-import { UserInfoAtom } from '/src/recoil/UserInfoAtom';
+import { UserInfoAtom } from '/src/Recoil/UserInfoAtom';
 //임시 데이터 : 로그인한 유저 고유정보 email
 // 게시글 1번 - 본인작성게시물 가정
 const LOGIN_INFO = 'BBBB@naver.com';

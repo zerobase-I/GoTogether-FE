@@ -1,11 +1,11 @@
 import React, { useState,useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSetRecoilState,useRecoilValue } from 'recoil';
-import { TokenAtom } from '/src/recoil/TokenAtom';
-import { UserInfoAtom } from '/src/recoil/UserInfoAtom';
+import { TokenAtom } from '/src/Recoil/TokenAtom';
+import { UserInfoAtom } from '/src/Recoil/UserInfoAtom';
 import { useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
-
+import { signIn, getUserDetails } from '/src/api/authService.js';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -16,59 +16,30 @@ const Login = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-
-  async function fetchUserDetails(accessToken) {
-  try {
-    const response = await axios.get('/api/member/myProfile', {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-    return response.data; // API 응답에서 사용자 정보 반환
-  } catch (error) {
-    console.error('사용자 정보를 가져오는 중 오류 발생:', error);
-    throw new Error('사용자 정보를 가져오는데 실패했습니다.');
-  }
-}
-
-  async function onLoginSuccess(response) {
-  try {
-    const { accessToken } = response.data; // 응답에서 accessToken 추출
-    const userDetails = await fetchUserDetails(accessToken);
-    console.log('User Details:', userDetails); // 콘솔에 사용자 상세 정보 출력
-    setAccessToken({ accessToken });
-    setUserInfo(userDetails); // Recoil 상태 업데이트
-    localStorage.setItem('accessToken', accessToken);
-    localStorage.setItem('userDetails', JSON.stringify(userDetails));
-    queryClient.setQueryData(['userInfo'], userDetails);
-    alert("로그인 완료 되었습니다.");
-    navigate('/');
-  } catch (error) {
-    console.error('Error fetching user details:', error);
-    setError('사용자 정보를 가져오는 데 실패했습니다.');
-  }
-}
-
-  const handleLogin = async (e) => {
-    e.preventDefault(); // 폼 제출에 의한 페이지 리로드 방지
+ const handleLogin = async (e) => {
+    e.preventDefault();
     try {
-      const response = await axios.post('/api/auth/signIn', {
-        email,
-        password,
-      });
-      if (response.data.accessToken) {
-        // 로그인 성공
-        console.log('Response Data:', response.data); // 콘솔에 accessToken 출력
-        localStorage.setItem('accessToken', response.data.accessToken); // localStorage에 accessToken 저장
-        await onLoginSuccess(response); // 로그인 성공 처리 함수 호출
+      const data = await signIn(email, password);
+      if (data.accessToken) {
+        const userDetails = await getUserDetails(data.accessToken);
+        setAccessToken({ accessToken: data.accessToken });
+        setUserInfo(userDetails);
+        localStorage.setItem('accessToken', data.accessToken);
+        localStorage.setItem('refreshToken', data.refreshToken);
+        localStorage.setItem('userDetails', JSON.stringify(userDetails));
+        queryClient.setQueryData(['userInfo'], userDetails);
+        alert("로그인 완료 되었습니다.");
+        navigate('/');
       } else {
-        // 로그인 실패
-        console.log('Login failed:', response.data.message);
-        setError('이메일 또는 비밀번호가 올바르지 않습니다.'); // 사용자에게 오류 메시지 표시
+        setError('로그인 실패: 인증 정보를 확인할 수 없습니다.');
       }
     } catch (error) {
-      console.error('Login Error:', error); // 로그인 오류 시 콘솔에 오류 출력
-      setError('이메일 또는 비밀번호가 올바르지 않습니다.'); // 사용자에게 오류 메시지 표시
+      console.error('로그인 중 오류 발생:', error);
+      if (error.response && error.response.data) {
+        setError(error.response.data.errorMessage || '로그인 중 오류가 발생했습니다.');
+      } else {
+        setError('이메일 또는 비밀번호가 올바르지 않습니다.');
+      }
     }
   };
 
