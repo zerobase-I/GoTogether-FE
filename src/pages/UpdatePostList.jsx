@@ -18,7 +18,7 @@ const UpdatePostList = () => {
   const {
     postQuery: { isLoading, error, data: postData },
   } = usePosts();
-  const { createUpdatePostMutation } = usePosts();
+  const { UpdatePostMutation } = usePosts();
   const [success, setSuccess] = useState(); // 업로드 성공/ 실패 상태
   const {
     state: { id: postId },
@@ -123,16 +123,19 @@ const UpdatePostList = () => {
 
     try {
       // 서버로 POST 요청 보내기
-      createUpdatePostMutation.mutate(formData, {
-        onSuccess: () => {
-          setSuccess('성공적으로 게시글이 수정되었습니다.');
-          alert('성공적으로 게시글이 수정되었습니다 ');
-          goToHome();
-          setTimeout(() => {
-            setSuccess(null);
-          }, 1000);
+      UpdatePostMutation.mutate(
+        { inputs: formData, postId: 1 },
+        {
+          onSuccess: () => {
+            setSuccess('성공적으로 게시글이 수정되었습니다.');
+            alert('성공적으로 게시글이 수정되었습니다 ');
+            goToHome();
+            setTimeout(() => {
+              setSuccess(null);
+            }, 1000);
+          },
         },
-      });
+      );
       console.log('데이터 업로드 성공');
     } catch (error) {
       console.error('데이터 업로드 실패', error);

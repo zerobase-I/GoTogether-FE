@@ -4,12 +4,23 @@ import postData from '../postDummy.json';
 let allPosts = postData;
 let postId = 3;
 
-const getPostList = http.get('/api/post/list', async () => {
+/* const getPostList = http.get('/api/post/list', async () => {
   let res = [...allPosts];
 
   await delay(1000);
   return HttpResponse.json(res);
-});
+}); */
+
+const getPostList = http.get(
+  '/api/post/searchAll?page=page$size=size',
+  async ({ params }) => {
+    console.log(params);
+    let res = [...allPosts];
+
+    await delay(1000);
+    return HttpResponse.json(res);
+  },
+);
 
 const getPostDetail = http.get('/api/post/:postId', async ({ params }) => {
   const { postId } = params; //1
@@ -30,8 +41,10 @@ const createPostList = http.post('/api/post', async ({ request }) => {
   }
 
   newPost.id = postId++;
+  console.log(newPost);
 
-  allPosts = [newPost, ...allPosts];
+  allPosts = [...allPosts, newPost];
+  console.log(allPosts);
   await delay(1000);
 
   return HttpResponse.json(newPost, { status: 201 });

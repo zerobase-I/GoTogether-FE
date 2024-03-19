@@ -4,24 +4,29 @@ import usePosts from '../components/hooks/usePosts';
 import useAccompany from '../components/hooks/useAccompany';
 import { postAccompanyCancel, postAccompanyRequest } from '../api/accompany';
 import { useRecoilValue } from 'recoil';
-import { UserInfoAtom } from '/src/Recoil/UserInfoAtom';
+import { UserInfoAtom } from '../recoil/UserInfoAtom';
+import Loading from '../components/Loading';
+import moment from 'moment';
+import { IoRocketOutline } from 'react-icons/io5';
+
 //임시 데이터 : 로그인한 유저 고유정보 email
 // 게시글 1번 - 본인작성게시물 가정
-const LOGIN_INFO = 'BBBB@naver.com';
+// const LOGIN_INFO = 'BBBB@naver.com';
 // 로그인정보 전역상태로 저장시 지울예정
 
 const PostList = () => {
-  const userInfo = useRecoilValue(UserInfoAtom);
-  console.log(userInfo);
-  
   const { deletePostMutation } = usePosts();
+  const userInfo = useRecoilValue(UserInfoAtom);
+  const loginUserEmail = userInfo.email;
+  console.log(`현재 로그인 유저 ${userInfo}`);
+
   const {
     state: {
       post: {
         title,
         category,
         startDate,
-        finishDate,
+        endDate,
         gender,
         travelCountry,
         travelCity,
@@ -33,7 +38,7 @@ const PostList = () => {
         image,
         id,
         memberId,
-        userEmail,
+        userEmail, //post 작성자 email
       },
     },
   } = useLocation();
@@ -43,25 +48,24 @@ const PostList = () => {
     navigate('/');
   };
 
-  // 요청을 보냈나?
-  //true: 보냄 / false: 안보냄
-  // 내 게시물일 경우 ? 채팅방으로(버튼텍스트)
-  const [isRequest, setIsRequest] = useState(false);
-  const [isMyPost, setIsMyPost] = useState(false);
+  console.log(`게시글 작성유저 : ${userEmail}`);
+
+  const [isRequest, setIsRequest] = useState(false); // 요청유무
+  const [isMyPost, setIsMyPost] = useState(false); //내 게시물 유무
 
   const {
     getRequestListQuery: { isLoading, error, data: requestList },
   } = useAccompany();
 
-  isLoading && console.log(isLoading);
-  error && console.log(error.message);
+  isLoading && <Loading />;
+  error && <p>{error.message}</p>;
 
   useEffect(() => {
     // 사용자가 게시글 페이지 처음 들어왔을경우,  버튼의 초기 상태를 알아야함
     // 본인 게시글(채팅방으로) / 동행요청 / 요청취소
 
-    // 4. 게시글이 내 게시물일 경우, "채팅방으로" 버튼으로 보여야 함
-    if (LOGIN_INFO === userEmail) {
+    // 1. 게시글이 내 게시물일 경우, "채팅방으로" 버튼으로 보여야 함
+    if (loginUserEmail === userEmail) {
       setIsMyPost(true);
       return;
     }
@@ -69,9 +73,9 @@ const PostList = () => {
     //1. 내가 보낸 동행 요청 목록을 get한다.
     // 1-1. 요청 목록에서 requestedMemberId (게시글 작성자 고유 아이디) 값을 얻는다.
     //2. 현재 페이지의 게시글 작성자의 id와 비교한다.
-    const isMatched =
-      requestList &&
-      requestList.filter((item) => item.requestedMemberId === memberId);
+    const isMatched = Array.isArray(requestList)
+      ? requestList.filter((item) => item.requestedMemberId === memberId)
+      : null;
 
     //2-1.  게시글 작성자의 id 와  비교해서 같은게 있으면, 동행 요청 버튼이 "동행 취소" 버튼으로 보여야함
     //3. 같은게 없으면, "동행 요청 버튼으로 보여야 함"
@@ -80,7 +84,7 @@ const PostList = () => {
     } else {
       setIsRequest(false);
     }
-  }, [requestList, memberId, userEmail]);
+  }, [requestList, memberId, userEmail, loginUserEmail]);
 
   const handleRequestBtnClick = (e) => {
     //     1. 버튼이 "동행 요청" 일 경우,
@@ -132,12 +136,16 @@ const PostList = () => {
           <span>글작성날짜</span>
         </div>
         <div>
-          <button onClick={handleEditClick} className="mr-2 text-gray-500">
-            수정
-          </button>
-          <button onClick={handleDeleteClick} className="text-gray-500">
-            삭제
-          </button>
+          {isMyPost && (
+            <button onClick={handleEditClick} className="mr-2 text-gray-500">
+              수정
+            </button>
+          )}
+          {isMyPost && (
+            <button onClick={handleDeleteClick} className="text-gray-500">
+              삭제
+            </button>
+          )}
         </div>
       </div>
       <div className="card bg-base-100 shadow-xl mx-1">
@@ -178,14 +186,18 @@ const PostList = () => {
             </div>
           </section>
 
-          <p className="mt-10">🚀 자세한 여행 정보</p>
+          <p className="mt-10 text-xl md:text-2xl flex justify-center">
+            <IoRocketOutline className="mr-2" />
+            자세한 여행 정보
+          </p>
           <div className="card-actions justify-end"></div>
           <div>
             <p className="test-sm">
               {travelCountry}: {travelCity}
             </p>
             <p className="test-sm">
-              {startDate} ~ {finishDate}
+              {moment(startDate).format('YYYY-MM-DD')} ~{' '}
+              {moment(endDate).format('YYYY-MM-DD')}
             </p>
             <p className="test-sm">현재인원/모집인원: 2/{recruitsPeople}</p>
             <p className="test-sm">

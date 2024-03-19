@@ -1,36 +1,40 @@
 import React from 'react';
+import { useRecoilValue } from 'recoil';
+import { UserInfoAtom } from '../recoil/UserInfoAtom';
 
 const UserInfoDetail = () => {
+  //  const userInfo = useRecoilValue(UserInfoAtom);
+  const { MBTI, address, age, description, gender, travelScore, instagramId } =
+    useRecoilValue(UserInfoAtom);
+
   return (
     <section className="flex flex-col mt-10">
       <div className="text-start">
-        <span className="font-bold">동행 점수:</span>
-        60 🔍
+        <span className="font-bold mr-2">동행 점수:</span>
+        {travelScore}
       </div>
       <div className="text-start">
-        <span className="font-bold">성별 : </span>남성
+        <span className="font-bold mr-2">성별 : </span>
+        {gender}
       </div>
       <div className="text-start">
-        <span className="font-bold">나이 :</span> 20대
+        <span className="font-bold mr-2">나이 :</span> {age}
       </div>
       <div className="text-start">
-        <span className="font-bold">위치: </span>한국, 서울
+        <span className="font-bold mr-2">위치: </span>
+        {address}
       </div>
       <div className="text-start">
-        <span className="font-bold">MBTI : </span>ENTP
+        <span className="font-bold mr-2">MBTI : </span>
+        {MBTI}
       </div>
       <div className="text-start">
-        <span className="font-bold">인스타그램 아이디:</span> pages102
+        <span className="font-bold mr-2">인스타그램 아이디:</span> {instagramId}
       </div>
       <div className="block mt-4">
-        <span className="font-bold">자기소개</span>
+        <span className="font-bold mr-2">자기소개</span>
       </div>
-      <div>
-        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ducimus,
-        molestias nobis quo distinctio suscipit quibusdam doloribus! Distinctio
-        illum ipsam cum aspernatur, dolores aperiam maxime dignissimos, quo
-        voluptates facere sed reprehenderit.
-      </div>
+      <div>{description}</div>
     </section>
   );
 };
