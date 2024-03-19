@@ -35,7 +35,6 @@ const usePosts = () => {
   });
 
   return {
-    postQuery,
     createPostMutation,
     UpdatePostMutation,
     deletePostMutation,

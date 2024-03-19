@@ -5,6 +5,9 @@ import useAccompany from '../components/hooks/useAccompany';
 import { postAccompanyCancel, postAccompanyRequest } from '../api/accompany';
 import { useRecoilValue } from 'recoil';
 import { UserInfoAtom } from '../recoil/UserInfoAtom';
+import Loading from '../components/Loading';
+import moment from 'moment';
+import { IoRocketOutline } from 'react-icons/io5';
 
 //임시 데이터 : 로그인한 유저 고유정보 email
 // 게시글 1번 - 본인작성게시물 가정
@@ -22,7 +25,7 @@ const PostList = () => {
         title,
         category,
         startDate,
-        finishDate,
+        endDate,
         gender,
         travelCountry,
         travelCity,
@@ -51,8 +54,8 @@ const PostList = () => {
     getRequestListQuery: { isLoading, error, data: requestList },
   } = useAccompany();
 
-  isLoading && console.log(isLoading);
-  error && console.log(error.message);
+  isLoading && <Loading />;
+  error && <p>{error.message}</p>;
 
   useEffect(() => {
     // 사용자가 게시글 페이지 처음 들어왔을경우,  버튼의 초기 상태를 알아야함
@@ -67,9 +70,9 @@ const PostList = () => {
     //1. 내가 보낸 동행 요청 목록을 get한다.
     // 1-1. 요청 목록에서 requestedMemberId (게시글 작성자 고유 아이디) 값을 얻는다.
     //2. 현재 페이지의 게시글 작성자의 id와 비교한다.
-    const isMatched =
-      requestList &&
-      requestList.filter((item) => item.requestedMemberId === memberId);
+    const isMatched = Array.isArray(requestList)
+      ? requestList.filter((item) => item.requestedMemberId === memberId)
+      : null;
 
     //2-1.  게시글 작성자의 id 와  비교해서 같은게 있으면, 동행 요청 버튼이 "동행 취소" 버튼으로 보여야함
     //3. 같은게 없으면, "동행 요청 버튼으로 보여야 함"
@@ -180,14 +183,18 @@ const PostList = () => {
             </div>
           </section>
 
-          <p className="mt-10">🚀 자세한 여행 정보</p>
+          <p className="mt-10 text-xl md:text-2xl flex justify-center">
+            <IoRocketOutline className="mr-2" />
+            자세한 여행 정보
+          </p>
           <div className="card-actions justify-end"></div>
           <div>
             <p className="test-sm">
               {travelCountry}: {travelCity}
             </p>
             <p className="test-sm">
-              {startDate} ~ {finishDate}
+              {moment(startDate).format('YYYY-MM-DD')} ~{' '}
+              {moment(endDate).format('YYYY-MM-DD')}
             </p>
             <p className="test-sm">현재인원/모집인원: 2/{recruitsPeople}</p>
             <p className="test-sm">
