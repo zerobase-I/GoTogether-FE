@@ -7,9 +7,18 @@ ctx 는 실제로 응답을 어떻게 처리할지 세세한 내용을 정해줄
 */
 const chatRoomDto = [
   {
+      "chatRoomId": 0,
+      "postId": 0,
+      "name": "서울",
+      "status": "",
+      "imageUrls": [
+        "/src/assets/GoTogetherLogo.png"
+      ]
+    },
+    {
       "chatRoomId": 1,
       "postId": 1,
-      "name": "서울",
+      "name": "부산",
       "status": "",
       "imageUrls": [
         "/src/assets/GoTogetherLogo.png"
@@ -18,8 +27,8 @@ const chatRoomDto = [
     {
       "chatRoomId": 2,
       "postId": 2,
-      "name": "부산",
-      "status": "",
+      "name": "미국",
+      "status": "ACTIVE",
       "imageUrls": [
         "/src/assets/GoTogetherLogo.png"
       ]
@@ -27,7 +36,7 @@ const chatRoomDto = [
     {
       "chatRoomId": 3,
       "postId": 3,
-      "name": "미국",
+      "name": "인천",
       "status": "ACTIVE",
       "imageUrls": [
         "/src/assets/GoTogetherLogo.png"
@@ -36,16 +45,16 @@ const chatRoomDto = [
     {
       "chatRoomId": 4,
       "postId": 4,
-      "name": "인천",
+      "name": "강릉",
       "status": "ACTIVE",
       "imageUrls": [
         "/src/assets/GoTogetherLogo.png"
       ]
-    },
+  },
     {
       "chatRoomId": 5,
       "postId": 5,
-      "name": "강릉",
+      "name": "제주도",
       "status": "ACTIVE",
       "imageUrls": [
         "/src/assets/GoTogetherLogo.png"
@@ -54,7 +63,7 @@ const chatRoomDto = [
     {
       "chatRoomId": 6,
       "postId": 6,
-      "name": "제주도",
+      "name": "강원도",
       "status": "ACTIVE",
       "imageUrls": [
         "/src/assets/GoTogetherLogo.png"
@@ -63,7 +72,7 @@ const chatRoomDto = [
     {
       "chatRoomId": 7,
       "postId": 7,
-      "name": "강원도",
+      "name": "센프란시스코",
       "status": "ACTIVE",
       "imageUrls": [
         "/src/assets/GoTogetherLogo.png"
@@ -72,15 +81,6 @@ const chatRoomDto = [
     {
       "chatRoomId": 8,
       "postId": 8,
-      "name": "센프란시스코",
-      "status": "ACTIVE",
-      "imageUrls": [
-        "/src/assets/GoTogetherLogo.png"
-      ]
-  },
-    {
-      "chatRoomId": 9,
-      "postId": 9,
       "name": "괌",
       "status": "ACTIVE",
       "imageUrls": [

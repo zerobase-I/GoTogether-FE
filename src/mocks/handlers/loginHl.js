@@ -48,6 +48,7 @@ const getUserDetailsHandler = http.get('/api/member/myProfile', (req, res, ctx) 
 
   return HttpResponse.json(userDetails, 200); // 사용자 상세 정보와 상태 코드를 사용하여 응답 생성
 });
+ 
 
 //////////////////////////////////////Login.jsx와 MSW 연결////////////////////////////////////////////////////////////////
 
@@ -69,5 +70,8 @@ const getIndexCSS = http.get('/src/index.css', async (req, res, ctx) => {
 
 
 
-export const loginPageHandlers = [postVirtualLoginHandler, getUserDetailsHandler];
+export const loginPageHandlers = [
+  postVirtualLoginHandler,
+  getUserDetailsHandler,
+];
 export const additionalLoginHandlersler = [loginLeftArrowHandlers, getIndexCSS];

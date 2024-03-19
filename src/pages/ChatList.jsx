@@ -33,7 +33,7 @@ const ChatList = () => {
             <section
               key={room.chatRoomId}
               className="bg-white p-4 rounded-md shadow-md hover:shadow-lg cursor-pointer transition duration-300 ease-in-out flex items-center justify-between"
-              onClick={() => navigate(`/chatroom/${room.postId}`)}
+              onClick={() => navigate(`/chatroom/${room.postId}`, { state: { roomName: room.name } })}
             >
               <div className="flex items-center gap-4">
                 <div className="w-16 rounded-md">
