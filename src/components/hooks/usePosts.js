@@ -10,7 +10,7 @@ import {
 const usePosts = () => {
   const queryClient = useQueryClient();
 
-  //게시글 불러오기
+  //게시글 불러오기 -> 페이지네이션으로 구현
   /*   const postQuery = useQuery({
     queryKey: ['posts'],
     queryFn: (page, size) => getPosts(page, size),

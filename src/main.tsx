@@ -26,7 +26,7 @@ import FirstPage from './routes/FirstPage.jsx';
 import ProtectedRoute from './routes/ProtectedRoute.jsx';
 import App from './routes/App.js';
 
-async function enableMocking() {
+/* async function enableMocking() {
   if (process.env.NODE_ENV !== 'development') {
     return;
   }
@@ -34,7 +34,7 @@ async function enableMocking() {
   const { worker } = await import('./mocks/browsers');
 
   return worker.start();
-}
+} */
 
 const router = createBrowserRouter([
   {
@@ -83,7 +83,7 @@ const router = createBrowserRouter([
   },
 ]);
 
-enableMocking().then(() => {
+/* enableMocking().then(() => {
   const queryClient = new QueryClient(); // QueryClient 생성
 
   // ReactDOM.createRoot로 앱을 렌더링하기 전에 QueryClientProvider로 감싸줍니다.
@@ -97,8 +97,8 @@ enableMocking().then(() => {
     </RecoilRoot>,
   );
 });
-
-/* const queryClient = new QueryClient(); // QueryClient 생성
+ */
+const queryClient = new QueryClient(); // QueryClient 생성
 
 // ReactDOM.createRoot로 앱을 렌더링하기 전에 QueryClientProvider로 감싸줍니다.
 ReactDOM.createRoot(document.getElementById('root')!).render(
@@ -110,4 +110,3 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     </React.StrictMode>
   </RecoilRoot>,
 );
- */

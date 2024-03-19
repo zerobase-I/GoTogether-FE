@@ -18,6 +18,7 @@ const PostList = () => {
   const { deletePostMutation } = usePosts();
   const userInfo = useRecoilValue(UserInfoAtom);
   const loginUserEmail = userInfo.email;
+  console.log(`현재 로그인 유저 ${userInfo}`);
 
   const {
     state: {
@@ -46,6 +47,8 @@ const PostList = () => {
   const goToHome = () => {
     navigate('/');
   };
+
+  console.log(`게시글 작성유저 : ${userEmail}`);
 
   const [isRequest, setIsRequest] = useState(false); // 요청유무
   const [isMyPost, setIsMyPost] = useState(false); //내 게시물 유무

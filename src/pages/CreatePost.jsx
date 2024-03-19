@@ -87,6 +87,12 @@ const CreatePost = () => {
       }
     }
 
+    const newPost = {};
+    for (const [key, value] of formData.entries()) {
+      newPost[key] = value;
+    }
+    console.log(newPost);
+
     try {
       // 서버로 POST 요청 보내기
       createPostMutation.mutate(formData, {
@@ -99,7 +105,6 @@ const CreatePost = () => {
           }, 1000);
         },
       });
-      console.log('데이터 업로드 성공');
     } catch (error) {
       console.error('데이터 업로드 실패', error);
     }
