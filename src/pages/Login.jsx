@@ -6,6 +6,7 @@ import { UserInfoAtom } from '/src/recoil/UserInfoAtom';
 import { useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 
+
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -20,7 +21,7 @@ const Login = () => {
   try {
     const response = await axios.get('/api/member/myProfile', {
       headers: {
-        Authorization: `Bearer ${accessToken}`, // 수정: 정확한 변수명 사용
+        Authorization: `Bearer ${accessToken}`,
       },
     });
     return response.data; // API 응답에서 사용자 정보 반환
@@ -33,12 +34,12 @@ const Login = () => {
   async function onLoginSuccess(response) {
   try {
     const { accessToken } = response.data; // 응답에서 accessToken 추출
-    const userDetails = await fetchUserDetails(accessToken); // 수정: accessToken을 정확히 전달
+    const userDetails = await fetchUserDetails(accessToken);
     console.log('User Details:', userDetails); // 콘솔에 사용자 상세 정보 출력
     setAccessToken({ accessToken });
     setUserInfo(userDetails); // Recoil 상태 업데이트
     localStorage.setItem('accessToken', accessToken);
-    localStorage.setItem('userDetails', JSON.stringify(userDetails)); // 로컬 스토리지에 사용자 상세 정보 저장
+    localStorage.setItem('userDetails', JSON.stringify(userDetails));
     queryClient.setQueryData(['userInfo'], userDetails);
     alert("로그인 완료 되었습니다.");
     navigate('/');

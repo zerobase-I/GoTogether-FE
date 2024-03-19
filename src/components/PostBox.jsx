@@ -8,8 +8,8 @@ const PostBox = () => {
   } = usePosts();
 
   return (
-    <article className="mb-20">
-      {isLoading && <p>Loading 중 입니다.</p>}
+    <article className="mb-10">
+      {isLoading && <p className="">Loading 중 입니다.</p>}
       {error && <p>{error.message}</p>}
       {postsData &&
         postsData.map((data) => <PostItem key={data.id} post={data} />)}

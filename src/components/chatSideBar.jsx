@@ -11,7 +11,6 @@ const ChatSideBar = ({ chatRoomId }) => {
     const fetchPostList = async () => {
   try {
     const response = await axios.get(`/api/post/list/${chatRoomId}`);
-    // 수정: 응답에서 filteredPosts 배열을 올바르게 추출
     if (response.data.filteredPosts && response.data.filteredPosts.length > 0) {
       setPostDetails(response.data.filteredPosts[0]);
     } else {
@@ -59,10 +58,12 @@ const ChatSideBar = ({ chatRoomId }) => {
       </div>
       <div className="mt-4 text-center font-light text-sm">
         {postDetails.content}
-      </div>
+        </div>
+        
       <div className="mt-4 text-center">
         <span className="px-3 py-1 bg-green-500 rounded-full text-xs">{postDetails.category}</span>
       </div>
+        
     </div>
     
     <div className="mt-4 mx-4 p-4 bg-gray-800 text-white rounded-lg">

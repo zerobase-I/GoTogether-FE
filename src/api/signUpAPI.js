@@ -1,19 +1,29 @@
-// import axios from 'axios';
+import axios from 'axios';
 
-// // 이메일 중복 확인
-// export const checkEmailDuplicate = async (email) => {
-//   const response = await axios.post('/api/checkEmail', { email });
-//   return response.data;
-// };
+const apiClient = axios.create({
+  baseURL: 'http://49.50.167.227:8080/api/',
 
-// // 이메일 인증 코드 발송
-// export const sendEmailVerificationCode = async (email) => {
-//   const response = await axios.post('/api/auth/mail/certification', { email });
-//   return response.data;
-// };
+});
+const signUpAPI = {
+  requestEmailVerification: async (email) => {
+    return await apiClient.post('auth/mail/certification', { email } );
+},
 
-// // 회원가입 요청
-// export const signUp = async (userData) => {
-//   const response = await axios.post('/api/signup', userData);
-//   return response.data;
-// };
+  verifyEmailCode: async (email, code) => {
+    return await apiClient.post('auth/mail/verify', { email, code } );
+},
+
+  submitSignUpForm: async (formData) => {
+    return await apiClient.post('auth/signUp',  formData );
+  },
+
+   checkEmail: async (email) => {
+    return await apiClient.get(`auth/checkEmail?email=${email}`);
+  },
+
+  checkNickname: async (nickname) => {
+    return await apiClient.get(`auth/checkNickname?nickname=${nickname}`);
+  },
+};
+
+export default signUpAPI;
