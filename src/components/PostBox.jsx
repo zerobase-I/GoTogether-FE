@@ -1,34 +1,46 @@
 import React, { useState } from 'react';
 import PostItem from './PostItem';
-import usePosts from './hooks/usePosts';
 import Loading from './Loading';
 import Pagination from 'react-js-pagination';
 import '../styles/pagination.css';
+import { useQuery } from '@tanstack/react-query';
+import { getPosts } from '../api/postApi';
 
 const PostBox = () => {
-  const [page, setPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
+  const postPerPage = 5; //한 페이지에서 보여줄 post 개수
+
+  /*   const {
+    postQuery: { isLoading, error, data: postsData },
+  } = usePosts(currentPage, postPerPage); */
 
   const {
-    postQuery: { isLoading, error, data: postsData },
-  } = usePosts();
+    data: postsData,
+    error,
+    isError,
+    isLoading,
+  } = useQuery({
+    queryKey: ['posts', currentPage - 1],
+    queryFn: () => getPosts(currentPage - 1, postPerPage),
+    keepPreviousData: true,
+  });
 
-  const handlePageChange = (page) => {
-    setPage(page);
+  if (isLoading) return <Loading />;
+  if (isError) return <p>{error.message}</p>;
+
+  const handlePageChange = (currentPage) => {
+    setCurrentPage(currentPage);
   };
 
   return (
     <article className="mb-20">
-      {isLoading && <Loading />}
-      {error && <p>{error.message}</p>}
       {postsData &&
-        postsData
-          .map((data) => <PostItem key={data.id} post={data} />)
-          .reverse()}
+        postsData.content.map((data) => <PostItem key={data.id} post={data} />)}
       <Pagination
-        activePage={page} // 현재 페이지
-        itemsCountPerPage={5} // 한 페이지에서 보여줄 post 개수
-        totalItemsCount={300} // 총 post 개수
-        pageRangeDisplayed={5} // paginator의 페이지 범위
+        activePage={currentPage} // 현재 페이지
+        itemsCountPerPage={postPerPage} // 한 페이지에서 보여줄 post 개수
+        totalItemsCount={postsData && postsData.totalElements} // 총 post 개수
+        pageRangeDisplayed={postsData && postsData.totalPages} // paginator의 페이지 범위
         prevPageText={'<'}
         nextPageText={'>'}
         firstPageText="<<"

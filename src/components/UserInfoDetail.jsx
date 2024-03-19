@@ -10,29 +10,29 @@ const UserInfoDetail = () => {
   return (
     <section className="flex flex-col mt-10">
       <div className="text-start">
-        <span className="font-bold">동행 점수:</span>
-        {travelScore} 🔍
+        <span className="font-bold mr-2">동행 점수:</span>
+        {travelScore}
       </div>
       <div className="text-start">
-        <span className="font-bold">성별 : </span>
+        <span className="font-bold mr-2">성별 : </span>
         {gender}
       </div>
       <div className="text-start">
-        <span className="font-bold">나이 :</span> {age}
+        <span className="font-bold mr-2">나이 :</span> {age}
       </div>
       <div className="text-start">
-        <span className="font-bold">위치: </span>
+        <span className="font-bold mr-2">위치: </span>
         {address}
       </div>
       <div className="text-start">
-        <span className="font-bold">MBTI : </span>
+        <span className="font-bold mr-2">MBTI : </span>
         {MBTI}
       </div>
       <div className="text-start">
-        <span className="font-bold">인스타그램 아이디:</span> {instagramId}
+        <span className="font-bold mr-2">인스타그램 아이디:</span> {instagramId}
       </div>
       <div className="block mt-4">
-        <span className="font-bold">자기소개</span>
+        <span className="font-bold mr-2">자기소개</span>
       </div>
       <div>{description}</div>
     </section>

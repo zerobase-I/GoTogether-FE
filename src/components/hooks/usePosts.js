@@ -11,11 +11,11 @@ const usePosts = () => {
   const queryClient = useQueryClient();
 
   //게시글 불러오기
-  const postQuery = useQuery({
+  /*   const postQuery = useQuery({
     queryKey: ['posts'],
-    queryFn: getPosts,
+    queryFn: (page, size) => getPosts(page, size),
   });
-
+ */
   //게시글 생성하기
   const createPostMutation = useMutation({
     mutationFn: (inputs) => createPost(inputs),
