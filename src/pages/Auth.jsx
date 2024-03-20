@@ -5,7 +5,9 @@ import { useQuery } from '@tanstack/react-query';
 const Auth = () => {
   
   const handleKakaoLogin = () => {
-    const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?client_id=클라이언트ID&redirect_uri=http://localhost:5173/member/callback&response_type=code`;
+    const kakaoAuthUrl = `kauth.kakao.com/oauth/authorize?client_id=1693202f64710447bf714a86174ad17f
+&redirect_uri=http://49.50.167.227:8080/api/auth/redirected/kakao
+&response_type=code`;
     window.location.href = kakaoAuthUrl;
   };
 
