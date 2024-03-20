@@ -15,6 +15,7 @@ import { TokenAtom } from '../recoil/TokenAtom';
 
 const date = new Date();
 const formatDate = moment(date.toDateString()).format('MM-DD-YYYY');
+
 const CreatePost = () => {
   const ACCESSTOKEN = useRecoilValue(TokenAtom);
   console.log(ACCESSTOKEN);
@@ -76,7 +77,7 @@ const CreatePost = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('submit 이벤트 발생');
+    console.log('createPost submit 이벤트 발생');
 
     const formData = new FormData();
 
@@ -98,19 +99,16 @@ const CreatePost = () => {
 
     try {
       // 서버로 POST 요청 보내기
-      createPostMutation.mutate(
-        { formData, ACCESSTOKEN },
-        {
-          onSuccess: () => {
-            setSuccess('성공적으로 게시글이 등록되었습니다.');
-            alert('성공적으로 게시글이 등록되었습니다 ');
-            goToHome();
-            setTimeout(() => {
-              setSuccess(null);
-            }, 1000);
-          },
+      createPostMutation.mutate(formData, {
+        onSuccess: () => {
+          setSuccess('성공적으로 게시글이 등록되었습니다.');
+          alert('성공적으로 게시글이 등록되었습니다 ');
+          goToHome();
+          setTimeout(() => {
+            setSuccess(null);
+          }, 1000);
         },
-      );
+      });
     } catch (error) {
       console.error('데이터 업로드 실패', error);
     }

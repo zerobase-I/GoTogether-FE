@@ -24,7 +24,7 @@ export const getPostDetail = async (postId) => {
   }
 };
 
-export const createPost = async (inputValue) => {
+/* export const createPost = async (inputValue) => {
   const { formData, ACCESSTOKEN } = inputValue;
   console.log(formData);
   console.log(ACCESSTOKEN.accessToken);
@@ -44,6 +44,16 @@ export const createPost = async (inputValue) => {
         data: { formData: formData },
       },
     });
+    console.log(response);
+    return response.data; // 성공 시 반환할 데이터
+  } catch (error) {
+    throw new Error('게시글 작성 실패'); // 실패 시 에러 처리
+  }
+}; */
+export const createPost = async (inputValue) => {
+  try {
+    // 서버에 데이터를 보내는 비동기 작업 수행
+    const response = await axios.post(`${BASE_URL}/post`, inputValue);
     console.log(response);
     return response.data; // 성공 시 반환할 데이터
   } catch (error) {

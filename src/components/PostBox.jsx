@@ -27,7 +27,7 @@ const PostBox = () => {
 
   if (isLoading) return <Loading />;
   if (isError) return <p>{error.message}</p>;
-  // console.log(postsData);
+  console.log(postsData);
 
   const handlePageChange = (currentPage) => {
     setCurrentPage(currentPage);
@@ -35,8 +35,12 @@ const PostBox = () => {
 
   return (
     <article className="mb-20">
-      {postsData &&
-        postsData.content.map((data) => <PostItem key={data.id} post={data} />)}
+      {postsData ? (
+        postsData.content.map((data) => <PostItem key={data.id} post={data} />)
+      ) : (
+        <p>게시물이 존재하지 않습니다.</p>
+      )}
+
       <Pagination
         activePage={currentPage} // 현재 페이지
         itemsCountPerPage={postPerPage} // 한 페이지에서 보여줄 post 개수
