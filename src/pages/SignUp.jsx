@@ -93,6 +93,12 @@ const SignUp = () => {
       return;
     }
 
+    if (!validatePassword(password)) {
+    alert("비밀번호는 영문, 숫자, 특수문자를 포함한 10~20자리여야 합니다.");
+    setPassword(''); // 비밀번호 입력란 초기화
+    return; // 함수 실행 중단
+  }
+
     const requestData = {
       email: email,
       password: password,
@@ -227,6 +233,7 @@ const SignUp = () => {
                 type="button"
                 className="mt-3 w-full inline-flex justify-center py-2 px-4 mb-7 border border-transparent shadow-sm text-sm font-medium rounded-lg text-white bg-blue-500"
                 onClick={handleRequestEmailVerification}
+                disabled={!isEmailChecked}
               >
                 이메일 인증 요청
               </button>
