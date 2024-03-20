@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 
-
 const Auth = () => {
   
   const handleKakaoLogin = () => {
@@ -15,7 +14,11 @@ const Auth = () => {
       <div className="max-w-md w-full">
         {/* 첫페이지 LOGO  */}
         <div className="relative top-0 left-0 right-0 m-auto mb-28">
-            <img className="mx-auto h-auto mb-44 w-102" src="/src/assets/GoTogetherLogo.png" alt="같이가요 로고" />
+          <img
+            className="mx-auto h-auto mb-44 w-102"
+            src="/src/assets/GoTogetherLogo.png"
+            alt="같이가요 로고"
+          />
         </div>
 
         <div className="relative text-center animate-bounce">
@@ -27,7 +30,9 @@ const Auth = () => {
 
         <button onClick={handleKakaoLogin} className="btn mb-2 rounded-md relative block w-full px-3 py-1 border-none bg-yellow-300 text-black rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">카카오 로그인</button>
         <Link to="/member/login">
-        <button className="btn mb-2 rounded-md relative block w-full px-3 py-1 border-none text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">이메일로 로그인</button>
+          <button className="btn mb-2 rounded-md relative block w-full px-3 py-1 border-none text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">
+            이메일로 로그인
+          </button>
         </Link>
         <div className="flex justify-between align-middle items-center mt-10">
           <div className="border-t border-white my-4 w-44"></div>

@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { getReceiveRequestList, getRequestList } from '../../api/accompany';
 
 const useAccompany = () => {

@@ -15,11 +15,19 @@ const requestList = [
   },
 ];
 
+//  보낸 동행 요청 리스트 얻기
 const getRequestList = http.get('/api/accompany/request/send', async () => {
   let res = [...requestList];
 
   await delay(200);
   return HttpResponse.json(res);
 });
+
+// 동행 요청 보내기
+/* const postAccompanyRequest = http.post('/api/accompany/request/send', async ({request}) => {
+  const
+}) */
+
+// 동행 취소요청 보내기
 
 export const accompanyHandlers = [getRequestList];

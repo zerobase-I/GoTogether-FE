@@ -1,11 +1,11 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useSetRecoilState,useRecoilValue } from 'recoil';
-import { TokenAtom } from '/src/Recoil/TokenAtom';
-import { UserInfoAtom } from '/src/Recoil/UserInfoAtom';
+import { useSetRecoilState } from 'recoil';
+
 import { useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
 import { signIn, getUserDetails } from '/src/api/authService.js';
+import { TokenAtom } from '../recoil/TokenAtom';
+import { UserInfoAtom } from '../recoil/UserInfoAtom';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -37,22 +37,22 @@ const Login = () => {
 
         localStorage.setItem('userDetails', JSON.stringify(userDetails));
         queryClient.setQueryData(['userInfo'], userDetails);
-        alert("로그인 완료 되었습니다.");
-        // navigate('/');
+        alert('로그인 완료 되었습니다.');
+        navigate('/');
       } else {
         setError('로그인 실패: 인증 정보를 확인할 수 없습니다.');
       }
     } catch (error) {
       console.error('로그인 중 오류 발생:', error);
       if (error.response && error.response.data) {
-        setError(error.response.data.errorMessage || '로그인 중 오류가 발생했습니다.');
+        setError(
+          error.response.data.errorMessage || '로그인 중 오류가 발생했습니다.',
+        );
       } else {
         setError('이메일 또는 비밀번호가 올바르지 않습니다.');
       }
     }
   };
-
-
 
   return (
     <>
