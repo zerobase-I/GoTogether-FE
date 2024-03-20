@@ -93,6 +93,12 @@ const SignUp = () => {
       return;
     }
 
+    if (!validatePassword(password)) {
+    alert("비밀번호는 영문, 숫자, 특수문자를 포함한 10~20자리여야 합니다.");
+    setPassword(''); // 비밀번호 입력란 초기화
+    return; // 함수 실행 중단
+  }
+
     const requestData = {
       email: email,
       password: password,

@@ -15,17 +15,26 @@ const Login = () => {
   const setUserInfo = useSetRecoilState(UserInfoAtom);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const tokenState = useRecoilValue(TokenAtom);
 
-  const handleLogin = async (e) => {
+   useEffect(() => {
+    console.log('Recoil TokenAtom State:', tokenState);
+   }, [tokenState]);
+  
+ const handleLogin = async (e) => {
     e.preventDefault();
     try {
       const data = await signIn(email, password);
       if (data.accessToken) {
         const userDetails = await getUserDetails(data.accessToken);
-        setAccessToken({ accessToken: data.accessToken });
         setUserInfo(userDetails);
+        setAccessToken({
+          accessToken: data.accessToken,
+          refreshToken: data.refreshToken,
+        });
         localStorage.setItem('accessToken', data.accessToken);
         localStorage.setItem('refreshToken', data.refreshToken);
+
         localStorage.setItem('userDetails', JSON.stringify(userDetails));
         queryClient.setQueryData(['userInfo'], userDetails);
         alert('로그인 완료 되었습니다.');
