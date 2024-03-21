@@ -1,9 +1,17 @@
 import axios from 'axios';
 
-const BASE_URL = `http://49.50.167.227:8080/api`;
+const BASE_URL = `//49.50.167.227:8080/api`;
 
-/* const ACCESSTOKEN = localStorage.getItem('accessToken');
-console.log(ACCESSTOKEN); */
+/* export const getPost = async (postId) => {
+  console.log(123);
+  try {
+    const response = await axios.get(`${BASE_URL}/post/${postId}`);
+
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+}; */
 
 export const getPosts = async (page = 0, size = 10) => {
   try {
@@ -17,7 +25,7 @@ export const getPosts = async (page = 0, size = 10) => {
   }
 };
 
-export const getPostDetail = async (postId) => {
+/* export const getPostDetail = async (postId) => {
   try {
     const response = await axios.get(`${BASE_URL}/post/${postId}`);
 
@@ -26,7 +34,7 @@ export const getPostDetail = async (postId) => {
     console.error(error);
   }
 };
-
+ */
 export const createPost = async (formData) => {
   const accessToken = localStorage.getItem('accessToken');
 
@@ -34,7 +42,13 @@ export const createPost = async (formData) => {
   const requestData = {};
 
   for (const [key, value] of formData.entries()) {
-    requestData[key] = value;
+    if (value instanceof FileList) {
+      // Append the file directly to the requestData object
+      requestData[key] = value;
+    } else {
+      // For non-file values, append to FormData as usual
+      requestData[key] = value;
+    }
   }
   form.append('request', JSON.stringify(requestData));
 
@@ -49,7 +63,6 @@ export const createPost = async (formData) => {
     const response = await axios.post(`${BASE_URL}/post`, form, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
-        Accept: '*/*',
       },
     });
     console.log(response);
@@ -89,8 +102,15 @@ export const updatePost = async (inputValue) => {
 };
 
 export const deletePost = async (postId) => {
+  console.log(postId);
+  const accessToken = localStorage.getItem('accessToken');
   try {
-    const response = await axios.delete(`${BASE_URL}/post/${postId}`);
+    const response = await axios.delete(`${BASE_URL}/post/${postId}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        Accept: '*/*',
+      },
+    });
 
     console.log(response);
 

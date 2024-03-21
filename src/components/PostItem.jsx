@@ -19,6 +19,8 @@ const PostItem = ({
 }) => {
   const navigate = useNavigate();
 
+  console.log(post);
+
   return (
     <section
       className=" mb-4 mt-8  shadow-lg shadow-blue-500/30 rounded-md cursor-pointer"

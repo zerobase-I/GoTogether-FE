@@ -10,15 +10,11 @@ import SelectCountry from '../components/SelectCountry';
 import moment from 'moment';
 import { ImageUpload2 } from '../api/ImageUpload2';
 import usePosts from '../components/hooks/usePosts';
-import { useRecoilValue } from 'recoil';
-import { TokenAtom } from '../recoil/TokenAtom';
 
 const date = new Date();
 const formatDate = moment(date.toDateString()).format('MM-DD-YYYY');
 
 const CreatePost = () => {
-  const ACCESSTOKEN = useRecoilValue(TokenAtom);
-
   const { createPostMutation } = usePosts();
   const [success, setSuccess] = useState(); // 업로드 성공/ 실패 상태
   const [inputs, setInputs] = useState({
@@ -82,7 +78,7 @@ const CreatePost = () => {
     const formData = new FormData();
 
     for (const key in inputs) {
-      if (key === 'image' && inputs.image.length) {
+      if (key === 'image' && inputs.image && inputs.image.length) {
         for (let i = 0; i < inputs.image.length; i++) {
           formData.append('image', inputs.image[i]);
         }
@@ -90,12 +86,6 @@ const CreatePost = () => {
         formData.append(key, inputs[key]);
       }
     }
-
-    /*   const newPost = {};
-    for (const [key, value] of formData.entries()) {
-      newPost[key] = value;
-    }
-    // console.log(newPost); */
 
     try {
       // 서버로 POST 요청 보내기

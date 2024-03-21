@@ -18,7 +18,6 @@ const PostList = () => {
   const { deletePostMutation } = usePosts();
   const userInfo = useRecoilValue(UserInfoAtom);
   const loginUserEmail = userInfo.email;
-  console.log(`현재 로그인 유저 ${userInfo}`);
 
   const {
     state: {
@@ -48,7 +47,8 @@ const PostList = () => {
     navigate('/');
   };
 
-  console.log(`게시글 작성유저 : ${userEmail}`);
+  // 임시 유저이메일 코드
+  console.log(`게시글 작성 유저 ${userEmail}`);
 
   const [isRequest, setIsRequest] = useState(false); // 요청유무
   const [isMyPost, setIsMyPost] = useState(false); //내 게시물 유무
@@ -98,10 +98,10 @@ const PostList = () => {
 
     if (e.target.innerText === '동행요청') {
       postAccompanyRequest(id, memberId);
-      setIsRequest(false);
+      setIsRequest(true);
     } else {
       postAccompanyCancel(requestList && requestList.id);
-      setIsRequest(true);
+      setIsRequest(false);
     }
   };
 
@@ -109,7 +109,25 @@ const PostList = () => {
     console.log('Edit 버튼 클릭');
     //1. 글쓰기 페이지로 이동
     // 이동시, 현재 데이터들을 넘겨준다.
-    navigate(`/updatePostList/${id}`, { state: { id } });
+    navigate(`/updatePostList/${id}`, {
+      state: {
+        title,
+        category,
+        startDate,
+        endDate,
+        gender,
+        travelCountry,
+        travelCity,
+        minimumAge,
+        maximumAge,
+        recruitsPeople,
+        estimatedTravelExpense,
+        content,
+        image,
+        id,
+        memberId,
+      },
+    });
   };
 
   const handleDeleteClick = () => {
@@ -220,25 +238,25 @@ const PostList = () => {
           채팅방으로
         </button>
       )}
-      {isMyPost || isRequest || (
-        <button
-          type="submit"
-          className="btn btn-outline btn-error w-full mb-20 "
-          onClick={handleRequestBtnClick}
-        >
-          요청취소
-        </button>
-      )}
       {isMyPost ||
         (isRequest && (
           <button
             type="submit"
-            className="btn btn-outline btn-info w-full mb-20"
+            className="btn btn-outline btn-error w-full mb-20 "
             onClick={handleRequestBtnClick}
           >
-            동행요청
+            요청취소
           </button>
         ))}
+      {isMyPost || isRequest || (
+        <button
+          type="submit"
+          className="btn btn-outline btn-info w-full mb-20"
+          onClick={handleRequestBtnClick}
+        >
+          동행요청
+        </button>
+      )}
     </article>
   );
 };
