@@ -18,12 +18,11 @@ import ChatRoom from './pages/ChatRoom.jsx';
 import EditProfile from './pages/EditProfile.jsx';
 import Review from './pages/Review.jsx';
 import Login from './pages/Login.jsx';
-import KakaoRedirectHandler from './components/KaKaoRedirectHandler.jsx';
-import KakaoSignUp from './pages/KakaoSignUp';
 import UpdatePostList from './pages/UpdatePostList.jsx';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { RecoilRoot } from 'recoil';
-
+import KakaoSignUp from './pages/KakaoSignUp.jsx';
+import KakaoRedirectHandler from './pages/KakaoRedirectHandler.jsx';
 import App from './Routes/App.js';
 import FirstPage from './Routes/FirstPage.jsx';
 import ProtectedRoute from './Routes/ProtectedRoute.jsx';
@@ -84,9 +83,8 @@ const router = createBrowserRouter([
         path: 'callback',
         element: <KakaoRedirectHandler />,
       },
-      // 카카오 회원가입 추가 정보 입력 페이지
       {
-        path: 'kakaoSignup',
+        path: 'KakaoSignUp',
         element: <KakaoSignUp />,
       },
     ],

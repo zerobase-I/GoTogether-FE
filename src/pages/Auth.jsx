@@ -5,9 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 const Auth = () => {
   
   const handleKakaoLogin = () => {
-    const kakaoAuthUrl = `kauth.kakao.com/oauth/authorize?client_id=1693202f64710447bf714a86174ad17f
-&redirect_uri=http://49.50.167.227:8080/api/auth/redirected/kakao
-&response_type=code`;
+   const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?client_id=1693202f64710447bf714a86174ad17f&redirect_uri=http://localhost:5173/member/callback&response_type=code`;
     window.location.href = kakaoAuthUrl;
   };
 
@@ -30,7 +28,10 @@ const Auth = () => {
           </div>
         </div>
 
-        <button onClick={handleKakaoLogin} className="btn mb-2 rounded-md relative block w-full px-3 py-1 border-none bg-yellow-300 text-black rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">카카오 로그인</button>
+        <button onClick={handleKakaoLogin}
+          className="btn mb-2 rounded-md relative block w-full px-3 py-1 border-none
+           bg-yellow-300 text-black rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">카카오 로그인</button>
+       
         <Link to="/member/login">
           <button className="btn mb-2 rounded-md relative block w-full px-3 py-1 border-none text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">
             이메일로 로그인
