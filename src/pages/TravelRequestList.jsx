@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import useAccompany from '../components/hooks/useAccompany';
 import { postApproveAccompany, postRejectAccompany } from '../api/accompany';
 import { createChatroom } from '../api/chatroom';
+import Loading from '../components/Loading';
 
 const TravelRequestList = () => {
   // 예시로 사용자 데이터를 하드코딩합니다.
@@ -38,16 +39,12 @@ const TravelRequestList = () => {
   const [recieveList, setRecieveList] = useState([]);
 
   const {
-    getRequestListQuery: { isLoading, error, data: recieveListData },
-  } = useAccompany();
-  const {
-    getReceiveRequestListQuery: { data: requestListData },
+    getRequestListQuery: { isLoading, isError, error, data: requestListData },
+    getReceiveListQuery: { data: recieveListData },
   } = useAccompany();
 
-  useEffect(() => {
-    isLoading ? isLoading : setRequestList(requestListData);
-    isLoading ? isLoading : setRecieveList(recieveListData);
-  }, []);
+  isLoading && <Loading />;
+  isError && console.error(error.message);
 
   // 보낸 요청 목록
   //1. 보낸 요청 목록 조회하기
