@@ -27,7 +27,7 @@ const PostBox = () => {
 
   if (isLoading) return <Loading />;
   if (isError) return <p>{error.message}</p>;
-  console.log(postsData);
+  //console.log(postsData);
 
   const handlePageChange = (currentPage) => {
     setCurrentPage(currentPage);

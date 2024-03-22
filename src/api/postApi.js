@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = `//49.50.167.227:8080/api`;
+const BASE_URL = `http://49.50.167.227:8080/api`;
 
 /* export const getPost = async (postId) => {
   console.log(123);
@@ -49,6 +49,7 @@ export const createPost = async (formData) => {
       // For non-file values, append to FormData as usual
       requestData[key] = value;
     }
+    // requestData[key] = value;
   }
   form.append('request', JSON.stringify(requestData));
 
@@ -63,6 +64,7 @@ export const createPost = async (formData) => {
     const response = await axios.post(`${BASE_URL}/post`, form, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
+        Accept: '*/*',
       },
     });
     console.log(response);
