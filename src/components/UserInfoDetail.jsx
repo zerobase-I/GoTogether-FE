@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRecoilValue } from 'recoil';
-import { UserInfoAtom } from '../recoil/UserInfoAtom';
+import { UserInfoAtom } from '../recoil/userInfoAtom';
 
 const UserInfoDetail = () => {
   const userInfo = useRecoilValue(UserInfoAtom);
