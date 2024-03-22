@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import usePosts from '../components/hooks/usePosts';
 import useAccompany from '../components/hooks/useAccompany';
 import { useRecoilValue } from 'recoil';
-import { UserInfoAtom } from '../recoil/UserInfoAtom';
+import { UserInfoAtom } from '../recoil/userInfoAtom';
 import Loading from '../components/Loading';
 import moment from 'moment';
 import { IoRocketOutline } from 'react-icons/io5';
