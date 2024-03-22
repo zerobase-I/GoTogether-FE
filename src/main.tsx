@@ -25,7 +25,7 @@ import KakaoSignUp from './pages/KakaoSignUp.jsx';
 import KakaoRedirectHandler from './pages/KakaoRedirectHandler.jsx';
 import App from './routes/App.js';
 import FirstPage from './routes/FirstPage.jsx';
-import ProtectedRoute from './routes/ProtectedRoute.jsx';
+import ProtectedRoute from './routes/ProtectedRoute.js';
 
 /* async function enableMocking() {
   if (process.env.NODE_ENV !== 'development') {
