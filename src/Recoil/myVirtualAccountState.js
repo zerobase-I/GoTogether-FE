@@ -1,6 +1,6 @@
 import { atom } from 'recoil';
 
-export const virtualAccountsState = atom({
+export const myVirtualAccountsState = atom({
   key: 'virtualAccountsState',
   default: [],
 });
