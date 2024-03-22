@@ -3,15 +3,15 @@ import { useRecoilValue } from 'recoil';
 import { UserInfoAtom } from '../recoil/UserInfoAtom';
 
 const UserInfoDetail = () => {
-  //  const userInfo = useRecoilValue(UserInfoAtom);
-  const { MBTI, address, age, description, gender, travelScore, instagramId } =
+  const userInfo = useRecoilValue(UserInfoAtom);
+  console.log(userInfo);
+  const { address, age, description, gender, instagramId, mbti } =
     useRecoilValue(UserInfoAtom);
 
   return (
     <section className="flex flex-col mt-10">
       <div className="text-start">
         <span className="font-bold mr-2">동행 점수:</span>
-        {travelScore}
       </div>
       <div className="text-start">
         <span className="font-bold mr-2">성별 : </span>
@@ -26,7 +26,7 @@ const UserInfoDetail = () => {
       </div>
       <div className="text-start">
         <span className="font-bold mr-2">MBTI : </span>
-        {MBTI}
+        {mbti}
       </div>
       <div className="text-start">
         <span className="font-bold mr-2">인스타그램 아이디:</span> {instagramId}
