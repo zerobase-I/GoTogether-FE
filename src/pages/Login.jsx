@@ -1,11 +1,12 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useSetRecoilState,useRecoilValue } from 'recoil';
+import { useSetRecoilState, useRecoilValue } from 'recoil';
 
+import { TokenAtom } from '../recoil/tokenAtom';
 import { useQueryClient } from '@tanstack/react-query';
 import { signIn, getUserDetails } from '/src/api/authService.js';
-import { TokenAtom } from '../recoil/TokenAtom';
-import { UserInfoAtom } from '../recoil/UserInfoAtom';
+
+import { UserInfoAtom } from '../recoil/userInfoAtom';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -17,11 +18,11 @@ const Login = () => {
   const queryClient = useQueryClient();
   const tokenState = useRecoilValue(TokenAtom);
 
-   useEffect(() => {
+  useEffect(() => {
     console.log('Recoil TokenAtom State:', tokenState);
-   }, [tokenState]);
-  
- const handleLogin = async (e) => {
+  }, [tokenState]);
+
+  const handleLogin = async (e) => {
     e.preventDefault();
     try {
       const data = await signIn(email, password);
