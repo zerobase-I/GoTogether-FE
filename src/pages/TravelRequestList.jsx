@@ -35,12 +35,49 @@ const TravelRequestList = () => {
     },
   ];
 
+  /*     const requests = [
+      {
+        id: 1,
+        requestMemberId: 1,
+        requestedMemberId: 2,
+        postId: 2,
+        requestStatus: 'WATING',
+        createdAt: '2024-01-01T12:04:11',
+      },
+      {
+        id: 2,
+        requestMemberId: 1,
+        requestedMemberId: 2,
+        postId: 2,
+        requestStatus: 'WATING',
+        createdAt: '2024-01-01T12:04:11',
+      },
+    ];
+    const receive = [
+      {
+        id: 1,
+        requestMemberId: 1,
+        requestedMemberId: 2,
+        postId: 2,
+        requestStatus: 'WATING',
+        createdAt: '2024-01-01T12:04:11',
+      },
+      {
+        id: 2,
+        requestMemberId: 1,
+        requestedMemberId: 2,
+        postId: 2,
+        requestStatus: 'WATING',
+        createdAt: '2024-01-01T12:04:11',
+      },
+    ];
+ */
   const [requestList, setRequestList] = useState([]);
   const [recieveList, setRecieveList] = useState([]);
 
   const {
     getRequestListQuery: { isLoading, isError, error, data: requestListData },
-    getReceiveListQuery: { data: recieveListData },
+    getReceiveListQuery: { data: receiveListData },
   } = useAccompany();
 
   isLoading && <Loading />;
@@ -99,8 +136,54 @@ const TravelRequestList = () => {
         </button>
       </div>
       <div className="border-t-2 border-gray-500 my-4 w-100%"></div>
-      <div className="grid grid-cols-1 gap-8">
+      <div className="grid grid-cols-1 gap-8 mt-4 mx-4">
         <ul className="space-y-4">
+          {activeTab === 'send'
+            ? []?.map((data) => (
+                <li
+                  key={data.id}
+                  className="bg-white p-4 flex justify-between gap-1 rounded-md align-middle shadow-md hover:shadow-lg cursor-pointer transition duration-300 ease-in-out"
+                >
+                  <img
+                    src={data.profilePic}
+                    alt="Profile"
+                    className="w-12 h-12 rounded-full"
+                  />
+                  <p className="font-semibold mr-36">{data.nickname}</p>
+                  <p className="mt-2 text-blue-500">수락 대기중</p>
+                </li>
+              ))
+            : [].map((data) => (
+                <li
+                  key={data.id}
+                  className="bg-white p-4 flex justify-between gap-1 rounded-md align-middle shadow-md hover:shadow-lg cursor-pointer transition duration-300 ease-in-out"
+                >
+                  <img
+                    src={data.profilePic}
+                    alt="Profile"
+                    className="w-12 h-12 rounded-full"
+                  />
+                  <p className="font-semibold mr-36">{data.nickname}</p>
+
+                  <div className="flex items-center">
+                    <div className="flex justify-center gap-5 pb-2">
+                      <button
+                        className="bg-transparent text-blue-500 rounded"
+                        onClick={handleApproveBtnClick}
+                      >
+                        수락
+                      </button>
+                      <button
+                        className="bg-transparent text-blue-500 rounded"
+                        onClick={handleRejectBtnClick}
+                      >
+                        거절
+                      </button>
+                    </div>
+                  </div>
+                </li>
+              ))}
+
           {requests
             .filter((request) => request.type === activeTab)
             .map((request) => (
