@@ -5,7 +5,7 @@ import PostBox from '../components/PostBox';
 
 const Home = () => {
   return (
-    <main className="mt-3 pb-3 flex flex-col mx-4">
+    <main className="mt-4 mx-4 pb-3 flex flex-col ">
       <article>
         <UserInfo />
         <SearchBox />

@@ -5,21 +5,25 @@ import { GiCrossMark } from 'react-icons/gi';
 import { BiSolidAlarmExclamation } from 'react-icons/bi';
 import { Link } from 'react-router-dom';
 import { TbPencilSearch } from 'react-icons/tb';
+import { useRecoilValue } from 'recoil';
+import { UserInfoAtom } from '../recoil/UserInfoAtom';
 
 const UserInfo = () => {
+  const { nickname, profileImageUrl } = useRecoilValue(UserInfoAtom);
+
   return (
     <section className="flex justify-between mb-2">
       <div className="flex items-end">
         <div className="avatar">
           <div className="w-40 rounded-full md:w-60 relative">
             <Link to="/editprofile">
-              <img src="https://i.namu.wiki/i/1L_8d7FSBchLDnx7zLaxWs-HvUa6wQzLy2trSu0fGIqjWYQDWjEIEyxxoNJyDaIq_FF1QKFsu8nMNpDbJn_QSQ.webp" />
+              <img src={profileImageUrl} />
               <TbPencilSearch className="absolute top-28 right-8 md:absolute md:top-44 md:right-10 text-2xl" />
             </Link>
           </div>
         </div>
         <div>
-          <span className="text-xl self-start">홍길동</span>
+          <span className="text-xl self-start">{nickname}</span>
           <div className="flex">
             <GiCrossMark className="text-2xl mr-2" />
             <Link to="/reviewdetail">

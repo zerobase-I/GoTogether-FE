@@ -1,22 +1,115 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { VscZoomIn } from 'react-icons/vsc';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactCalendar from '../components/ReactCalendar';
 import RadioBtn from '../components/RadioBtn';
 import RadioBtnSingle from '../components/Ui/RadioBtnSingle';
 import EditorQuill from '../components/EditorQuill';
 import { categoryList } from '../components/config/data';
+import SelectCountry from '../components/SelectCountry';
+import moment from 'moment';
+import { ImageUpload2 } from '../api/ImageUpload2';
+import usePosts from '../components/hooks/usePosts';
+
+const date = new Date();
+const formatDate = moment(date.toDateString()).format('MM-DD-YYYY');
 
 const CreatePost = () => {
-  const [recruitedPeople, setRecruitedPeople] = useState(6);
+  const { createPostMutation } = usePosts();
+  const [success, setSuccess] = useState(); // 업로드 성공/ 실패 상태
+  const [inputs, setInputs] = useState({
+    travelCountry: '한국',
+    travelCity: '서울',
+    startDate: formatDate,
+    finishDate: formatDate,
+    gender: '',
+    minimumAge: '18',
+    maximumAge: '100',
+    recruitsPeople: '6',
+    estimatedTravelExpense: '',
+    category: '',
+    title: '',
+    content: '',
+    image: [],
+  });
 
-  const handleInputChange = (e) => {
-    setRecruitedPeople(e.target.value);
+  const navigate = useNavigate();
+  const goToHome = () => {
+    navigate('/');
+  };
+
+  /* inputs 출력 테스트 코드 */
+  useEffect(() => {
+    console.log(inputs); // 상태가 업데이트된 후에 실행됨
+  }, [inputs]); // inputs 상태가 변경될 때마다 실행
+
+  const handleChangeInfo = (e) => {
+    const { name, value } = e.target;
+
+    setInputs({ ...inputs, [name]: value });
+  };
+
+  const handleDateChange = (dates) => {
+    setInputs(() => ({
+      ...inputs,
+      startDate: moment(dates[0].toDateString()).format('MM-DD-YYYY'),
+      finishDate: moment(dates[1].toDateString()).format('MM-DD-YYYY'),
+    }));
+  };
+
+  const handleFileChange = (files) => {
+    setInputs(() => ({
+      ...inputs,
+      image: files,
+    }));
+  };
+
+  const handleQuillTextChange = (text) => {
+    setInputs(() => ({
+      ...inputs,
+      content: text,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log('createPost submit 이벤트 발생');
+
+    const formData = new FormData();
+
+    for (const key in inputs) {
+      if (key === 'image' && inputs.image && inputs.image.length) {
+        for (let i = 0; i < inputs.image.length; i++) {
+          formData.append('image', inputs.image[i]);
+        }
+      } else {
+        formData.append(key, inputs[key]);
+      }
+    }
+
+    try {
+      // 서버로 POST 요청 보내기
+      createPostMutation.mutate(formData, {
+        onSuccess: () => {
+          setSuccess('성공적으로 게시글이 등록되었습니다.');
+          alert('성공적으로 게시글이 등록되었습니다 ');
+          //    goToHome();
+          setTimeout(() => {
+            setSuccess(null);
+          }, 1000);
+        },
+        onError: () => {
+          console.log('post요청 에러');
+        },
+      });
+    } catch (error) {
+      console.error('데이터 업로드 실패', error);
+    }
   };
 
   return (
-    <main className="flex flex-col mx-4">
-      <form action="/" method="post" name="createpost" acceptCharset="UTF-8">
+    <main className="flex flex-col mx-4 mt-4">
+      <form onSubmit={handleSubmit}>
         <section className="mt-2 mb-10 border-t border-b">
           <Link to="" className="w-full h-6 mb-10 ">
             <div className="flex justify-center items-center">
@@ -31,54 +124,8 @@ const CreatePost = () => {
           </Link>
         </section>
 
-        <section className="flex flex-col items-center mt-3  ">
-          <span className="text-xl w-full text-left font-semibold">
-            나라와 도시를 선택하세요
-          </span>
-          <div className="">
-            <label className="form-control w-full max-w-xs">
-              <div className="label">
-                <span className="label-text">
-                  나라를 선택하세요 (API 찾아보기)
-                </span>
-              </div>
-              <select
-                className="select select-bordered"
-                name="country"
-                required
-              >
-                <option value="한국">한국</option>
-                <option value="일본">일본</option>
-                <option value="미국">미국</option>
-                <option value="괌">괌</option>
-                <option value="사이판">사이판</option>
-                <option value="캐나다">캐나다</option>
-                <option value="대만">대만</option>
-              </select>
-            </label>
-
-            <label className="form-control w-full max-w-xs">
-              <div className="label">
-                <span className="label-text">
-                  도시를 선택하세요 (API 찾아보기)
-                </span>
-              </div>
-              <select
-                className="select select-bordered"
-                name="country"
-                required
-              >
-                <option value="서울">서울</option>
-                <option value="강릉">강릉</option>
-                <option value="가평/양평">가평/양평</option>
-              </select>
-            </label>
-          </div>
-        </section>
-
-        <section className="mb-6">
-          <ReactCalendar />
-        </section>
+        <SelectCountry onChange={handleChangeInfo} />
+        <ReactCalendar onDateChange={handleDateChange} />
 
         <section className="mb-2">
           <span className="text-xl text-left font-semibold w-max block ">
@@ -87,8 +134,8 @@ const CreatePost = () => {
           <RadioBtn
             option1="모두 포함"
             option2="동일 성별"
-            name="sex"
-            onChange={handleInputChange}
+            name="gender"
+            onChange={handleChangeInfo}
           />
         </section>
 
@@ -99,36 +146,39 @@ const CreatePost = () => {
           <div className="flex flex-col items-center flex-grow-1">
             <input
               type="number"
-              placeholder="최소 나이"
+              placeholder="최소 나이 (18세 이상)"
               className="input input-bordered input-info w-full max-w-xs mb-1"
-              min={20}
+              min={18}
               max={100}
               required
-              onChange={handleInputChange}
+              onChange={handleChangeInfo}
+              name="minimumAge"
             />
             <input
               type="number"
-              placeholder="최대 나이"
+              placeholder="최대 나이 (100세 이하)"
               className="input input-bordered input-info w-full max-w-xs "
-              min={20}
+              min={18}
               max={100}
               required
-              onChange={handleInputChange}
+              onChange={handleChangeInfo}
+              name="maximumAge"
             />
           </div>
         </section>
 
         <section className="mb-6">
           <span className="text-xl w-full text-left font-semibold block mb-2">
-            모집 인원(본인포함) : {recruitedPeople} 명
+            모집 인원(본인포함) : {inputs.recruitsPeople} 명
           </span>
           <input
             type="range"
             min="2"
             max="10"
             step="1"
-            value={recruitedPeople}
-            onChange={handleInputChange}
+            name="recruitsPeople"
+            value={inputs.recruitsPeople}
+            onChange={handleChangeInfo}
             className="range range-info"
           />
         </section>
@@ -142,26 +192,57 @@ const CreatePost = () => {
               option={category}
               name="category"
               key={category}
-              onChange={handleInputChange}
+              onChange={handleChangeInfo}
             />
           ))}
         </section>
 
-        <section className="mb-32">
+        <section className="mb-6">
+          <span className="text-xl w-full text-left font-semibold block mb-1">
+            예상 여행 경비
+          </span>
+          <div className="flex flex-col items-center flex-grow-1">
+            <input
+              type="number"
+              placeholder="예상 여행 경비 1000원 단위 (숫자 입력)"
+              className="input input-bordered input-info w-full max-w-xs "
+              required
+              onChange={handleChangeInfo}
+              name="estimatedTravelExpense"
+              step="1000"
+            />
+          </div>
+        </section>
+
+        <section className="mb-24">
           <label className="text-xl w-full text-left font-semibold block mb-2">
             제목/내용을 입력하세요
           </label>
           <input
             type="text"
-            placeholder="제목 (최대 30자)"
+            placeholder="제목 "
             className="input input-bordered input-info w-full max-w-full mb-1"
             required
-            maxLength="30"
-            onChange={handleInputChange}
+            minLength="4"
+            maxLength="40"
+            name="title"
+            onChange={handleChangeInfo}
           />
-          <EditorQuill />
+          <EditorQuill onTextChange={handleQuillTextChange} />
         </section>
 
+        <section className="mb-16">
+          <label
+            className="text-xl w-full text-left font-semibold  mb-2 flex flex-col"
+            id="upLoadFile"
+          >
+            <span className="mb-4">
+              글 최상단에 보여질 이미지를 설정해 보세요!
+            </span>
+            <ImageUpload2 onFileChange={handleFileChange} />
+          </label>
+        </section>
+        <p>{success}</p>
         <button type="submit" className="btn btn-outline btn-info w-full mb-20">
           등록하기
         </button>

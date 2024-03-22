@@ -1,8 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom/client';
-import App from './App.tsx';
 import Auth from './pages/Auth.jsx';
-
 import SignUp from './pages/SignUp.jsx';
 import NotFound from './pages/NotFound.jsx';
 import ChatList from './pages/ChatList.jsx';
@@ -20,22 +18,44 @@ import ChatRoom from './pages/ChatRoom.jsx';
 import EditProfile from './pages/EditProfile.jsx';
 import Review from './pages/Review.jsx';
 import Login from './pages/Login.jsx';
-import FirstPage from './FirstPage.jsx';
+import UpdatePostList from './pages/UpdatePostList.jsx';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { RecoilRoot } from 'recoil';
+import KakaoSignUp from './pages/KakaoSignUp.jsx';
+import KakaoRedirectHandler from './pages/KakaoRedirectHandler.jsx';
+import App from './routes/App.js';
+import FirstPage from './routes/FirstPage.jsx';
+import ProtectedRoute from './routes/ProtectedRoute.jsx';
 
+/* async function enableMocking() {
+  if (process.env.NODE_ENV !== 'development') {
+    return;
+  }
+
+  const { worker } = await import('./mocks/browsers');
+
+  return worker.start();
+}
+ */
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <App />,
+    element: (
+      <ProtectedRoute>
+        <App />
+      </ProtectedRoute>
+    ),
     errorElement: <NotFound />,
     children: [
       { path: '', element: <Home /> },
       { path: 'chatlist', element: <ChatList /> },
       { path: 'mypage', element: <MyPage /> },
       { path: 'travelrequestlist', element: <TravelRequestList /> },
-      { path: 'postList', element: <PostList /> },
+      { path: 'postLists/:id', element: <PostList /> },
+      { path: 'updatePostList/:id', element: <UpdatePostList /> },
       { path: 'filter', element: <Filter /> },
       { path: 'createpost', element: <CreatePost /> },
-      { path: 'chatroom', element: <ChatRoom /> },
+      { path: 'chatroom/:id', element: <ChatRoom /> },
       { path: 'editprofile', element: <EditProfile /> },
       { path: 'reviewdetail', element: <ReviewDetail /> },
       { path: 'alarm', element: <Alarm /> },
@@ -44,7 +64,6 @@ const router = createBrowserRouter([
       { path: '*', element: <NotFound /> },
     ],
   },
-
   {
     path: 'member',
     element: <FirstPage />,
@@ -59,12 +78,30 @@ const router = createBrowserRouter([
         path: 'signup',
         element: <SignUp />,
       },
+      // 카카오 로그인 리다이렉트 처리 경로
+      {
+        path: 'callback',
+        element: <KakaoRedirectHandler />,
+      },
+      {
+        path: 'KakaoSignUp',
+        element: <KakaoSignUp />,
+      },
     ],
   },
 ]);
 
+//enableMocking().then(() => {
+const queryClient = new QueryClient(); // QueryClient 생성
+
+// ReactDOM.createRoot로 앱을 렌더링하기 전에 QueryClientProvider로 감싸줍니다.
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <RouterProvider router={router} />
-  </React.StrictMode>,
+  <RecoilRoot>
+    <React.StrictMode>
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+      </QueryClientProvider>
+    </React.StrictMode>
+  </RecoilRoot>,
 );
+//});

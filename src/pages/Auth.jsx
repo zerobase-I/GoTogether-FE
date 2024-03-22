@@ -1,14 +1,21 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 
 const Auth = () => {
+  
+  const handleKakaoLogin = () => {
+   const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?client_id=1693202f64710447bf714a86174ad17f&redirect_uri=http://localhost:5173/member/callback&response_type=code`;
+    window.location.href = kakaoAuthUrl;
+  };
+
   return (
-    <div className="flex justify-center min-h-screen items-center px-4 sm:px-6 lg:px-8 bg-[url('./assets/같이가요Login.jpg')] bg-cover">
+    <div className="flex justify-center min-h-screen items-center px-4 sm:px-6 lg:px-8 bg-[url('/src/assets/AuthBackGround.jpg')] bg-cover">
       <div className="max-w-md w-full">
         {/* 첫페이지 LOGO  */}
         <div className="relative top-0 left-0 right-0 m-auto mb-28">
           <img
-            className="mx-auto h-auto w-102"
+            className="mx-auto h-auto mb-44 w-102"
             src="/src/assets/GoTogetherLogo.png"
             alt="같이가요 로고"
           />
@@ -21,13 +28,11 @@ const Auth = () => {
           </div>
         </div>
 
-        <button className="btn mb-2 rounded-md relative block w-full px-3 py-1 border-none bg-yellow-300 text-black rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">
-          카카오 로그인
-        </button>
-        <button className="btn mb-2 rounded-md relative block w-full px-3 py-1 border-none bg-black text-white rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">
-          Apple로 로그인
-        </button>
-        <Link to="login">
+        <button onClick={handleKakaoLogin}
+          className="btn mb-2 rounded-md relative block w-full px-3 py-1 border-none
+           bg-yellow-300 text-black rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">카카오 로그인</button>
+       
+        <Link to="/member/login">
           <button className="btn mb-2 rounded-md relative block w-full px-3 py-1 border-none text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">
             이메일로 로그인
           </button>
@@ -37,11 +42,14 @@ const Auth = () => {
           <p className="font-medium text-xl">or</p>
           <div className="border-t border-white my-4 w-44"></div>
         </div>
-        <Link to="signup" className="mt-10 m-autoa flex justify-center">
-          <button className="btn mb-2 rounded-md relative block w-36 px-3 py-1 border-none text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">
-            회원가입
-          </button>
-        </Link>
+        <div className="flex gap-2 justify-center">
+        <Link to="/member/signup" className="mt-10 m-autoa flex justify-center">
+            <button className="btn mb-2 rounded-md relative block w-28 px-3 py-1 border-none text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">회원가입</button>
+          </Link>
+          <Link to="" className="mt-10 m-autoa flex justify-center">
+            <button className="btn mb-2 rounded-md relative block w-28 px-3 py-1 border-none text-gray-900 bg-yellow-300 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"><span>KaKao</span><br/><span>회원가입</span></button>
+          </Link>
+        </div>
         <div className="text-white mt-14 text-left text-base">
           로그인 시 같이가요의{' '}
           <span className="underline">개인정보처리방침</span> 및{' '}

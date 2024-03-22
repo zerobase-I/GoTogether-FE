@@ -1,0 +1,252 @@
+[
+  {
+    "id": 0,
+    "chatRoomId":"0",
+    "memberId": "A",
+    "userEmail": "AAAA@naver.com",
+    "travelCountry": "한국",
+    "travelCity": "서울",
+    "startDate": "23-03-10",
+    "finishDate": "23-03-18",
+    "gender": "동성",
+    "minimumAge": "20",
+    "maximumAge": "30",
+    "recruitsPeople": "7",
+    "estimatedTravelExpense": "80000",
+    "category": "여행",
+    "title": "서울맛집 찾아봐요",
+    "content": "서울특별시는 대한민국의 수도,[20] 그리고 최대도시이다. 평양시, 경주시, 개성시와 함께 오랜 역사를 가진 한반도의 고도 중 하나다. 법률상 대한민국 제1의 도시로 규정되어 있다.[21] 현재 한국에서 유일한 특별시고, 수장인 서울특별시장은 한국 광역자치단체장 중 유일하게 장관급 대우를 받으며 국무회의 참여권 및 발언권이 있다.[22][23] 서울특별시는 한국 제2의 도시인 부산광역시보다도 인구가 약 3배 더 많은 명실상부한 한국의 종주도시다.",
+    "image": [
+      {
+        "imageId": ""
+      }
+    ]
+  },
+  {
+    "id": 1,
+    "chatRoomId":"1",
+    "memberId": "B",
+    "userEmail": "zerobase@naver.com",
+    "travelCountry": "한국",
+    "travelCity": "부산",
+    "startDate": "23-03-05",
+    "finishDate": "23-03-07",
+    "gender": "동성",
+    "minimumAge": "21",
+    "maximumAge": "23",
+    "recruitsPeople": "7",
+    "estimatedTravelExpense": "80000",
+    "category": "여행",
+    "title": "같이 부산 맛집 뿌실분 구합니다",
+    "content": "부산의 위치와 특징 부산은 한반도 남동부에 위치한 광역시로, 대한민국에서 제2의 도시이자 최대의 해양 도시입니다. 부산항은 아시아 최대 규모의 항구 중 하나입니다",
+    "image": [
+      {
+        "imageId": ""
+      },
+      {
+        "imageId": ""
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "memberId": "C",
+    "chatRoomId":"2",
+    "userEmail": "CCCC@naver.com",
+    "travelCountry": "미국",
+    "travelCity": "로스앤젤레스",
+    "startDate": "23-03-16",
+    "finishDate": "23-03-21",
+    "gender": "모두",
+    "minimumAge": "20",
+    "maximumAge": "26",
+    "recruitsPeople": "9",
+    "estimatedTravelExpense": "80000",
+    "category": "여행",
+    "title": "미국 여행을 떠나요~",
+    "content": "법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙",
+    "image": [
+      {
+        "imageId": ""
+      },
+      {
+        "imageId": ""
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "memberId": "D",
+    "userEmail": "DDDD@naver.com",
+    "travelCountry": "미국",
+    "travelCity": "로스앤젤레스",
+    "startDate": "23-03-16",
+    "finishDate": "23-03-21",
+    "gender": "모두",
+    "minimumAge": "20",
+    "maximumAge": "26",
+    "recruitsPeople": "9",
+    "estimatedTravelExpense": "80000",
+    "category": "여행",
+    "title": "미국 여행을 떠나요~",
+    "content": "법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙",
+    "image": [
+      {
+        "imageId": ""
+      },
+      {
+        "imageId": ""
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "memberId": "E",
+    "userEmail": "EEEE@naver.com",
+    "travelCountry": "미국",
+    "travelCity": "로스앤젤레스",
+    "startDate": "23-03-16",
+    "finishDate": "23-03-21",
+    "gender": "모두",
+    "minimumAge": "20",
+    "maximumAge": "26",
+    "recruitsPeople": "9",
+    "estimatedTravelExpense": "80000",
+    "category": "여행",
+    "title": "미국 여행을 떠나요~",
+    "content": "법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙",
+    "image": [
+      {
+        "imageId": ""
+      },
+      {
+        "imageId": ""
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "memberId": "E",
+    "userEmail": "EEEE@naver.com",
+    "travelCountry": "미국",
+    "travelCity": "로스앤젤레스",
+    "startDate": "23-03-16",
+    "finishDate": "23-03-21",
+    "gender": "모두",
+    "minimumAge": "20",
+    "maximumAge": "26",
+    "recruitsPeople": "9",
+    "estimatedTravelExpense": "80000",
+    "category": "여행",
+    "title": "미국 여행을 떠나요~",
+    "content": "법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙",
+    "image": [
+      {
+        "imageId": ""
+      },
+      {
+        "imageId": ""
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "memberId": "D",
+    "userEmail": "DDDD@naver.com",
+    "travelCountry": "미국",
+    "travelCity": "로스앤젤레스",
+    "startDate": "23-03-16",
+    "finishDate": "23-03-21",
+    "gender": "모두",
+    "minimumAge": "20",
+    "maximumAge": "26",
+    "recruitsPeople": "9",
+    "estimatedTravelExpense": "80000",
+    "category": "여행",
+    "title": "미국 여행을 떠나요~",
+    "content": "법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙",
+    "image": [
+      {
+        "imageId": ""
+      },
+      {
+        "imageId": ""
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "memberId": "D",
+    "userEmail": "DDDD@naver.com",
+    "travelCountry": "미국",
+    "travelCity": "로스앤젤레스",
+    "startDate": "23-03-16",
+    "finishDate": "23-03-21",
+    "gender": "모두",
+    "minimumAge": "20",
+    "maximumAge": "26",
+    "recruitsPeople": "9",
+    "estimatedTravelExpense": "80000",
+    "category": "여행",
+    "title": "미국 여행을 떠나요~",
+    "content": "법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙",
+    "image": [
+      {
+        "imageId": ""
+      },
+      {
+        "imageId": ""
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "memberId": "D",
+    "userEmail": "DDDD@naver.com",
+    "travelCountry": "미국",
+    "travelCity": "로스앤젤레스",
+    "startDate": "23-03-16",
+    "finishDate": "23-03-21",
+    "gender": "모두",
+    "minimumAge": "20",
+    "maximumAge": "26",
+    "recruitsPeople": "9",
+    "estimatedTravelExpense": "80000",
+    "category": "여행",
+    "title": "미국 여행을 떠나요~",
+    "content": "법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙",
+    "image": [
+      {
+        "imageId": ""
+      },
+      {
+        "imageId": ""
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "memberId": "D",
+    "userEmail": "DDDD@naver.com",
+    "travelCountry": "미국",
+    "travelCity": "로스앤젤레스",
+    "startDate": "23-03-16",
+    "finishDate": "23-03-21",
+    "gender": "모두",
+    "minimumAge": "20",
+    "maximumAge": "26",
+    "recruitsPeople": "9",
+    "estimatedTravelExpense": "80000",
+    "category": "여행",
+    "title": "미국 여행을 떠나요~",
+    "content": "법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙법에 의하여 소수자의 권리를 보호하여, 다수결의 원칙",
+    "image": [
+      {
+        "imageId": ""
+      },
+      {
+        "imageId": ""
+      }
+    ]
+  }
+]

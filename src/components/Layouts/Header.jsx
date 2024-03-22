@@ -4,17 +4,13 @@ import { Link } from 'react-router-dom';
 
 const Header = () => {
   return (
-    <header className="flex justify-between align-middle h-20 sticky top-0 bg-gray-900 px-4 z-10 ">
-      <h1 className="text-2xl z-100 pt-7 ">
-        <Link to="/" className="z-100 text-primary flex gap-2">
-          <IoHome className="inline-block ml-4 text-center" />
-          같이 가요
-        </Link>
-      </h1>
-      <Link to="settings">
-        <button className="transition ease-in-out pt-3 hover:rotate-360">
-          <IoSettingsSharp className="text-2xl ss:text-4xl fill-gray-300 hover:animate-spin" />
-        </button>
+    <header className="flex justify-between items-center h-20 bg-gray-800 px-4 sm:px-6 lg:px-8 shadow-md sticky top-0 z-10">
+      <Link to="/" className="flex items-center text-white hover:text-gray-300 transition duration-150 ease-in-out">
+        <IoHome className="text-xl md:text-2xl" />
+        <span className="ml-2 text-lg md:text-xl font-semibold">같이 가요</span>
+      </Link>
+      <Link to="/settings" className="transition duration-150 ease-in-out hover:scale-110">
+        <IoSettingsSharp className="text-2xl md:text-3xl text-white hover:text-gray-300" />
       </Link>
     </header>
   );
