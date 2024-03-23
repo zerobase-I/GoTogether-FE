@@ -57,14 +57,14 @@ const Login = () => {
 
   return (
     <>
-      <div className="min-h-screen flex justify-center bg-white py-12 px-4 sm:px-6 lg:px-8">
+      <div className="min-h-screen ml-5 mr-5 bg-white flex flex-col justify-start py-12 sm:px-6 lg:px-8">
+        <div className="sm:mx-auto sm:w-full sm:max-w-md">
+          <div>
         <Link to="/member">
-          <div className="absolute left-6 top-14 w-5">
+          <div className="left-6 top-14 w-5">
             <img src="/src/assets/left-arrow.png" alt="왼쪽 화살표" />
           </div>
         </Link>
-        <div className="max-w-md w-full space-y-8">
-          <div>
             <h2 className="ml-5 mt-14 text-3xl flex item-start font-extrabold text-gray-900">
               이메일로 로그인
             </h2>

@@ -197,7 +197,7 @@ const SignUp = () => {
   return (
     <div className="min-h-screen ml-5 mr-5 bg-white flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <Link to="/member">
-        <div className="absolute left-6 top-14 w-5">
+        <div className="left-6 top-14 w-5">
           <img src="/src/assets/left-arrow.png" alt="왼쪽 화살표" />
         </div>
       </Link>
