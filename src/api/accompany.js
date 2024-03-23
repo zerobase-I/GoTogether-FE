@@ -7,7 +7,7 @@ export const getRequestAccompanyList = async () => {
 
   try {
     const response = await axios.get(
-      'http://49.50.167.227:8080/api/accompany/request/send',
+      'https://gotogether.site/api/accompany/request/send',
       {
         headers: {
           Authorization: {
@@ -29,7 +29,7 @@ export const getReceiveAccompanyList = async () => {
 
   try {
     const response = await axios.get(
-      'http://49.50.167.227:8080/api/accompany/request/receive',
+      'https://gotogether.site/api/accompany/request/receive',
       {
         headers: {
           Authorization: {

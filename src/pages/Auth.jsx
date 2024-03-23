@@ -46,9 +46,6 @@ const Auth = () => {
         <Link to="/member/signup" className="mt-10 m-autoa flex justify-center">
             <button className="btn mb-2 rounded-md relative block w-28 px-3 py-1 border-none text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">회원가입</button>
           </Link>
-          <Link to="" className="mt-10 m-autoa flex justify-center">
-            <button className="btn mb-2 rounded-md relative block w-28 px-3 py-1 border-none text-gray-900 bg-yellow-300 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"><span>KaKao</span><br/><span>회원가입</span></button>
-          </Link>
         </div>
         <div className="text-white mt-14 text-left text-base">
           로그인 시 같이가요의{' '}

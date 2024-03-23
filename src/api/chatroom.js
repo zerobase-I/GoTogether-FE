@@ -1,5 +1,10 @@
 import axios from 'axios';
 
+const apiClient = axios.create({
+  baseURL: 'https://gotogether.site/api/',
+
+});
+
 // 채팅방 생성
 export const createChatroom = async (postId) => {
   try {
