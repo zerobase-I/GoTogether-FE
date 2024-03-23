@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = `http://49.50.167.227:8080/api`;
+const BASE_URL = `https://gotogether.site/api`;
 
 /* export const getPost = async (postId) => {
   console.log(123);
@@ -76,7 +76,6 @@ export const createPost = async (formData) => {
     const response = await axios.post(`${BASE_URL}/post`, form, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
-        Accept: '*/*',
       },
     });
     console.log(response);
