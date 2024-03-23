@@ -1,7 +1,8 @@
 import React from 'react';
 import UserInfo from '../components/UserInfo';
-import PostBox from '../components/PostBox';
+
 import UserInfoDetail from '../components/UserInfoDetail';
+import MyPostBox from '../components/Ui/MyPostBox';
 
 const MyPage = () => {
   return (
@@ -11,9 +12,9 @@ const MyPage = () => {
         <UserInfoDetail />
         <section className="mt-9 border-t">
           <h3>
-            <span className="text-xl block mt-5">지난 동행</span>
+            <span className="text-xl block mt-5">내가 쓴 게시물</span>
           </h3>
-          <PostBox />
+          <MyPostBox />
         </section>
       </article>
     </main>

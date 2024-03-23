@@ -25,6 +25,18 @@ export const getPosts = async (page = 0, size = 10) => {
   }
 };
 
+export const getMyPosts = async (page = 0, size = 10, userId) => {
+  try {
+    const response = await axios.get(
+      `${BASE_URL}/post/myPosts/${userId}?page=${page}&size=${size}`,
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 /* export const getPostDetail = async (postId) => {
   try {
     const response = await axios.get(`${BASE_URL}/post/${postId}`);

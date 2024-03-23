@@ -180,6 +180,7 @@ const PostList = () => {
             {moment(createdAt).format('YYYY-MM-DD HH:MM')}
           </span>
           <span className="mr-10 items-start">작성자: {postUserEmail}</span>
+          <span className="mr-10 items-start">게시글id: {postId}</span>
         </div>
         <div>
           {isMyPost && (
