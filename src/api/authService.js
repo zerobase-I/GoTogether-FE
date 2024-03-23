@@ -2,13 +2,13 @@ import axios from 'axios';
 
 // axios 인스턴스 생성
 export const apiClient = axios.create({
-  baseURL: 'http://49.50.167.227:8080/api/',
+  baseURL: 'https://gotogether.site/api',
 });
 
 // 로그인 요청 함수
 export const signIn = async (email, password) => {
   try {
-    const response = await apiClient.post('auth/signIn', {
+    const response = await apiClient.post('/auth/signIn', {
       email,
       password,
     });
@@ -23,7 +23,7 @@ export const signIn = async (email, password) => {
 // 사용자 정보 요청 함수
 export const getUserDetails = async (accessToken) => {
   try {
-    const response = await apiClient.get('member/myProfile', {
+    const response = await apiClient.get('/member/myProfile', {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
