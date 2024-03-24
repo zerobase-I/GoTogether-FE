@@ -79,7 +79,7 @@ export const createPost = async (formData) => {
     // 서버에 데이터를 보내는 비동기 작업 수행
     const response = await axios.post(`${BASE_URL}/post`, form, {
       headers: {
-        Authorization: `Bearer ${refreshToken}`,
+        Authorization: `Bearer ${accessToken}`,
       },
     });
     console.log(response);

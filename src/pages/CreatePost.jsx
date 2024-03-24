@@ -22,12 +22,12 @@ const CreatePost = () => {
     travelCity: '서울',
     startDate: formatDate,
     endDate: formatDate,
-    gender: '',
+    postGenderType: '',
     minimumAge: '18',
     maximumAge: '100',
     recruitsPeople: '6',
     estimatedTravelExpense: '',
-    category: '',
+    postCategory: '',
     title: '',
     content: '',
     image: [],
@@ -52,8 +52,8 @@ const CreatePost = () => {
   const handleDateChange = (dates) => {
     setInputs(() => ({
       ...inputs,
-      startDate: moment(dates[0].toDateString()).format('MM-DD-YYYY'),
-      finishDate: moment(dates[1].toDateString()).format('MM-DD-YYYY'),
+      startDate: moment(dates[0].toDateString()).format('YYYY-MM-DDTHH:mm:ss'),
+      endDate: moment(dates[1].toDateString()).format('YYYY-MM-DDTHH:mm:ss'),
     }));
   };
 
@@ -136,9 +136,9 @@ const CreatePost = () => {
             함께하고 싶은 성별
           </span>
           <RadioBtn
-            option1="모두 포함"
-            option2="동일 성별"
-            name="gender"
+            option1="ALL"
+            option2="MAN"
+            name="postGenderType"
             onChange={handleChangeInfo}
           />
         </section>
@@ -194,7 +194,7 @@ const CreatePost = () => {
           {categoryList.map((category) => (
             <RadioBtnSingle
               option={category}
-              name="category"
+              name="postCategory"
               key={category}
               onChange={handleChangeInfo}
             />

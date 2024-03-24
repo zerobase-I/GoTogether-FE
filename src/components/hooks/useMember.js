@@ -1,14 +1,10 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQueries, useQuery } from '@tanstack/react-query';
 
 import { getOtherMemberInfo } from '../../api/mamber';
 
-const useMember = () => {
-  const getOtherMemberInfoQuery = useQuery({
-    queryKey: ['otherMemberInfo'],
-    queryFn: (memberId) => getOtherMemberInfo(memberId),
-  });
-
-  return { getOtherMemberInfoQuery };
+const useMember = (users) => {
+  const getOtherMemberInfoQueries = useQueries({ queries: [] });
+  return { getOtherMemberInfoQueries };
 };
 
 export default useMember;
