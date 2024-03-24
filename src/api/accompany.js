@@ -4,15 +4,12 @@ const BASE_URL = `https://gotogether.site/api`;
 
 // 내가 보낸 동행 요청 목록
 export const getRequestAccompanyList = async () => {
-  console.log(123);
   const accessToken = localStorage.getItem('accessToken');
 
   try {
     const response = await axios.get(`${BASE_URL}/accompany/request/send`, {
       headers: {
-        Authorization: {
-          Authorization: `Bearer ${accessToken}`,
-        },
+        Authorization: `Bearer ${accessToken}`,
       },
     });
 
@@ -29,9 +26,7 @@ export const getReceiveAccompanyList = async () => {
   try {
     const response = await axios.get(`${BASE_URL}/accompany/request/receive`, {
       headers: {
-        Authorization: {
-          Authorization: `Bearer ${accessToken}`,
-        },
+        Authorization: `Bearer ${accessToken}`,
       },
     });
 
@@ -48,7 +43,7 @@ export const postAccompanyRequest = async ({ postId, postAuthorId }) => {
 
   try {
     await axios.post(
-      `${BASE_URL}/accompany/request/send`,
+      `${BASE_URL}/accompany/request/send/${postId}`,
       {
         postId: postId,
         requestedMemberId: postAuthorId,

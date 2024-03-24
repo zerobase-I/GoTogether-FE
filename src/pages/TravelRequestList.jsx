@@ -87,11 +87,15 @@ const TravelRequestList = () => {
   //1. 보낸 요청 목록 조회하기
   //2. 보낸 요청 목록의 requestedMemberId 를 통해 memberAPI를 호출해 해당 회원 정보 조회하기.
   //3. 해당 유저 데이터로 요청 컴포넌트를 만든다.
+  console.log(requestListData);
+  const myRequestListMemberId =
+    requestListData && requestListData.map((item) => item);
 
   //받은 요청 목록
   //1. 받은 요청 목록 조회하기
   //2. 받은 요청 목록의 requestMemberId 를 통해 memberAPI를 호출해 해당 회원 정보 조회하기.
   //3. 해당 유저 데이터로 요청 컴포넌트를 만든다.
+  console.log(receiveListData);
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);

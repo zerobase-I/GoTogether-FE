@@ -14,13 +14,15 @@ const PostBox = () => {
     postQuery: { isLoading, error, data: postsData },
   } = usePosts(currentPage, postPerPage); */
 
+  //쿼리 키는 가져오는 데이터를 고유하게 설명하므로
+  //쿼리 함수에서 사용하는 변경되는 모든 변수를 포함해야 한다.
   const {
     data: postsData,
     error,
     isError,
     isLoading,
   } = useQuery({
-    queryKey: ['posts', currentPage - 1],
+    queryKey: ['posts', currentPage - 1, postPerPage],
     queryFn: () => getPosts(currentPage - 1, postPerPage),
     keepPreviousData: true,
   });

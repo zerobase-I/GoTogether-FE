@@ -21,7 +21,7 @@ const CreatePost = () => {
     travelCountry: '한국',
     travelCity: '서울',
     startDate: formatDate,
-    finishDate: formatDate,
+    endDate: formatDate,
     gender: '',
     minimumAge: '18',
     maximumAge: '100',
@@ -125,7 +125,11 @@ const CreatePost = () => {
         </section>
 
         <SelectCountry onChange={handleChangeInfo} />
-        <ReactCalendar onDateChange={handleDateChange} />
+        <ReactCalendar
+          onDateChange={handleDateChange}
+          startDate={inputs.startDate}
+          finishDate={inputs.endDate}
+        />
 
         <section className="mb-2">
           <span className="text-xl text-left font-semibold w-max block ">

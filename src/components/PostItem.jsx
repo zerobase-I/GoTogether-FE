@@ -19,7 +19,7 @@ const PostItem = ({
 }) => {
   const navigate = useNavigate();
 
-  console.log(post);
+  //console.log(post);
 
   return (
     <section

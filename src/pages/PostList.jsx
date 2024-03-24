@@ -4,7 +4,7 @@ import usePosts from '../components/hooks/usePosts';
 import useAccompany from '../components/hooks/useAccompany';
 import { useRecoilValue } from 'recoil';
 import { UserInfoAtom } from '../recoil/userInfoAtom';
-import Loading from '../components/Loading';
+
 import moment from 'moment';
 import { IoRocketOutline } from 'react-icons/io5';
 
@@ -17,7 +17,7 @@ const PostList = () => {
   const { deletePostMutation } = usePosts();
   const userInfo = useRecoilValue(UserInfoAtom);
   const loginUserEmail = userInfo.email;
-  const loginUserId = userInfo.id;
+  //const loginUserId = userInfo.id;
 
   const {
     state: {
@@ -48,50 +48,51 @@ const PostList = () => {
     navigate('/');
   };
 
-  // 임시 유저이메일 코드
-  console.log(`게시글 작성 유저 ${postUserEmail}`);
-
   const [isRequest, setIsRequest] = useState(false); // 요청유무
   const [isMyPost, setIsMyPost] = useState(false); //내 게시물 유무
 
+  const { requestAccompany, requestCancleAccompany } = useAccompany();
+  const [isBtnClick, setIsBtnClick] = useState(false);
+  const [cancelId, setCancelId] = useState(null); // 취소요청 내역 고유 아이디
+
   const {
-    getRequestListQuery: { isLoading, error, data: requestList },
+    getRequestListQuery: { data: requestList },
   } = useAccompany();
 
-  isLoading && <Loading />;
-  error && <p>{error.message}</p>;
-
   useEffect(() => {
-    // 사용자가 게시글 페이지 처음 들어왔을경우,  버튼의 초기 상태를 알아야함
-    // 본인 게시글(채팅방으로) / 동행요청 / 요청취소
-
-    // 1. 게시글이 내 게시물일 경우, "채팅방으로" 버튼으로 보여야 함
     if (loginUserEmail === postUserEmail) {
       setIsMyPost(true);
       return;
     }
 
-    //1. 내가 보낸 동행 요청 목록을 get한다.
-    // 1-1. 요청 목록에서 requestedMemberId (게시글 작성자 고유 아이디) 값을 얻는다.
-    //2. 현재 페이지의 게시글 작성자의 id와 비교한다.
-    console.log(requestList);
+    console.log(requestList && requestList);
+
     const isMatched =
-      requestList?.length > 0
-        ? requestList.filter((item) => item.requestedMemberId === loginUserId)
-        : [];
+      requestList &&
+      requestList.some(
+        (item) =>
+          item.requestedMemberId === postAuthorId && item.postId === postId,
+      );
+
+    console.log(isMatched);
+
+    if (isMatched) {
+      const findMatchedPost = requestList.find(
+        (item) => item.postId === postId,
+      );
+      console.log(findMatchedPost);
+      requestList && setCancelId(findMatchedPost && findMatchedPost.id);
+    }
 
     //2-1.  게시글 작성자의 id 와  비교해서 같은게 있으면, 동행 요청 버튼이 "동행 취소" 버튼으로 보여야함
     //3. 같은게 없으면, "동행 요청 버튼으로 보여야 함"
-    if (isMatched && isMatched.length > 0) {
+    if (isMatched) {
       setIsRequest(true);
     } else {
       setIsRequest(false);
     }
-  }, []);
-
-  const { requestAccompany, requestCancleAccompany } = useAccompany();
-
-  const [isBtnClick, setIsBtnClick] = useState(false);
+  }, [requestList, cancelId]);
+  console.log(cancelId && cancelId);
 
   const handleRequestBtnClick = (e) => {
     //     1. 버튼이 "동행 요청" 일 경우,
@@ -108,10 +109,10 @@ const PostList = () => {
         { postId, postAuthorId },
         {
           onSuccess: () => {
-            alert('동행 요청 성공!.');
             setTimeout(() => {
               setIsRequest(true);
               setIsBtnClick(false);
+              alert('동행 요청 성공!.');
             }, 1000);
           },
           onError: () => {
@@ -121,12 +122,12 @@ const PostList = () => {
       );
     } else {
       setIsBtnClick(true);
-      requestCancleAccompany.mutate(loginUserId, {
+      requestCancleAccompany.mutate(cancelId, {
         onSuccess: () => {
-          alert('동행 요청 취소 완료!.');
           setTimeout(() => {
             setIsRequest(false);
             setIsBtnClick(false);
+            alert('동행 요청 취소 완료!.');
           }, 1000);
         },
         onError: () => {
