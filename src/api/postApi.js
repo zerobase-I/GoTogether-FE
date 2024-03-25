@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = `https://gotogether.site/api`;
+const BASE_URL = `http://49.50.167.227:8080/api`;
 
 /* export const getPost = async (postId) => {
   console.log(123);
