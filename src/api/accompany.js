@@ -2,7 +2,6 @@ import axios from 'axios';
 
 // 내가 보낸 동행 요청 목록
 export const getRequestAccompanyList = async () => {
-  console.log(123);
   const accessToken = localStorage.getItem('accessToken');
 
   try {
@@ -52,7 +51,7 @@ export const postAccompanyRequest = async ({ postId, postAuthorId }) => {
 
   try {
     await axios.post(
-      'http://49.50.167.227:8080/api/accompany/request/send',
+      'https://gotogether.site/api/accompany/request/send',
       {
         postId: postId,
         requestedMemberId: postAuthorId,
@@ -75,7 +74,7 @@ export const postAccompanyCancel = async (requestId) => {
   console.log(`동행요청취소 requestId ${requestId}`);
   try {
     await axios.post(
-      `http://49.50.167.227:8080/api/accompany/request/cancel/${requestId}`,
+      `https://gotogether.site/api/accompany/request/cancel/${requestId}`,
     );
   } catch (error) {
     console.error(error);
@@ -86,7 +85,7 @@ export const postAccompanyCancel = async (requestId) => {
 export const postApproveAccompany = async (requestId) => {
   try {
     await axios.post(
-      `http://49.50.167.227:8080/api/accompany/request/approve/${requestId}`,
+      `https://gotogether.site/api/accompany/request/approve/${requestId}`,
     );
   } catch (error) {
     console.error(error);
@@ -97,7 +96,7 @@ export const postApproveAccompany = async (requestId) => {
 export const postRejectAccompany = async (requestId) => {
   try {
     await axios.post(
-      `http://49.50.167.227:8080/api/accompany/request/reject/${requestId}`,
+      `https://gotogether.site/api/accompany/request/reject/${requestId}`,
     );
   } catch (error) {
     console.error(error);

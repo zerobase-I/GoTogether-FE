@@ -1,21 +1,15 @@
 import React from 'react';
-
+import { getChatRoomLists } from '../api/chatroom.js';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
-const fetchChatRooms = async () => {
-  const response = await fetch('/api/chat-room/my-list');
-  if (!response.ok) {
-    throw new Error('네트워크 오류: 목데이터를 불러올 수 없습니다.');
-  }
-  return response.json();
-};
-
 const ChatList = () => {
+
+
   const navigate = useNavigate();
   const { data, isLoading, isError } = useQuery({
-    queryKey: ['chatRooms'], // queryKey를 배열로 변경
-    queryFn: fetchChatRooms,
+    queryKey: ['chatRooms'],
+    queryFn: getChatRoomLists, // 수정된 부분: 직접 정의한 fetchChatRooms 함수 사용
   });
 
   if (isLoading) return <div>Loading...</div>;
@@ -31,14 +25,14 @@ const ChatList = () => {
           data.length > 0 &&
           data.map((room) => (
             <section
-              key={room.chatRoomId}
+              key={room.chatRoomId} // 수정된 부분: chatRoomId 사용
               className="bg-white p-4 rounded-md shadow-md hover:shadow-lg cursor-pointer transition duration-300 ease-in-out flex items-center justify-between"
-              onClick={() => navigate(`/chatroom/${room.postId}`, { state: { roomName: room.name } })}
+              onClick={() => navigate(`/chatroom/${room.postId}`, { state: { roomName: room.name } })} // 수정된 부분: postId 사용
             >
               <div className="flex items-center gap-4">
-                <div className="w-16 rounded-md">
-                  <img src={room.imageUrls[0]} alt="chat room" />
-                </div>
+                {/* <div className="w-16 rounded-md">
+                  <img src={room.imageUrls[0]} alt="chat room" /> 이미지 URL이 없으므로 이 부분은 주석 처리하거나 제거
+                </div> */}
                 <div className="text-xm font-bold whitespace-nowrap">
                   {room.name}
                 </div>

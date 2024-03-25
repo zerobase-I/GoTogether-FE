@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'https://www.gotogether.site/api/';
+const API_BASE_URL = 'https://gotogether.site/api/';
 
 // 카카오 회원가입을 위해 서버에 추가 정보를 전송하는 함수
 export const signUpWithKakao = async (userInfo) => {
