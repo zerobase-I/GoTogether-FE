@@ -37,7 +37,7 @@ export const getMyPosts = async (page = 0, size = 10, userId) => {
   }
 };
 
-/* export const getPostDetail = async (postId) => {
+export const getPostDetail = async (postId) => {
   try {
     const response = await axios.get(`${BASE_URL}/post/${postId}`);
 
@@ -46,7 +46,7 @@ export const getMyPosts = async (page = 0, size = 10, userId) => {
     console.error(error);
   }
 };
- */
+
 export const createPost = async (formData) => {
   const accessToken = localStorage.getItem('accessToken');
 
@@ -67,7 +67,12 @@ export const createPost = async (formData) => {
 
   console.log(requestData);
   console.log(form);
-  form.append('request', JSON.stringify(requestData));
+
+  const json = JSON.stringify(requestData);
+  const blob = new Blob([json], { type: 'application/json' });
+  form.append('request', blob);
+
+  //form.append('request', JSON.stringify(requestData));
 
   // 토큰이 존재하는지 확인하고 없다면 에러 처리
   if (!accessToken) {

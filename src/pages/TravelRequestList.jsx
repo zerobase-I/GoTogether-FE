@@ -5,106 +5,84 @@ import { createChatroom } from '../api/chatroom';
 import Loading from '../components/Loading';
 
 import useMember from '../components/hooks/useMember';
+import { getPostDetail } from '../api/postApi';
+import usePosts from '../components/hooks/usePosts';
+import { useQueries, useQuery } from '@tanstack/react-query';
+
+const requests = [
+  {
+    id: 1,
+    profilePic: 'https://via.placeholder.com/50',
+    postTitle: 'dasfasfadfafsdsfd',
+    type: 'send',
+  },
+  {
+    id: 2,
+    profilePic: 'https://via.placeholder.com/50',
+    nickname: 'User 2',
+    type: 'received',
+  },
+  {
+    id: 3,
+    profilePic: 'https://via.placeholder.com/50',
+    postTitle: 'adfasfadfs 3',
+    type: 'send',
+  },
+  {
+    id: 4,
+    profilePic: 'https://via.placeholder.com/50',
+    nickname: 'User 4',
+    type: 'received',
+  },
+];
 
 const TravelRequestList = () => {
-  // 예시로 사용자 데이터를 하드코딩합니다.
   const [activeTab, setActiveTab] = useState('send');
 
-  const requests = [
-    {
-      id: 1,
-      profilePic: 'https://via.placeholder.com/50',
-      nickname: 'User 1',
-      type: 'send',
-    },
-    {
-      id: 2,
-      profilePic: 'https://via.placeholder.com/50',
-      nickname: 'User 2',
-      type: 'received',
-    },
-    {
-      id: 3,
-      profilePic: 'https://via.placeholder.com/50',
-      nickname: 'User 3',
-      type: 'send',
-    },
-    {
-      id: 4,
-      profilePic: 'https://via.placeholder.com/50',
-      nickname: 'User 4',
-      type: 'received',
-    },
-  ];
-
-  /*     const requests = [
-      {
-        id: 1,
-        requestMemberId: 1,
-        requestedMemberId: 2,
-        postId: 2,
-        requestStatus: 'WATING',
-        createdAt: '2024-01-01T12:04:11',
-      },
-      {
-        id: 2,
-        requestMemberId: 1,
-        requestedMemberId: 2,
-        postId: 2,
-        requestStatus: 'WATING',
-        createdAt: '2024-01-01T12:04:11',
-      },
-    ];
-    const receive = [
-      {
-        id: 1,
-        requestMemberId: 1,
-        requestedMemberId: 2,
-        postId: 2,
-        requestStatus: 'WATING',
-        createdAt: '2024-01-01T12:04:11',
-      },
-      {
-        id: 2,
-        requestMemberId: 1,
-        requestedMemberId: 2,
-        postId: 2,
-        requestStatus: 'WATING',
-        createdAt: '2024-01-01T12:04:11',
-      },
-    ];
- */
-  const [requestList, setRequestList] = useState([]);
-  const [recieveList, setRecieveList] = useState([]);
-
   const {
-    getRequestListQuery: { isLoading, isError, error, data: requestListData },
+    getRequestListQuery: { data: postIdOfRequestList },
     getReceiveListQuery: { data: receiveListData },
   } = useAccompany();
 
-  isLoading && <Loading />;
-  isError && console.error(error.message);
+  const {
+    data: requestPostLists,
+    isLoading,
+    isError,
+    error,
+  } = useQueries({
+    queries: postIdOfRequestList
+      ? postIdOfRequestList.map((postId) => {
+          return {
+            queryKey: ['postLists', postId],
+            queryFn: () => getPostDetail(postId),
+          };
+        })
+      : [],
+  });
+
+  if (isLoading) return <Loading />;
+  if (isError) return <p>{error.message}</p>;
+
+  if (requestPostLists) {
+    console.log(requestPostLists);
+    // Render your UI components that depend on requestPostLists
+  }
 
   // 보낸 요청 목록
   //1. 보낸 요청 목록 조회하기
   //2. 보낸 요청 목록의 requestedMemberId 를 통해 memberAPI를 호출해 해당 회원 정보 조회하기.
-  //3. 해당 유저 데이터로 요청 컴포넌트를 만든다.
-  console.log(requestListData);
-  const myRequestListMemberId =
-    requestListData && requestListData.map((item) => item.requestedMemberId);
-  const myRequestListPostId =
-    requestListData && requestListData.map((item) => item.postId);
-  console.log(myRequestListMemberId);
-  console.log(myRequestListPostId);
-
-  const { getOtherMemberInfoQueries: data } = useMember(myRequestListMemberId);
-  console.log(data);
+  //3. 해당 posat 제목으로 요청 컴포넌트를 만든다.
+  /*  console.log(requestListData);
+  console.log('보낸요청내역 memberPostId'); */
+  //console.log(myRequestListPostId);
 
   //받은 요청 목록
   //1. 받은 요청 목록 조회하기
   //2. 받은 요청 목록의 requestMemberId 를 통해 memberAPI를 호출해 해당 회원 정보 조회하기.
   //3. 해당 유저 데이터로 요청 컴포넌트를 만든다.
-  console.log(receiveListData);
+  //console.log(receiveListData);
+
+  //console.log(receivePosts && receivePosts);
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
@@ -134,6 +112,9 @@ const TravelRequestList = () => {
       <h1 className="text-2xl bg-blue-400 w-64 m-auto rounded-md font-bold mb-4">
         동행 요청 내역
       </h1>
+      {isLoading && <Loading />}
+      {isError && <p>{error.message}</p>}
+      {requestPostLists && console.log(requestPostLists)}
       <div className="flex justify-center mb-4 gap-7">
         <button
           className={`mr-4 ${activeTab === 'send' ? 'text-blue-500 font-bold' : ''}`}
@@ -152,17 +133,20 @@ const TravelRequestList = () => {
       <div className="grid grid-cols-1 gap-8 mt-4 mx-4">
         <ul className="space-y-4">
           {activeTab === 'send'
-            ? []?.map((data) => (
+            ? requestPostLists &&
+              console.log(requestPostLists) &&
+              requestPostLists.map((data) => (
                 <li
                   key={data.id}
                   className="bg-white p-4 flex justify-between gap-1 rounded-md align-middle shadow-md hover:shadow-lg cursor-pointer transition duration-300 ease-in-out"
                 >
+                  {console.log(data)}
                   <img
-                    src={data.profilePic}
+                    src={data.images}
                     alt="Profile"
                     className="w-12 h-12 rounded-full"
                   />
-                  <p className="font-semibold mr-36">{data.nickname}</p>
+                  <p className="font-semibold mr-36">{data.title}</p>
                   <p className="mt-2 text-blue-500">수락 대기중</p>
                 </li>
               ))
@@ -209,7 +193,7 @@ const TravelRequestList = () => {
                   alt="Profile"
                   className="w-12 h-12 rounded-full"
                 />
-                <p className="font-semibold mr-36">{request.nickname}</p>
+                <p className="font-semibold mr-36">{request.postTitle}</p>
                 {activeTab === 'received' ? (
                   <div className="flex items-center">
                     <div className="flex justify-center gap-5 pb-2">

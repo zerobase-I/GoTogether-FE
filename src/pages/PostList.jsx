@@ -77,9 +77,8 @@ const PostList = () => {
     console.log(isMatched);
 
     if (isMatched) {
-      const findMatchedPost = requestList.find(
-        (item) => item.postId === postId,
-      );
+      const findMatchedPost =
+        requestList && requestList.find((item) => item.postId === postId);
       console.log(findMatchedPost);
       requestList && setCancelId(findMatchedPost && findMatchedPost.id);
     }

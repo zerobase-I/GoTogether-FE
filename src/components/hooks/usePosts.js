@@ -1,12 +1,17 @@
 import { useMutation, useQueries, useQueryClient } from '@tanstack/react-query';
 
-import { createPost, deletePost, updatePost } from '../../api/postApi';
+import {
+  createPost,
+  deletePost,
+  getPostDetail,
+  updatePost,
+} from '../../api/postApi';
 
 const usePosts = () => {
   const queryClient = useQueryClient();
 
   //게시글 불러오기 -> 페이지네이션으로 구현
-  /*     const postDetailQuery = useQueries({
+  /*   const postDetailQuery = useQueries({
     queryKey: ['posts'],
     queryFn: (postId) => getPostDetail(postId),
   }); */
@@ -36,6 +41,7 @@ const usePosts = () => {
     createPostMutation,
     UpdatePostMutation,
     deletePostMutation,
+    // postDetailQuery,
   };
 };
 

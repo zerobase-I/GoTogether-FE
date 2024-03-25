@@ -18,8 +18,8 @@ const CreatePost = () => {
   const { createPostMutation } = usePosts();
   const [success, setSuccess] = useState(); // 업로드 성공/ 실패 상태
   const [inputs, setInputs] = useState({
-    travelCountry: '한국',
-    travelCity: '서울',
+    travelCountry: '',
+    travelCity: '',
     startDate: formatDate,
     endDate: formatDate,
     postGenderType: '',

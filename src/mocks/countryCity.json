@@ -4,7 +4,7 @@
     "cities": ["SEOUL", "BUSAN"]
   },
   {
-    "country": "미국",
+    "country": "USA",
     "cities": [
       "뉴욕",
       "로스앤젤레스",
@@ -56,7 +56,7 @@
     ]
   },
   {
-    "country": "일본",
+    "country": "JAPAN",
     "cities": ["TOKYO", "OSAKA"]
   },
   {
