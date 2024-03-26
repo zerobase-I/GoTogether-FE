@@ -9,19 +9,14 @@ import moment from 'moment';
 import { IoRocketOutline } from 'react-icons/io5';
 import { sampleImage } from '../components/config/sampleImg';
 
-//임시 데이터 : 로그인한 유저 고유정보 email
-// 게시글 1번 - 본인작성게시물 가정
-// const LOGIN_INFO = 'BBBB@naver.com';
-// 로그인정보 전역상태로 저장시 지울예정
-
 const PostList = () => {
   const { deletePostMutation } = usePosts();
   const userInfo = useRecoilValue(UserInfoAtom);
   const loginUserEmail = userInfo.email;
-  //const loginUserId = userInfo.id;
 
   const {
     state: {
+      post,
       post: {
         title,
         category,
@@ -49,9 +44,6 @@ const PostList = () => {
     navigate('/');
   };
 
-  console.log(title);
-
-  console.log(imagesUrl && imagesUrl);
   const [isRequest, setIsRequest] = useState(false); // 요청유무
   const [isMyPost, setIsMyPost] = useState(false); //내 게시물 유무
 
@@ -69,16 +61,12 @@ const PostList = () => {
       return;
     }
 
-    console.log(requestList && requestList);
-
     const isMatched =
       requestList &&
       requestList.some(
         (item) =>
           item.requestedMemberId === postAuthorId && item.postId === postId,
       );
-
-    console.log(isMatched);
 
     if (isMatched) {
       const findMatchedPost =
@@ -95,15 +83,8 @@ const PostList = () => {
       setIsRequest(false);
     }
   }, [requestList, cancelId]);
-  console.log(cancelId && cancelId);
 
   const handleRequestBtnClick = (e) => {
-    //     1. 버튼이 "동행 요청" 일 경우,
-    // 1-1. 동행요청 post 요청을 보낸다.
-    // 1-2. 동행 요청 페이지에서 해당 동행 요청 내역이 확인 가능해야 한다.
-
-    //     2. 버튼이 "동행 취소" 일 경우, 동행취소 post 요청을 보낸다.
-    // 2-1. 동행 요청 페이지에서 해당 동행 요청 내역이 보이면 안된다.
     console.log('동행요청 버튼 클릭');
 
     if (e.target.innerText === '동행요청') {
@@ -143,40 +124,21 @@ const PostList = () => {
   const handleEditClick = () => {
     //1. 글쓰기 페이지로 이동 -> 이동시, 현재 데이터들을 넘겨준다.
     navigate(`/updatePostList/${postId}`, {
-      state: {
-        title,
-        category,
-        startDate,
-        endDate,
-        gender,
-        travelCountry,
-        travelCity,
-        minimumAge,
-        maximumAge,
-        recruitsPeople,
-        estimatedTravelExpense,
-        content,
-        imagesUrl,
-        postId,
-        postAuthorId,
-      },
+      state: { post },
     });
   };
 
   const handleDeleteClick = () => {
-    try {
-      deletePostMutation.mutate(postId, {
-        onSuccess: () => {
-          alert('성공적으로 게시글이 삭제되었습니다 ');
-          goToHome();
-        },
-      });
-    } catch (error) {
-      console.error('데이터 삭제 실패', error);
-    }
+    deletePostMutation.mutate(postId, {
+      onSuccess: () => {
+        alert('성공적으로 게시글이 삭제되었습니다 ');
+        goToHome();
+      },
+      onError: () => {
+        alert('게시글 삭제에 실패했습니다.');
+      },
+    });
   };
-
-  console.log(imagesUrl);
 
   return (
     <article className="mx-4 mt-4">

@@ -12,28 +12,27 @@ import { categoryList } from '../components/config/data';
 import usePosts from '../components/hooks/usePosts';
 import Loading from '../components/Loading';
 
-const date = new Date();
-const formatDate = moment(date.toDateString()).format('MM-DD-YYYY');
-
 const UpdatePostList = () => {
   const { UpdatePostMutation } = usePosts();
   const [success, setSuccess] = useState(); // 업로드 성공/ 실패 상태
   const {
     state: {
-      postId,
-      title,
-      category,
-      startDate,
-      endDate,
-      gender,
-      travelCountry,
-      travelCity,
-      minimumAge,
-      maximumAge,
-      recruitsPeople,
-      estimatedTravelExpense,
-      content,
-      imagesUrl,
+      post: {
+        postId,
+        title,
+        category,
+        startDate,
+        endDate,
+        gender,
+        travelCountry,
+        travelCity,
+        minimumAge,
+        maximumAge,
+        recruitsPeople,
+        estimatedTravelExpense,
+        content,
+        imagesUrl,
+      },
     },
   } = useLocation();
 
@@ -111,8 +110,6 @@ const UpdatePostList = () => {
         formData.append(key, inputs[key]);
       }
     }
-
-    console.log(formData);
 
     try {
       // 서버로 POST 요청 보내기
