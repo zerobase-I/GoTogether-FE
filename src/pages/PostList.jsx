@@ -205,7 +205,7 @@ const PostList = () => {
         <figure className="h-50 w-full">
           <img
             className="w-60"
-            src={imagesUrl[0] || sampleImage}
+            src={imagesUrl && imagesUrl.length > 0 ? imagesUrl : sampleImage}
             alt="샘플이미지"
           />
         </figure>

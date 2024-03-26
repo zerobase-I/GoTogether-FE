@@ -1,11 +1,8 @@
 import axios from 'axios';
-
-const BASE_URL = `https://gotogether.site/api`;
+import { BASE_URL, accessToken } from '../components/config/data';
 
 // 내가 보낸 동행 요청 목록
 export const getRequestAccompanyList = async () => {
-  const accessToken = localStorage.getItem('accessToken');
-
   try {
     const response = await axios.get(`${BASE_URL}/accompany/request/send`, {
       headers: {
@@ -21,8 +18,6 @@ export const getRequestAccompanyList = async () => {
 
 //내가 받은 동행 요청 목록
 export const getReceiveAccompanyList = async () => {
-  const accessToken = localStorage.getItem('accessToken');
-
   try {
     const response = await axios.get(`${BASE_URL}/accompany/request/receive`, {
       headers: {
@@ -38,9 +33,6 @@ export const getReceiveAccompanyList = async () => {
 
 //게시글에서 동행요청 보내기
 export const postAccompanyRequest = async ({ postId, postAuthorId }) => {
-  console.log(postId, postAuthorId);
-  const accessToken = localStorage.getItem('accessToken');
-
   try {
     await axios.post(
       `${BASE_URL}/accompany/request/send/${postId}`,
@@ -65,25 +57,49 @@ export const postAccompanyRequest = async ({ postId, postAuthorId }) => {
 export const postAccompanyCancel = async (requestId) => {
   console.log(`동행요청취소 requestId ${requestId}`);
   try {
-    await axios.post(`${BASE_URL}/accompany/request/cancel/${requestId}`);
+    await axios.post(
+      `${BASE_URL}/accompany/request/cancel/${requestId}`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
   } catch (error) {
     console.error(error);
   }
 };
 
 //동행 요청 승인하기
-export const postApproveAccompany = async (requestId) => {
+export const postApproveAccompany = async (requestListId) => {
   try {
-    await axios.post(`${BASE_URL}/accompany/request/approve/${requestId}`);
+    await axios.post(
+      `${BASE_URL}/accompany/request/approve/${requestListId}`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
   } catch (error) {
     console.error(error);
   }
 };
 
 //동행 요청 거절하기
-export const postRejectAccompany = async (requestId) => {
+export const postRejectAccompany = async (requestListId) => {
   try {
-    await axios.post(`${BASE_URL}/accompany/request/reject/${requestId}`);
+    await axios.post(
+      `${BASE_URL}/accompany/request/reject/${requestListId}`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
   } catch (error) {
     console.error(error);
   }

@@ -5,3 +5,7 @@ export const categoryList = [
   'EXHIBITION_PERFORMANCE',
   'ETC',
 ];
+
+export const accessToken = localStorage.getItem('accessToken');
+
+export const BASE_URL = `https://gotogether.site/api`;
