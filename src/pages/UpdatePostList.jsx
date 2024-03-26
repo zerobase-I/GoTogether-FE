@@ -20,7 +20,7 @@ const UpdatePostList = () => {
   const [success, setSuccess] = useState(); // 업로드 성공/ 실패 상태
   const {
     state: {
-      id: postId,
+      postId,
       title,
       category,
       startDate,
@@ -33,7 +33,7 @@ const UpdatePostList = () => {
       recruitsPeople,
       estimatedTravelExpense,
       content,
-      image,
+      imagesUrl,
     },
   } = useLocation();
 
@@ -52,7 +52,8 @@ const UpdatePostList = () => {
     category: category,
     title: title,
     content: content,
-    image: image,
+    newImages: '',
+    imageIdsToDelete: '',
   });
 
   console.log(inputs);
@@ -73,7 +74,7 @@ const UpdatePostList = () => {
   const handleFileChange = (files) => {
     setInputs(() => ({
       ...inputs,
-      image: files,
+      newImages: files,
     }));
   };
 
@@ -116,7 +117,7 @@ const UpdatePostList = () => {
     try {
       // 서버로 POST 요청 보내기
       UpdatePostMutation.mutate(
-        { inputs: formData, postId },
+        { formData, postId },
         {
           onSuccess: () => {
             setSuccess('성공적으로 게시글이 수정되었습니다.');
@@ -169,8 +170,8 @@ const UpdatePostList = () => {
             함께하고 싶은 성별
           </span>
           <RadioBtn
-            option1="모두 포함"
-            option2="동일 성별"
+            option1="ALL"
+            option2="MAN"
             name="gender"
             onChange={handleChangeInfo}
             beforeGender={inputs.gender}

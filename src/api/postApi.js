@@ -72,8 +72,6 @@ export const createPost = async (formData) => {
   const blob = new Blob([json], { type: 'application/json' });
   form.append('request', blob);
 
-  //form.append('request', JSON.stringify(requestData));
-
   // 토큰이 존재하는지 확인하고 없다면 에러 처리
   if (!accessToken) {
     throw new Error(
@@ -100,10 +98,32 @@ export const createPost = async (formData) => {
 };
 
 export const updatePost = async (inputValue) => {
-  const { inputs, postId } = inputValue;
+  const { formData, postId } = inputValue;
+
+  const form = new FormData();
+  const requestData = {};
+
+  for (const [key, value] of formData.entries()) {
+    if (value instanceof File) {
+      form.append(`files`, value);
+    } else {
+      // 비파일 값은 requestData 객체에 추가
+      if (key !== 'image') {
+        // 'image' 키를 제외한 모든 데이터를 처리
+        requestData[key] = value;
+      }
+    }
+  }
+
+  console.log(requestData);
+  console.log(form);
+
+  const json = JSON.stringify(requestData);
+  const blob = new Blob([json], { type: 'application/json' });
+  form.append('request', blob);
 
   try {
-    const response = await axios.put(`${BASE_URL}/post/${postId}`, inputs);
+    const response = await axios.put(`${BASE_URL}/post/${postId}`, form);
 
     console.log(response);
 

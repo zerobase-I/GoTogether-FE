@@ -3,6 +3,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { GiCommercialAirplane } from 'react-icons/gi';
 import { MdCalendarMonth } from 'react-icons/md';
+import { sampleImage } from './config/sampleImg';
 
 const PostItem = ({
   post,
@@ -12,26 +13,28 @@ const PostItem = ({
     endDate,
     content,
     id,
-    image,
+    imagesUrl,
     travelCity,
     travelCountry,
   },
 }) => {
   const navigate = useNavigate();
 
-  //console.log(post);
+  // console.log(post);
 
+  console.log(imagesUrl);
   return (
     <section
       className=" mb-4 mt-8  shadow-lg shadow-blue-500/30 rounded-md cursor-pointer"
       onClick={() => navigate(`/postlists/${id}`, { state: { post } })}
     >
-      <div className="flex flex-col py-3">
+      <div className="flex flex-col pt-3 rounded-2xl">
         <div className="flex ">
           <img
-            src={image && image[0] && `${image[0].imageId}`}
+            className="w-24 md:w-40 h-40"
+            src={imagesUrl[0] || sampleImage}
             alt="샘플이미지"
-            width="100px"
+            height="100"
           />
           <div className="flex flex-col items-start justify-between">
             <div>
