@@ -13,13 +13,15 @@ const useAccompany = () => {
   const getRequestListQuery = useQuery({
     queryKey: ['accompany', 'request'],
     queryFn: getRequestAccompanyList,
-    select: (requestList) => requestList.map((list) => list.postId),
+    // select: (requestList) => requestList.map((list) => list.postId),
   });
 
   // 내가 받은 동행 요청목록
   const getReceiveListQuery = useQuery({
     queryKey: ['accompany', 'receive'],
     queryFn: getReceiveAccompanyList,
+    //  select: (receiveList) =>
+    //   receiveList.map((list) => [list.requestMemberId, list.postId]),
   });
 
   //동행 요청 보내기

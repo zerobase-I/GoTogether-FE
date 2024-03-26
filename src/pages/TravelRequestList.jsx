@@ -1,88 +1,69 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import useAccompany from '../components/hooks/useAccompany';
 import { postApproveAccompany, postRejectAccompany } from '../api/accompany';
 import { createChatroom } from '../api/chatroom';
 import Loading from '../components/Loading';
+import { sampleImage, sampleImgHands } from '../components/config/sampleImg';
 
-import useMember from '../components/hooks/useMember';
-import { getPostDetail } from '../api/postApi';
-import usePosts from '../components/hooks/usePosts';
-import { useQueries, useQuery } from '@tanstack/react-query';
-
-const requests = [
+/* const mockRequestList = [
   {
     id: 1,
-    profilePic: 'https://via.placeholder.com/50',
-    postTitle: 'dasfasfadfafsdsfd',
-    type: 'send',
+    requestMemberId: 1,
+    requestedMemberId: 2,
+    postId: 2,
+    postTitle: 'request1 가실분',
+    requestStatus: 'WATING',
+    createdAt: '2024-01-01T12:04:11',
   },
   {
     id: 2,
-    profilePic: 'https://via.placeholder.com/50',
-    nickname: 'User 2',
-    type: 'received',
-  },
-  {
-    id: 3,
-    profilePic: 'https://via.placeholder.com/50',
-    postTitle: 'adfasfadfs 3',
-    type: 'send',
-  },
-  {
-    id: 4,
-    profilePic: 'https://via.placeholder.com/50',
-    nickname: 'User 4',
-    type: 'received',
+    requestMemberId: 1,
+    requestedMemberId: 2,
+    postId: 2,
+    postTitle: 'request2 가실분',
+    requestStatus: 'WATING',
+    createdAt: '2024-01-01T12:04:11',
   },
 ];
+const mockRecieveList = [
+  {
+    id: 1,
+    requestMemberId: 1,
+    nickname: 'zero',
+    mbti: 'ENFP',
+    profileImage: sampleImage,
+    requestedMemberId: 2,
+    postId: 2,
+    postTitle: 'recieve1 가실분',
+    requestStatus: 'WATING',
+    createdAt: '2024-01-01T12:04:11',
+  },
+  {
+    id: 2,
+    requestMemberId: 1,
+    nickname: 'zero',
+    mbti: 'ISFP',
+    profileImage: sampleImage,
+    requestedMemberId: 2,
+    postId: 2,
+    postTitle: 'recieve2 가실분',
+    requestStatus: 'WATING',
+    createdAt: '2024-01-01T12:04:11',
+  },
+]; */
 
 const TravelRequestList = () => {
   const [activeTab, setActiveTab] = useState('send');
 
   const {
-    getRequestListQuery: { data: postIdOfRequestList },
-    getReceiveListQuery: { data: receiveListData },
+    getRequestListQuery: { isLoading: isRequestListLoading, data: RequestList },
+    getReceiveListQuery: {
+      isLoading: isReceiveListLoading,
+      isError,
+      error,
+      data: receiveList,
+    },
   } = useAccompany();
-
-  const {
-    data: requestPostLists,
-    isLoading,
-    isError,
-    error,
-  } = useQueries({
-    queries: postIdOfRequestList
-      ? postIdOfRequestList.map((postId) => {
-          return {
-            queryKey: ['postLists', postId],
-            queryFn: () => getPostDetail(postId),
-          };
-        })
-      : [],
-  });
-
-  if (isLoading) return <Loading />;
-  if (isError) return <p>{error.message}</p>;
-
-  if (requestPostLists) {
-    console.log(requestPostLists);
-    // Render your UI components that depend on requestPostLists
-  }
-
-  // 보낸 요청 목록
-  //1. 보낸 요청 목록 조회하기
-  //2. 보낸 요청 목록의 requestedMemberId 를 통해 memberAPI를 호출해 해당 회원 정보 조회하기.
-  //3. 해당 posat 제목으로 요청 컴포넌트를 만든다.
-  /*  console.log(requestListData);
-  console.log('보낸요청내역 memberPostId'); */
-  //console.log(myRequestListPostId);
-
-  //받은 요청 목록
-  //1. 받은 요청 목록 조회하기
-  //2. 받은 요청 목록의 requestMemberId 를 통해 memberAPI를 호출해 해당 회원 정보 조회하기.
-  //3. 해당 유저 데이터로 요청 컴포넌트를 만든다.
-  //console.log(receiveListData);
-
-  //console.log(receivePosts && receivePosts);
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
@@ -107,14 +88,18 @@ const TravelRequestList = () => {
     postRejectAccompany();
   };
 
+  if (isRequestListLoading) return <Loading />;
+  if (isReceiveListLoading) return <Loading />;
+  if (isError) return <p>{error.message}</p>;
+
+  console.log(RequestList && RequestList);
+
   return (
     <div className="container mx-auto py-8">
       <h1 className="text-2xl bg-blue-400 w-64 m-auto rounded-md font-bold mb-4">
         동행 요청 내역
       </h1>
-      {isLoading && <Loading />}
-      {isError && <p>{error.message}</p>}
-      {requestPostLists && console.log(requestPostLists)}
+
       <div className="flex justify-center mb-4 gap-7">
         <button
           className={`mr-4 ${activeTab === 'send' ? 'text-blue-500 font-bold' : ''}`}
@@ -133,45 +118,54 @@ const TravelRequestList = () => {
       <div className="grid grid-cols-1 gap-8 mt-4 mx-4">
         <ul className="space-y-4">
           {activeTab === 'send'
-            ? requestPostLists &&
-              console.log(requestPostLists) &&
-              requestPostLists.map((data) => (
+            ? RequestList &&
+              RequestList.map((list) => (
                 <li
-                  key={data.id}
-                  className="bg-white p-4 flex justify-between gap-1 rounded-md align-middle shadow-md hover:shadow-lg cursor-pointer transition duration-300 ease-in-out"
+                  key={list.id}
+                  className="bg-white p-2 flex justify-between items-center  gap-1 rounded-md align-middle shadow-md hover:shadow-lg cursor-pointer transition duration-300 ease-in-out"
                 >
-                  {console.log(data)}
                   <img
-                    src={data.images}
+                    src={sampleImgHands}
                     alt="Profile"
-                    className="w-12 h-12 rounded-full"
+                    className="w-16 h-16 rounded-full"
                   />
-                  <p className="font-semibold mr-36">{data.title}</p>
-                  <p className="mt-2 text-blue-500">수락 대기중</p>
+                  <p className="font-semibold text-sm ">{list.postTitle}</p>
+                  <p className="btn btn-outline btn-warning  text-blue-500">
+                    수락 대기중
+                  </p>
                 </li>
               ))
-            : [].map((data) => (
+            : receiveList &&
+              receiveList.map((list) => (
                 <li
-                  key={data.id}
-                  className="bg-white p-4 flex justify-between gap-1 rounded-md align-middle shadow-md hover:shadow-lg cursor-pointer transition duration-300 ease-in-out"
+                  key={list.id}
+                  className="bg-white p-4 flex justify-between items-center gap-1 rounded-md align-middle shadow-md hover:shadow-lg cursor-pointer transition duration-300 ease-in-out"
                 >
-                  <img
-                    src={data.profilePic}
-                    alt="Profile"
-                    className="w-12 h-12 rounded-full"
-                  />
-                  <p className="font-semibold mr-36">{data.nickname}</p>
+                  <div className="flex basis-40 items-center">
+                    <img
+                      src={list.profileImage}
+                      alt="Profile"
+                      className="w-12 h-12 rounded-full mr-2 md:mr-4"
+                    />
+                    <div className="">
+                      <p className="text-xs md:text-base ">{list.nickname}</p>
+                      <p className="text-xs ">{list.mbti}</p>
+                    </div>
+                  </div>
+                  <p className="font-semibold  text-xs md:text-base mr-4 ">
+                    {list.postTitle}
+                  </p>
 
                   <div className="flex items-center">
-                    <div className="flex justify-center gap-5 pb-2">
+                    <div className="flex justify-center gap-2 ">
                       <button
-                        className="bg-transparent text-blue-500 rounded"
+                        className="btn btn-outline btn-info bg-transparent text-blue-500 rounded text-sx p-3 "
                         onClick={handleApproveBtnClick}
                       >
-                        수락
+                        <p className="">수락</p>
                       </button>
                       <button
-                        className="bg-transparent text-blue-500 rounded"
+                        className="btn btn-outline btn-error bg-transparent text-red-500 rounded p-3"
                         onClick={handleRejectBtnClick}
                       >
                         거절
@@ -180,42 +174,6 @@ const TravelRequestList = () => {
                   </div>
                 </li>
               ))}
-
-          {requests
-            .filter((request) => request.type === activeTab)
-            .map((request) => (
-              <li
-                key={request.id}
-                className="bg-white p-4 flex justify-between gap-1 rounded-md align-middle shadow-md hover:shadow-lg cursor-pointer transition duration-300 ease-in-out"
-              >
-                <img
-                  src={request.profilePic}
-                  alt="Profile"
-                  className="w-12 h-12 rounded-full"
-                />
-                <p className="font-semibold mr-36">{request.postTitle}</p>
-                {activeTab === 'received' ? (
-                  <div className="flex items-center">
-                    <div className="flex justify-center gap-5 pb-2">
-                      <button
-                        className="bg-transparent text-blue-500 rounded"
-                        onClick={handleApproveBtnClick}
-                      >
-                        수락
-                      </button>
-                      <button
-                        className="bg-transparent text-blue-500 rounded"
-                        onClick={handleRejectBtnClick}
-                      >
-                        거절
-                      </button>
-                    </div>
-                  </div>
-                ) : (
-                  <p className="mt-2 text-blue-500">수락 대기중</p>
-                )}
-              </li>
-            ))}
         </ul>
       </div>
     </div>
