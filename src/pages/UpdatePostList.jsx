@@ -67,7 +67,7 @@ const UpdatePostList = () => {
     setInputs(() => ({
       ...inputs,
       startDate: moment(dates[0].toDateString()).format('MM-DD-YYYY'),
-      finishDate: moment(dates[1].toDateString()).format('MM-DD-YYYY'),
+      endDate: moment(dates[1].toDateString()).format('MM-DD-YYYY'),
     }));
   };
 

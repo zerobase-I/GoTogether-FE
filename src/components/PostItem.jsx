@@ -22,7 +22,6 @@ const PostItem = ({
 
   // console.log(post);
 
-  console.log(imagesUrl);
   return (
     <section
       className=" mb-4 mt-8  shadow-lg shadow-blue-500/30 rounded-md cursor-pointer"
@@ -32,7 +31,7 @@ const PostItem = ({
         <div className="flex ">
           <img
             className="w-24 md:w-40 h-40"
-            src={imagesUrl[0] || sampleImage}
+            src={(imagesUrl && imagesUrl[0]) || sampleImage}
             alt="샘플이미지"
             height="100"
           />
