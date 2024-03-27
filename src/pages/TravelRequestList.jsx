@@ -3,7 +3,7 @@ import useAccompany from '../components/hooks/useAccompany';
 
 import Loading from '../components/Loading';
 import { sampleImgHands } from '../components/config/sampleImg';
-import { createChatroom } from '../api/chatroom';
+import { createChatroom, enterChatRoom } from '../api/chatroom';
 
 const TravelRequestList = () => {
   const [activeTab, setActiveTab] = useState('send');
@@ -22,34 +22,32 @@ const TravelRequestList = () => {
     },
   } = useAccompany();
 
-  const { approveApprove, rejectAccompany } = useAccompany();
+  const { approveAccompany, rejectAccompany } = useAccompany();
 
   const handleApproveBtnClick = async (
     requestListId,
     postId,
     requestMemberId,
   ) => {
-    console.log('수락버튼 클릭');
-    console.log(requestListId);
-    console.log(postId);
-    console.log(requestMemberId);
-    approveApprove.mutate(requestListId, {
-      onSuccess: () => {
+    approveAccompany.mutate(requestListId, {
+      onSuccess: (chatRoomId) => {
         alert('요청 수락이 성공적으로 이루어졌습니다!');
-        createChatroom(postId)
-          .then((res) => {
-            console.log(res);
-            console.log('채팅방 생성 성공!');
-          })
-          .catch((err) => console.error(err));
+
+        if (!chatRoomId) {
+          createChatroom(postId, requestMemberId)
+            .then((res) => {
+              console.log(res);
+              alert('채팅방 생성 성공!');
+            })
+            .catch((err) => console.error(err));
+        } else {
+          enterChatRoom(chatRoomId, requestMemberId);
+        }
       },
       onError: () => {
         alert('요청 수락이 네트워크 오류로 실패했습니다. 잠시후 다시 ');
       },
     });
-    //createChatroom 인수로 해당 postId를 보내줘야함
-    //3. 채팅방 생성하기
-    console.log('채팅방 생성 완료');
   };
 
   const handleRejectBtnClick = (requestListId) => {

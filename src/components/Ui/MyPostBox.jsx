@@ -12,11 +12,7 @@ const MyPostBox = () => {
   const userInfo = useRecoilValue(UserInfoAtom);
   const loginUserId = userInfo.id;
   const [currentPage, setCurrentPage] = useState(1);
-  const postPerPage = 3; //한 페이지에서 보여줄 post 개수
-
-  /*   const {
-    postQuery: { isLoading, error, data: postsData },
-  } = usePosts(currentPage, postPerPage); */
+  const postPerPage = 10; //한 페이지에서 보여줄 post 개수
 
   const {
     data: postsData,

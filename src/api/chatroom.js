@@ -6,11 +6,11 @@ const apiClient = axios.create({
 });
 
 // 채팅방 생성
-export const createChatroom = async (postId) => {
+export const createChatroom = async (postId, accompanyRequestMemberId) => {
   try {
     const response = await apiClient.post(
-      `chat-room/${postId}`,
-      {},
+      `chat-room`,
+      { postId, accompanyRequestMemberId },
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -43,13 +43,17 @@ export const getChatRoomLists = async () => {
   }
 };
 // 채팅방 입장
-export const enterChatRoom = async (chatRoomId) => {
+export const enterChatRoom = async (chatRoomId, accompanyRequestMemberId) => {
   try {
-    const response = await apiClient.post(`chat-room/enter/${chatRoomId}`, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
+    const response = await apiClient.post(
+      `chat-room/enter`,
+      { chatRoomId, accompanyRequestMemberId },
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
       },
-    });
+    );
 
     return response.data;
   } catch (error) {
