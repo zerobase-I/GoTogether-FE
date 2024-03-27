@@ -17,7 +17,7 @@ const AlarmBox = ({ notificationId, postTitle }) => {
         goToReviewDetail();
       },
       onError: () => {
-        console.log('알림 확인 네트워크 요청 실패 ');
+        alert('네트워크 오류로 확인이 실패했습니다. 다시 클릭해주세요!');
       },
     });
   };

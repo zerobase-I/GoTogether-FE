@@ -2,10 +2,12 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   getReceiveAccompanyList,
   getRequestAccompanyList,
+  getReviewerList,
   postAccompanyCancel,
   postAccompanyRequest,
   postApproveAccompany,
   postRejectAccompany,
+  writeCompanionReview,
 } from '../../api/accompany';
 
 const useAccompany = () => {
@@ -50,6 +52,18 @@ const useAccompany = () => {
     onSuccess: () => queryClient.invalidateQueries(['accompany', 'receive']),
   });
 
+  //리뷰 대상 조회
+  const ReviewerList = useMutation({
+    mutationFn: getReviewerList,
+    onSuccess: () => console.log('리뷰 조회 성공'),
+  });
+
+  //동행 후기 작성
+  const writeReview = useMutation({
+    mutationFn: writeCompanionReview,
+    onSuccess: () => console.log('동행 후기 작성 성공'),
+  });
+
   return {
     getRequestListQuery,
     getReceiveListQuery,
@@ -57,6 +71,8 @@ const useAccompany = () => {
     requestCancleAccompany,
     approveAccompany,
     rejectAccompany,
+    ReviewerList,
+    writeReview,
   };
 };
 
