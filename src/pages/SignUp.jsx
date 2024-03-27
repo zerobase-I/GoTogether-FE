@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import signUpAPI from '/src/api/signUpAPI.js';
 import { Link, useNavigate } from 'react-router-dom';
-
+import axios from 'axios';
 const SignUp = () => {
   const navigate = useNavigate();
   const [authCode, setAuthCode] = useState('');
