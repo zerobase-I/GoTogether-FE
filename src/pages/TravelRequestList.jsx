@@ -70,20 +70,20 @@ const TravelRequestList = () => {
   console.log(receiveList && receiveList);
 
   return (
-    <div className="container mx-auto py-8">
-      <h1 className="text-2xl bg-blue-400 w-64 m-auto rounded-md font-bold mb-4">
+    <div className="container mx-auto py-8 px-4">
+      <h1 className="text-3xl text-center text-gray-800 font-bold mb-6">
         동행 요청 내역
       </h1>
 
       <div className="flex justify-center mb-4 gap-7">
         <button
-          className={`mr-4 ${activeTab === 'send' ? 'text-blue-500 font-bold' : ''}`}
+          className={`px-4 py-2 rounded-md text-lg ${activeTab === 'send' ? 'bg-blue-500 text-white' : 'text-gray-600 bg-white border border-gray-200'} shadow`}
           onClick={() => handleTabClick('send')}
         >
           보낸 동행 요청
         </button>
         <button
-          className={`${activeTab === 'received' ? 'text-blue-500 font-bold' : ''}`}
+          className={`px-4 py-2 rounded-md text-lg ${activeTab === 'received' ? 'bg-blue-500 text-white' : 'text-gray-600 bg-white border border-gray-200'} shadow`}
           onClick={() => handleTabClick('received')}
         >
           받은 동행 요청

@@ -24,7 +24,7 @@ const PostItem = ({
 
   return (
     <section
-      className=" mb-4 mt-8  shadow-lg shadow-blue-500/30 rounded-md cursor-pointer"
+      className="mb-4 mt-8 shadow transition duration-200 ease-in-out transform hover:shadow-md rounded-lg cursor-pointer"
       onClick={() => navigate(`/postlists/${id}`, { state: { post } })}
     >
       <div className="flex flex-col pt-3 rounded-2xl">
@@ -54,6 +54,9 @@ const PostItem = ({
               {content}
             </span>
           </div>
+          <p className="ml-4 mt-2 text-sm max-h-24 overflow-hidden text-ellipsis">
+            {content}
+          </p>
         </div>
       </div>
     </section>
