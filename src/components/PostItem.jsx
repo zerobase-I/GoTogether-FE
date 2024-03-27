@@ -18,39 +18,31 @@ const PostItem = ({
   },
 }) => {
   const navigate = useNavigate();
-  console.log(post);
+
+  
 
   return (
     <section
-      className=" mb-4 mt-8  shadow-lg shadow-blue-500/30 rounded-md cursor-pointer"
+      className="mb-4 mt-8 shadow transition duration-200 ease-in-out transform hover:shadow-md rounded-lg cursor-pointer"
       onClick={() => navigate(`/postlists/${id}`, { state: { post } })}
     >
-      <div className="flex flex-col py-3">
-        <div className="flex ">
-          <img
-            src={image && image[0] && `${image[0].imageId}`}
-            alt="샘플이미지"
-            width="100px"
-          />
-          <div className="flex flex-col items-start justify-between">
-            <div>
-              <h3 className="text-base md:text-2xl ml-4 mt-2 font-bold">
-                {title}
-              </h3>
-            </div>
-            <span className="text-sm md:text-base ml-4 mt-2 flex">
-              <MdCalendarMonth />
-              {moment(startDate).format('YYYY-MM-DD')} ~{' '}
-              {moment(endDate).format('YYYY-MM-DD')}
-            </span>
-            <div className="flex text-xs my-1">
-              <GiCommercialAirplane className="ml-4" />
-              {travelCity}({travelCountry})
-            </div>
-            <span className="ml-4 mb-2 font-light text-xs md:text-sm inline-block  max-h-9  text-left line-clamp-3  ">
-              {content}
-            </span>
+      <div className="flex py-3 shadow-lg">
+        <img
+          src={image && image[0] ? `${image[0].imageId}` : 'path/to/your/default-image.jpg'}
+          alt="Post"
+          className="w-24 h-24 md:w-28 md:h-28 object-cover rounded-md m-4"
+        />
+        <div className="flex flex-col justify-between">
+          <h3 className="text-lg md:text-xl font-semibold ml-4 mt-2">{title}</h3>
+          <span className="text-sm ml-4 mt-2 flex items-center">
+            <MdCalendarMonth className="text-lg mr-2" />
+            {moment(startDate).format('YYYY-MM-DD')} ~ {moment(endDate).format('YYYY-MM-DD')}
+          </span>
+          <div className="flex items-center text-sm ml-4 mt-2">
+            <GiCommercialAirplane className="text-lg mr-2" />
+            {travelCity}, {travelCountry}
           </div>
+          <p className="ml-4 mt-2 text-sm max-h-24 overflow-hidden text-ellipsis">{content}</p>
         </div>
       </div>
     </section>

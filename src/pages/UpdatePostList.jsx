@@ -10,60 +10,52 @@ import EditorQuill from '../components/EditorQuill';
 import { ImageUpload2 } from '../api/ImageUpload2';
 import { categoryList } from '../components/config/data';
 import usePosts from '../components/hooks/usePosts';
+import Loading from '../components/Loading';
 
 const date = new Date();
 const formatDate = moment(date.toDateString()).format('MM-DD-YYYY');
 
 const UpdatePostList = () => {
-  const {
-    postQuery: { isLoading, error, data: postData },
-  } = usePosts();
   const { UpdatePostMutation } = usePosts();
   const [success, setSuccess] = useState(); // 업로드 성공/ 실패 상태
   const {
-    state: { id: postId },
+    state: {
+      id: postId,
+      title,
+      category,
+      startDate,
+      endDate,
+      gender,
+      travelCountry,
+      travelCity,
+      minimumAge,
+      maximumAge,
+      recruitsPeople,
+      estimatedTravelExpense,
+      content,
+      image,
+    },
   } = useLocation();
 
+  console.log(postId);
+
   const [inputs, setInputs] = useState({
-    travelCountry: '',
-    travelCity: '',
-    startDate: '',
-    finishDate: '',
-    gender: '',
-    minimumAge: '',
-    maximumAge: '',
-    recruitsPeople: '',
-    estimatedTravelExpense: '',
-    category: '',
-    title: '',
-    content: '',
-    image: [],
+    travelCountry: travelCountry,
+    travelCity: travelCity,
+    startDate: startDate,
+    endDate: endDate,
+    gender: gender,
+    minimumAge: minimumAge,
+    maximumAge: maximumAge,
+    recruitsPeople: recruitsPeople,
+    estimatedTravelExpense: estimatedTravelExpense,
+    category: category,
+    title: title,
+    content: content,
+    image: image,
   });
 
   console.log(inputs);
-
-  useEffect(() => {
-    isLoading && console.log('Loading중입니다.');
-    error && console.log(error.message);
-
-    postData &&
-      setInputs({
-        travelCountry: postData && postData[postId].travelCountry,
-        travelCity: postData && postData[postId].travelCity,
-        startDate: postData && postData[postId].finishDate,
-        finishDate: formatDate,
-        gender: postData && postData[postId].gender,
-        minimumAge: postData && postData[postId].minimumAge,
-        maximumAge: postData && postData[postId].maximumAge,
-        recruitsPeople: postData && postData[postId].recruitsPeople,
-        estimatedTravelExpense:
-          postData && postData[postId].estimatedTravelExpense,
-        category: postData && postData[postId].category,
-        title: postData && postData[postId].title,
-        content: postData && postData[postId].content,
-        image: postData && postData[postId].image,
-      });
-  }, [isLoading, error, postId, postData]); // inputs 상태가 변경될 때마다 실행
 
   // inputs 변경시 테스트 코드
   useEffect(() => {
@@ -110,7 +102,7 @@ const UpdatePostList = () => {
     const formData = new FormData();
 
     for (const key in inputs) {
-      if (key === 'image' && inputs.image.length) {
+      if (key === 'image' && inputs.image && inputs.image.length) {
         for (let i = 0; i < inputs.image.length; i++) {
           formData.append('image', inputs.image[i]);
         }
@@ -124,7 +116,7 @@ const UpdatePostList = () => {
     try {
       // 서버로 POST 요청 보내기
       UpdatePostMutation.mutate(
-        { inputs: formData, postId: 1 },
+        { inputs: formData, postId },
         {
           onSuccess: () => {
             setSuccess('성공적으로 게시글이 수정되었습니다.');
@@ -168,8 +160,8 @@ const UpdatePostList = () => {
         <ReactCalendar
           onDateChange={handleDateChange}
           /* 날짜 수정시 자동선택 구현해야함() */
-          startDate={postData && postData[postId].startDate}
-          finishDate={postData && postData[postId].finishDate}
+          startDate={inputs.startDate}
+          endDate={inputs.endDate}
         />
 
         <section className="mb-2">
@@ -181,7 +173,7 @@ const UpdatePostList = () => {
             option2="동일 성별"
             name="gender"
             onChange={handleChangeInfo}
-            beforeGender={postData && postData[postId].gender}
+            beforeGender={inputs.gender}
           />
         </section>
 

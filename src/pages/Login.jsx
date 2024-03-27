@@ -1,11 +1,12 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useSetRecoilState,useRecoilValue } from 'recoil';
+import { useSetRecoilState, useRecoilValue } from 'recoil';
 
+import { TokenAtom } from '../recoil/tokenAtom';
 import { useQueryClient } from '@tanstack/react-query';
 import { signIn, getUserDetails } from '/src/api/authService.js';
-import { TokenAtom } from '../recoil/TokenAtom';
-import { UserInfoAtom } from '../recoil/UserInfoAtom';
+
+import { UserInfoAtom } from '../recoil/userInfoAtom';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -17,11 +18,11 @@ const Login = () => {
   const queryClient = useQueryClient();
   const tokenState = useRecoilValue(TokenAtom);
 
-   useEffect(() => {
+  useEffect(() => {
     console.log('Recoil TokenAtom State:', tokenState);
-   }, [tokenState]);
-  
- const handleLogin = async (e) => {
+  }, [tokenState]);
+
+  const handleLogin = async (e) => {
     e.preventDefault();
     try {
       const data = await signIn(email, password);
@@ -56,14 +57,14 @@ const Login = () => {
 
   return (
     <>
-      <div className="min-h-screen flex justify-center bg-white py-12 px-4 sm:px-6 lg:px-8">
+      <div className="min-h-screen ml-5 mr-5 bg-white flex flex-col justify-start py-12 sm:px-6 lg:px-8">
+        <div className="sm:mx-auto sm:w-full sm:max-w-md">
+          <div>
         <Link to="/member">
-          <div className="absolute left-6 top-14 w-5">
+          <div className="left-6 top-14 w-5">
             <img src="/src/assets/left-arrow.png" alt="왼쪽 화살표" />
           </div>
         </Link>
-        <div className="max-w-md w-full space-y-8">
-          <div>
             <h2 className="ml-5 mt-14 text-3xl flex item-start font-extrabold text-gray-900">
               이메일로 로그인
             </h2>

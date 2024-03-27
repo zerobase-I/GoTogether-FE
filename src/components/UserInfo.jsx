@@ -6,7 +6,7 @@ import { BiSolidAlarmExclamation } from 'react-icons/bi';
 import { Link } from 'react-router-dom';
 import { TbPencilSearch } from 'react-icons/tb';
 import { useRecoilValue } from 'recoil';
-import { UserInfoAtom } from '../recoil/UserInfoAtom';
+import { UserInfoAtom } from '../recoil/userInfoAtom';
 
 const UserInfo = () => {
   const { nickname, profileImageUrl } = useRecoilValue(UserInfoAtom);

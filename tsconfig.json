@@ -13,7 +13,7 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-
+    "forceConsistentCasingInFileNames": false,
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,

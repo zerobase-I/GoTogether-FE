@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import useAccompany from '../components/hooks/useAccompany';
 import { postApproveAccompany, postRejectAccompany } from '../api/accompany';
 import { createChatroom } from '../api/chatroom';
+import Loading from '../components/Loading';
 
 const TravelRequestList = () => {
   // 예시로 사용자 데이터를 하드코딩합니다.
@@ -34,20 +35,53 @@ const TravelRequestList = () => {
     },
   ];
 
+  /*     const requests = [
+      {
+        id: 1,
+        requestMemberId: 1,
+        requestedMemberId: 2,
+        postId: 2,
+        requestStatus: 'WATING',
+        createdAt: '2024-01-01T12:04:11',
+      },
+      {
+        id: 2,
+        requestMemberId: 1,
+        requestedMemberId: 2,
+        postId: 2,
+        requestStatus: 'WATING',
+        createdAt: '2024-01-01T12:04:11',
+      },
+    ];
+    const receive = [
+      {
+        id: 1,
+        requestMemberId: 1,
+        requestedMemberId: 2,
+        postId: 2,
+        requestStatus: 'WATING',
+        createdAt: '2024-01-01T12:04:11',
+      },
+      {
+        id: 2,
+        requestMemberId: 1,
+        requestedMemberId: 2,
+        postId: 2,
+        requestStatus: 'WATING',
+        createdAt: '2024-01-01T12:04:11',
+      },
+    ];
+ */
   const [requestList, setRequestList] = useState([]);
   const [recieveList, setRecieveList] = useState([]);
 
   const {
-    getRequestListQuery: { isLoading, error, data: recieveListData },
-  } = useAccompany();
-  const {
-    getReceiveRequestListQuery: { data: requestListData },
+    getRequestListQuery: { isLoading, isError, error, data: requestListData },
+    getReceiveListQuery: { data: receiveListData },
   } = useAccompany();
 
-  useEffect(() => {
-    isLoading ? isLoading : setRequestList(requestListData);
-    isLoading ? isLoading : setRecieveList(recieveListData);
-  }, []);
+  isLoading && <Loading />;
+  isError && console.error(error.message);
 
   // 보낸 요청 목록
   //1. 보낸 요청 목록 조회하기
@@ -83,27 +117,73 @@ const TravelRequestList = () => {
   };
 
   return (
-    <div className="container mx-auto py-8">
-      <h1 className="text-2xl bg-blue-400 w-64 m-auto rounded-md font-bold mb-4">
+     <div className="container mx-auto py-8 px-4">
+      <h1 className="text-3xl text-center text-gray-800 font-bold mb-6">
         동행 요청 내역
       </h1>
-      <div className="flex justify-center mb-4 gap-7">
+      <div className="flex justify-center mb-6 space-x-4">
         <button
-          className={`mr-4 ${activeTab === 'send' ? 'text-blue-500 font-bold' : ''}`}
+          className={`px-4 py-2 rounded-md text-lg ${activeTab === 'send' ? 'bg-blue-500 text-white' : 'text-gray-600 bg-white border border-gray-200'} shadow`}
           onClick={() => handleTabClick('send')}
         >
           보낸 동행 요청
         </button>
         <button
-          className={`${activeTab === 'received' ? 'text-blue-500 font-bold' : ''}`}
+          className={`px-4 py-2 rounded-md text-lg ${activeTab === 'received' ? 'bg-blue-500 text-white' : 'text-gray-600 bg-white border border-gray-200'} shadow`}
           onClick={() => handleTabClick('received')}
         >
           받은 동행 요청
         </button>
       </div>
       <div className="border-t-2 border-gray-500 my-4 w-100%"></div>
-      <div className="grid grid-cols-1 gap-8">
+      <div className="grid grid-cols-1 gap-8 mt-4 mx-4">
         <ul className="space-y-4">
+          {activeTab === 'send'
+            ? []?.map((data) => (
+                <li
+                  key={data.id}
+                  className="bg-white p-4 flex justify-between gap-1 rounded-md align-middle shadow-md hover:shadow-lg cursor-pointer transition duration-300 ease-in-out"
+                >
+                  <img
+                    src={data.profilePic}
+                    alt="Profile"
+                    className="w-12 h-12 rounded-full"
+                  />
+                  <p className="font-semibold mr-36">{data.nickname}</p>
+                  <p className="mt-2 text-blue-500">수락 대기중</p>
+                </li>
+              ))
+            : [].map((data) => (
+                <li
+                  key={data.id}
+                  className="bg-white p-4 flex justify-between gap-1 rounded-md align-middle shadow-md hover:shadow-lg cursor-pointer transition duration-300 ease-in-out"
+                >
+                  <img
+                    src={data.profilePic}
+                    alt="Profile"
+                    className="w-12 h-12 rounded-full"
+                  />
+                  <p className="font-semibold mr-36">{data.nickname}</p>
+
+                  <div className="flex items-center">
+                    <div className="flex justify-center gap-5 pb-2">
+                      <button
+                        className="bg-transparent text-blue-500 rounded"
+                        onClick={handleApproveBtnClick}
+                      >
+                        수락
+                      </button>
+                      <button
+                        className="bg-transparent text-blue-500 rounded"
+                        onClick={handleRejectBtnClick}
+                      >
+                        거절
+                      </button>
+                    </div>
+                  </div>
+                </li>
+              ))}
+
           {requests
             .filter((request) => request.type === activeTab)
             .map((request) => (

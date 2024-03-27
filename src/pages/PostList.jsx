@@ -2,9 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import usePosts from '../components/hooks/usePosts';
 import useAccompany from '../components/hooks/useAccompany';
-import { postAccompanyCancel, postAccompanyRequest } from '../api/accompany';
 import { useRecoilValue } from 'recoil';
-import { UserInfoAtom } from '../recoil/UserInfoAtom';
+import { UserInfoAtom } from '../recoil/userInfoAtom';
 import Loading from '../components/Loading';
 import moment from 'moment';
 import { IoRocketOutline } from 'react-icons/io5';
@@ -18,7 +17,7 @@ const PostList = () => {
   const { deletePostMutation } = usePosts();
   const userInfo = useRecoilValue(UserInfoAtom);
   const loginUserEmail = userInfo.email;
-  console.log(`현재 로그인 유저 ${userInfo}`);
+  const loginUserId = userInfo.id;
 
   const {
     state: {
@@ -36,9 +35,10 @@ const PostList = () => {
         estimatedTravelExpense,
         content,
         image,
-        id,
-        memberId,
-        userEmail, //post 작성자 email
+        createdAt,
+        id: postId,
+        memberId: postAuthorId,
+        userEmail: postUserEmail, //post 작성자 email
       },
     },
   } = useLocation();
@@ -48,7 +48,8 @@ const PostList = () => {
     navigate('/');
   };
 
-  console.log(`게시글 작성유저 : ${userEmail}`);
+  // 임시 유저이메일 코드
+  console.log(`게시글 작성 유저 ${postUserEmail}`);
 
   const [isRequest, setIsRequest] = useState(false); // 요청유무
   const [isMyPost, setIsMyPost] = useState(false); //내 게시물 유무
@@ -65,7 +66,7 @@ const PostList = () => {
     // 본인 게시글(채팅방으로) / 동행요청 / 요청취소
 
     // 1. 게시글이 내 게시물일 경우, "채팅방으로" 버튼으로 보여야 함
-    if (loginUserEmail === userEmail) {
+    if (loginUserEmail === postUserEmail) {
       setIsMyPost(true);
       return;
     }
@@ -73,18 +74,24 @@ const PostList = () => {
     //1. 내가 보낸 동행 요청 목록을 get한다.
     // 1-1. 요청 목록에서 requestedMemberId (게시글 작성자 고유 아이디) 값을 얻는다.
     //2. 현재 페이지의 게시글 작성자의 id와 비교한다.
-    const isMatched = Array.isArray(requestList)
-      ? requestList.filter((item) => item.requestedMemberId === memberId)
-      : null;
+    console.log(requestList);
+    const isMatched =
+      requestList?.length > 0
+        ? requestList.filter((item) => item.requestedMemberId === loginUserId)
+        : [];
 
     //2-1.  게시글 작성자의 id 와  비교해서 같은게 있으면, 동행 요청 버튼이 "동행 취소" 버튼으로 보여야함
     //3. 같은게 없으면, "동행 요청 버튼으로 보여야 함"
-    if (isMatched && isMatched.length) {
+    if (isMatched && isMatched.length > 0) {
       setIsRequest(true);
     } else {
       setIsRequest(false);
     }
-  }, [requestList, memberId, userEmail, loginUserEmail]);
+  }, []);
+
+  const { requestAccompany, requestCancleAccompany } = useAccompany();
+
+  const [isBtnClick, setIsBtnClick] = useState(false);
 
   const handleRequestBtnClick = (e) => {
     //     1. 버튼이 "동행 요청" 일 경우,
@@ -94,35 +101,72 @@ const PostList = () => {
     //     2. 버튼이 "동행 취소" 일 경우, 동행취소 post 요청을 보낸다.
     // 2-1. 동행 요청 페이지에서 해당 동행 요청 내역이 보이면 안된다.
     console.log('동행요청 버튼 클릭');
-    console.log(e.target.innerText === '동행요청');
 
     if (e.target.innerText === '동행요청') {
-      postAccompanyRequest(id, memberId);
-      setIsRequest(false);
+      setIsBtnClick(true);
+      requestAccompany.mutate(
+        { postId, postAuthorId },
+        {
+          onSuccess: () => {
+            alert('동행 요청 성공!.');
+            setTimeout(() => {
+              setIsRequest(true);
+              setIsBtnClick(false);
+            }, 1000);
+          },
+          onError: () => {
+            console.log('동행 요청 실패');
+          },
+        },
+      );
     } else {
-      postAccompanyCancel(requestList && requestList.id);
-      setIsRequest(true);
+      setIsBtnClick(true);
+      requestCancleAccompany.mutate(loginUserId, {
+        onSuccess: () => {
+          alert('동행 요청 취소 완료!.');
+          setTimeout(() => {
+            setIsRequest(false);
+            setIsBtnClick(false);
+          }, 1000);
+        },
+        onError: () => {
+          console.log(' 동행 요청취소 실패');
+        },
+      });
     }
   };
 
   const handleEditClick = () => {
-    console.log('Edit 버튼 클릭');
-    //1. 글쓰기 페이지로 이동
-    // 이동시, 현재 데이터들을 넘겨준다.
-    navigate(`/updatePostList/${id}`, { state: { id } });
+    //1. 글쓰기 페이지로 이동 -> 이동시, 현재 데이터들을 넘겨준다.
+    navigate(`/updatePostList/${postId}`, {
+      state: {
+        title,
+        category,
+        startDate,
+        endDate,
+        gender,
+        travelCountry,
+        travelCity,
+        minimumAge,
+        maximumAge,
+        recruitsPeople,
+        estimatedTravelExpense,
+        content,
+        image,
+        postId,
+        postAuthorId,
+      },
+    });
   };
 
   const handleDeleteClick = () => {
-    console.log('delete 버튼 클릭');
     try {
-      // 서버로 POST 요청 보내기
-      deletePostMutation.mutate(id, {
+      deletePostMutation.mutate(postId, {
         onSuccess: () => {
           alert('성공적으로 게시글이 삭제되었습니다 ');
           goToHome();
         },
       });
-      console.log('데이터 삭제 성공');
     } catch (error) {
       console.error('데이터 삭제 실패', error);
     }
@@ -131,9 +175,11 @@ const PostList = () => {
   return (
     <article className="mx-4 mt-4">
       <div className="flex justify-between mb-4 text-gray-500">
-        <div>
-          <span className="mr-2">작성자</span>
-          <span>글작성날짜</span>
+        <div className="flex flex-col  ">
+          <span className="mr-16 text-sm">
+            {moment(createdAt).format('YYYY-MM-DD HH:MM')}
+          </span>
+          <span className="mr-10 items-start">작성자: {postUserEmail}</span>
         </div>
         <div>
           {isMyPost && (
@@ -159,7 +205,7 @@ const PostList = () => {
         <div className="card-body">
           <h2 className="card-title flex flex-col">
             {title}
-            <div className="badge badge-secondary">NEW</div>
+            <div className="badge badge-secondary">모집성별 {gender}</div>
             <span className="badge badge-outline">{category}</span>
           </h2>
           <section>
@@ -215,30 +261,32 @@ const PostList = () => {
         <button
           type="submit"
           className="btn btn-outline  btn-success w-full mb-20 "
-          onClick={() => navigate(`/chatroom/${id}`)}
+          onClick={() => navigate(`/chatroom/${postId}`)}
         >
           채팅방으로
-        </button>
-      )}
-      {isMyPost || isRequest || (
-        <button
-          type="submit"
-          className="btn btn-outline btn-error w-full mb-20 "
-          onClick={handleRequestBtnClick}
-        >
-          요청취소
         </button>
       )}
       {isMyPost ||
         (isRequest && (
           <button
             type="submit"
-            className="btn btn-outline btn-info w-full mb-20"
+            className="btn btn-outline btn-error w-full mb-20 "
             onClick={handleRequestBtnClick}
+            disabled={isBtnClick}
           >
-            동행요청
+            요청취소
           </button>
         ))}
+      {isMyPost || isRequest || (
+        <button
+          type="submit"
+          className="btn btn-outline btn-info w-full mb-20"
+          onClick={handleRequestBtnClick}
+          disabled={isBtnClick}
+        >
+          동행요청
+        </button>
+      )}
     </article>
   );
 };
