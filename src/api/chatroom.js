@@ -19,16 +19,59 @@ export const createChatroom = async (postId) => {
 // 참여중인 채팅방 목록 조회
 export const getChatRoomLists = async () => {
   try {
-    const response = await apiClient.get('chat-room/my-list');
+  
+    const accessToken = localStorage.getItem('accessToken'); 
+
+   
+    const response = await apiClient.get('chat-room/my-list', {
+      headers: {
+        Authorization: `Bearer ${accessToken}`, 
+      },
+    });
     console.log(response.data);
-    // chatRoomDto 배열이 없거나 비어있는 경우 안전한 기본값 반환
-    return response.data.chatRoomDto || [];
+
+    return response.data|| [];
   } catch (error) {
     console.error(error);
-    // 에러 발생 시 안전한 기본값 반환
     return [];
   }
 };
+
+//채팅방 입장을 처리하는 함수
+export const enterChatRoom = async (accessToken, chatRoomId) => {
+  try {
+    
+    apiClient.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+    
+    const response = await apiClient.post(`chat-room/enter/${chatRoomId}`, {
+   
+    });
+    console.log(response.data);
+    return response.data;// 서버로부터 받은 응답 데이터를 반환합니다.
+  } catch (error) {
+    console.error('Chat room entry failed:', error);
+    throw error;
+  }
+};
+
+     
+// 채팅방 퇴장을 처리하는 함수
+export const exitChatRoom = async (accessToken, chatRoomId) => {
+  try {
+    
+    apiClient.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+
+    const response = await apiClient.delete(`chat-room/exit/${chatRoomId}`, {
+   
+    });
+    console.log(response.data);
+    return response.data;// 서버로부터 받은 응답 데이터를 반환합니다.
+  } catch (error) {
+    console.error('Chat room entry failed:', error);
+    throw error;
+  }
+};
+
 // 채팅방 입장
 
 // 채팅방 퇴장
