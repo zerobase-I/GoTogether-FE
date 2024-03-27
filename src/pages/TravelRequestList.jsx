@@ -13,7 +13,7 @@ const TravelRequestList = () => {
   };
 
   const {
-    getRequestListQuery: { isLoading: isRequestListLoading, data: RequestList },
+    getRequestListQuery: { isLoading: isRequestListLoading, data: requestList },
     getReceiveListQuery: {
       isLoading: isReceiveListLoading,
       isError,
@@ -62,10 +62,6 @@ const TravelRequestList = () => {
     });
   };
 
-  if (isRequestListLoading) return <Loading />;
-  if (isReceiveListLoading) return <Loading />;
-  if (isError) return <p>{error.message}</p>;
-
   console.log(receiveList && receiveList);
 
   return (
@@ -91,9 +87,12 @@ const TravelRequestList = () => {
       <div className="border-t-2 border-gray-500 my-4 w-100%"></div>
       <div className="grid grid-cols-1 gap-8 mt-4 mx-4">
         <ul className="space-y-4">
+          {isRequestListLoading && isReceiveListLoading && <Loading />}
+          {isError && <>{error.message}</>}
+
           {activeTab === 'send'
-            ? RequestList &&
-              (RequestList ?? []).map((list) => (
+            ? Array.isArray(requestList) &&
+              requestList.map((list) => (
                 <li
                   key={list.id}
                   className="bg-white p-2 flex justify-between items-center  gap-1 rounded-md align-middle shadow-md hover:shadow-lg cursor-pointer transition duration-300 ease-in-out"
@@ -101,7 +100,7 @@ const TravelRequestList = () => {
                   <img
                     src={sampleImgHands}
                     alt="Profile"
-                    className="w-16 h-16 rounded-full"
+                    className="w-16 h-16 md:w-20 md:h-20 rounded-full"
                   />
                   <p className="font-semibold text-sm text-gray-500">
                     {list.postTitle}
@@ -111,7 +110,8 @@ const TravelRequestList = () => {
                   </p>
                 </li>
               ))
-            : (receiveList ?? []).map((list) => (
+            : Array.isArray(receiveList) &&
+              receiveList.map((list) => (
                 <li
                   key={list.id}
                   className="bg-white p-4 flex justify-between items-center gap-1 rounded-md align-middle shadow-md hover:shadow-lg cursor-pointer transition duration-300 ease-in-out"
@@ -129,7 +129,7 @@ const TravelRequestList = () => {
                       <p className="text-xs ">{list.mbti}</p>
                     </div>
                   </div>
-                  <p className="font-semibold text-gray-500  text-xs md:text-base mr-4 ">
+                  <p className="font-semibold text-gray-500  text-xs md:text-base mr-4 whitespace-nowrap overflow-hidden text-ellipsis">
                     {list.postTitle}
                   </p>
 
