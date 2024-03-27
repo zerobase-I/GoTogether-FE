@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef,useCallback } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import ChatSideBar from '/src/components/chatSideBar.jsx';
 import {reissueToken, fetchChatMessages } from '/src/api/chatService.js';
@@ -25,24 +25,19 @@ const ChatRoom = () => {
     setUserDetails(JSON.parse(localStorage.getItem('userDetails')) || {});
    }, []);
   
-    useEffect(() => {
-  if (chatRoomId) { // chatRoomId가 유효한 값인 경우에만 실행
-    const loadChatMessages = async () => {
-      try {
-        const fetchedMessages = await fetchChatMessages(localStorage.getItem('accessToken'), chatRoomId);
-        if (Array.isArray(fetchedMessages)) {
+   useEffect(() => {
+    if (chatRoomId) {
+      const loadChatMessages = async () => {
+        try {
+          const fetchedMessages = await fetchChatMessages(localStorage.getItem('accessToken'), chatRoomId);
           setMessages(fetchedMessages);
-        } else {
-          console.error('Fetched data is not an array:', fetchedMessages);
-          setMessages([]); // 데이터 형태가 배열이 아니면 빈 배열로 설정
+        } catch (error) {
+          console.error('Failed to fetch chat messages:', error);
         }
-      } catch (error) {
-        console.error('Failed to fetch chat messages:', error);
-      }
-    };
-    loadChatMessages();
-  }
-}, []);
+      };
+      loadChatMessages();
+    }
+  }, [chatRoomId]);
     
    useEffect(() => {
     const tryConnectWebSocket = async () => {
@@ -78,7 +73,7 @@ const ChatRoom = () => {
     tryConnectWebSocket();
 
     return () => stompClient?.disconnect();
-  }, []);// Dependency array to re-run the effect when chatRoomId or stompClient changes.
+  }, [chatRoomId]);// Dependency array to re-run the effect when chatRoomId or stompClient changes.
    
 
 
@@ -157,20 +152,34 @@ const messagePayload = {
     <div className="flex flex-col h-screen">
       <div id="messageContainer" className="flex-1 pb-36 p-4 overflow-y-auto">
         {messages.map((message, index) => (
-          <div key={index} className={`mb-2 flex ${message.email === userDetails.email ? 'justify-end' : 'justify-start'}`}>
-            <div className={`max-w-xl flex items-end ${message.email === userDetails.email ? 'justify-end' : ''}`}>
-              <div className="flex-col">
-                <div className="flex justify-end">{message.nickname}</div>
+  <div key={index} className={`mb-2 flex ${message.email === userDetails.email ? 'justify-end' : 'justify-start'}`}>
+    <div className={`max-w-xl ${message.email === userDetails.email ? 'items-end' : ''}`}>
+      {/* 사용자 자신의 메시지일 경우 메시지 본문과 시간 표시 위치 조정 */}
+      {message.email === userDetails.email ? (
+                <div className="flex flex-col items-end">
+                  <div className="flex justify-start">{message.nickname}</div>
                   <div className="flex items-end">
                     <div className="text-xs mr-2">{formatTime(message.createdAt)}</div>
-                    <div className={`p-3 rounded-lg shadow ${message.email === userDetails.email ? 'bg-blue-100' : 'bg-gray-100'}`}>
+                    <div className={`p-3 rounded-lg shadow bg-blue-100`}>
                       {message.content}
                     </div>
-                </div>
-              </div>  
+                  </div> 
+        </div>
+      ) : (
+        // 상대방 메시지일 경우
+        <div className="flex flex-col items-start">
+          <div className="flex justify-start">{message.nickname}</div>
+          <div className="flex items-end">
+            <div className={`p-3 rounded-lg shadow bg-gray-100`}>
+              {message.content}
             </div>
+            <div className="text-xs ml-2">{formatTime(message.createdAt)}</div>
           </div>
-        ))}
+        </div>
+      )}
+    </div>
+  </div>
+))}
       </div>
 
       <div className="p-2 z-10 bg-white border-t border-gray-200 fixed inset-x-0 bottom-16">

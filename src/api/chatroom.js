@@ -40,6 +40,8 @@ export const getChatRoomLists = async () => {
   }
 };
 
+
+     
 // 채팅방 퇴장을 처리하는 함수
 export const exitChatRoom = async (accessToken, chatRoomId) => {
   try {

@@ -1,4 +1,5 @@
 import axios from 'axios';
+
 import { BASE_URL } from '../components/config/data';
 
 export const getPosts = async (page = 0, size = 10) => {
