@@ -24,10 +24,15 @@ const TravelRequestList = () => {
 
   const { approveApprove, rejectAccompany } = useAccompany();
 
-  const handleApproveBtnClick = async (requestListId, postId) => {
+  const handleApproveBtnClick = async (
+    requestListId,
+    postId,
+    requestMemberId,
+  ) => {
     console.log('수락버튼 클릭');
     console.log(requestListId);
     console.log(postId);
+    console.log(requestMemberId);
     approveApprove.mutate(requestListId, {
       onSuccess: () => {
         alert('요청 수락이 성공적으로 이루어졌습니다!');
@@ -138,7 +143,11 @@ const TravelRequestList = () => {
                       <button
                         className="btn btn-outline btn-info bg-transparent text-blue-500 rounded text-sx p-3 "
                         onClick={() =>
-                          handleApproveBtnClick(list.id, list.postId)
+                          handleApproveBtnClick(
+                            list.id,
+                            list.postId,
+                            list.requestMemberId,
+                          )
                         }
                       >
                         수락
