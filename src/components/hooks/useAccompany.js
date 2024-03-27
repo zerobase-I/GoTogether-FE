@@ -10,7 +10,7 @@ import {
   writeCompanionReview,
 } from '../../api/accompany';
 
-const useAccompany = () => {
+export const useAccompany = () => {
   const queryClient = useQueryClient();
 
   //내가 보낸 동행 요청목록
@@ -52,10 +52,21 @@ const useAccompany = () => {
     onSuccess: () => queryClient.invalidateQueries(['accompany', 'receive']),
   });
 
-  //리뷰 대상 조회
-  const ReviewerList = useMutation({
-    mutationFn: getReviewerList,
-    onSuccess: () => console.log('리뷰 조회 성공'),
+  return {
+    getRequestListQuery,
+    getReceiveListQuery,
+    requestAccompany,
+    requestCancleAccompany,
+    approveAccompany,
+    rejectAccompany,
+  };
+};
+
+// 리뷰 대상 조회
+export const useGetReviewerList = (postIds) => {
+  const ReviewerList = useQuery({
+    queryKey: ['ReviewerList'],
+    queryFn: () => getReviewerList(postIds),
   });
 
   //동행 후기 작성
@@ -64,16 +75,5 @@ const useAccompany = () => {
     onSuccess: () => console.log('동행 후기 작성 성공'),
   });
 
-  return {
-    getRequestListQuery,
-    getReceiveListQuery,
-    requestAccompany,
-    requestCancleAccompany,
-    approveAccompany,
-    rejectAccompany,
-    ReviewerList,
-    writeReview,
-  };
+  return { ReviewerList, writeReview };
 };
-
-export default useAccompany;

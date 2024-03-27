@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import usePosts from '../components/hooks/usePosts';
-import useAccompany from '../components/hooks/useAccompany';
+import { useAccompany } from '../components/hooks/useAccompany';
 import { useRecoilValue } from 'recoil';
 import { UserInfoAtom } from '../recoil/userInfoAtom';
 

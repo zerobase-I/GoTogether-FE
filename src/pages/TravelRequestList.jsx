@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import useAccompany from '../components/hooks/useAccompany';
+import { useAccompany } from '../components/hooks/useAccompany';
 
 import Loading from '../components/Loading';
 import { sampleImgHands } from '../components/config/sampleImg';

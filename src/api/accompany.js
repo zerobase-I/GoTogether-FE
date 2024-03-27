@@ -113,16 +113,15 @@ export const postRejectAccompany = async (requestListId) => {
 
 // 리뷰 대상 조회
 export const getReviewerList = async (postId) => {
+  console.log(postId);
   try {
-    await axios.post(
-      `${BASE_URL}/accompany/review/${postId}`,
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
+    const response = await axios.get(`${BASE_URL}/accompany/review/${postId}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
       },
-    );
+    });
+
+    return response.data;
   } catch (error) {
     console.error(error);
   }

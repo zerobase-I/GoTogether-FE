@@ -2,12 +2,12 @@ import { useNavigate } from 'react-router-dom';
 import { sampleImgHands } from './config/sampleImg';
 import useNotification from './hooks/useNotification';
 
-const AlarmBox = ({ notificationId, postTitle }) => {
+const AlarmBox = ({ notificationId, postTitle, postId }) => {
   const { checkedNotificationMutation } = useNotification();
 
   const navigate = useNavigate();
   const goToReviewDetail = () => {
-    navigate('/review');
+    navigate('/review', { state: postId });
   };
 
   const handleClick = () => {

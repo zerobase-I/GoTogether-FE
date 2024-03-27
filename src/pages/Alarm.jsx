@@ -26,6 +26,7 @@ const Alarm = () => {
             key={list.id}
             notificationId={list.id}
             postTitle={list.postTitle}
+            postId={list.postId}
           />
         );
       })}
