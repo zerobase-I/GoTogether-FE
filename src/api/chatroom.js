@@ -27,18 +27,13 @@ export const createChatroom = async (postId, accompanyRequestMemberId) => {
 // 참여중인 채팅방 목록 조회
 export const getChatRoomLists = async () => {
   try {
-  
-    const accessToken = localStorage.getItem('accessToken'); 
-
-   
     const response = await apiClient.get('chat-room/my-list', {
       headers: {
-        Authorization: `Bearer ${accessToken}`, 
+        Authorization: `Bearer ${accessToken}`,
       },
     });
-    console.log(response.data);
 
-    return response.data|| [];
+    return response.data || [];
   } catch (error) {
     console.error(error);
     return [];
@@ -50,14 +45,12 @@ export const getChatRoomLists = async () => {
 // 채팅방 퇴장을 처리하는 함수
 export const exitChatRoom = async (accessToken, chatRoomId) => {
   try {
-    
-    apiClient.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+    apiClient.defaults.headers.common['Authorization'] =
+      `Bearer ${accessToken}`;
 
-    const response = await apiClient.delete(`chat-room/exit/${chatRoomId}`, {
-   
-    });
+    const response = await apiClient.delete(`chat-room/exit/${chatRoomId}`, {});
     console.log(response.data);
-    return response.data;// 서버로부터 받은 응답 데이터를 반환합니다.
+    return response.data; // 서버로부터 받은 응답 데이터를 반환합니다.
   } catch (error) {
     console.error('Chat room entry failed:', error);
     throw error;
