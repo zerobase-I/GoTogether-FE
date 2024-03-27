@@ -18,16 +18,16 @@ const CreatePost = () => {
   const { createPostMutation } = usePosts();
   const [success, setSuccess] = useState(); // 업로드 성공/ 실패 상태
   const [inputs, setInputs] = useState({
-    travelCountry: '한국',
-    travelCity: '서울',
+    travelCountry: 'KOREA',
+    travelCity: '',
     startDate: formatDate,
-    finishDate: formatDate,
-    gender: '',
+    endDate: formatDate,
+    postGenderType: '',
     minimumAge: '18',
     maximumAge: '100',
     recruitsPeople: '6',
     estimatedTravelExpense: '',
-    category: '',
+    postCategory: '',
     title: '',
     content: '',
     image: [],
@@ -52,8 +52,8 @@ const CreatePost = () => {
   const handleDateChange = (dates) => {
     setInputs(() => ({
       ...inputs,
-      startDate: moment(dates[0].toDateString()).format('MM-DD-YYYY'),
-      finishDate: moment(dates[1].toDateString()).format('MM-DD-YYYY'),
+      startDate: moment(dates[0].toDateString()).format('YYYY-MM-DDTHH:mm:ss'),
+      endDate: moment(dates[1].toDateString()).format('YYYY-MM-DDTHH:mm:ss'),
     }));
   };
 
@@ -93,7 +93,7 @@ const CreatePost = () => {
         onSuccess: () => {
           setSuccess('성공적으로 게시글이 등록되었습니다.');
           alert('성공적으로 게시글이 등록되었습니다 ');
-          //    goToHome();
+          goToHome();
           setTimeout(() => {
             setSuccess(null);
           }, 1000);
@@ -125,16 +125,20 @@ const CreatePost = () => {
         </section>
 
         <SelectCountry onChange={handleChangeInfo} />
-        <ReactCalendar onDateChange={handleDateChange} />
+        <ReactCalendar
+          onDateChange={handleDateChange}
+          startDate={inputs.startDate}
+          finishDate={inputs.endDate}
+        />
 
         <section className="mb-2">
           <span className="text-xl text-left font-semibold w-max block ">
             함께하고 싶은 성별
           </span>
           <RadioBtn
-            option1="모두 포함"
-            option2="동일 성별"
-            name="gender"
+            option1="ALL"
+            option2="MAN"
+            name="postGenderType"
             onChange={handleChangeInfo}
           />
         </section>
@@ -190,7 +194,7 @@ const CreatePost = () => {
           {categoryList.map((category) => (
             <RadioBtnSingle
               option={category}
-              name="category"
+              name="postCategory"
               key={category}
               onChange={handleChangeInfo}
             />

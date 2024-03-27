@@ -1,102 +1,130 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef,useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import ChatSideBar from '/src/components/chatSideBar.jsx';
+import {reissueToken, fetchChatMessages } from '/src/api/chatService.js';
+import axios from 'axios';
+import * as Stomp from 'stomp-websocket';
+// import { useQuery } from '@tanstack/react-query';
 
 const ChatRoom = () => {
-  const [ws, setWs] = useState(null);
+  const [stompClient, setStompClient] = useState(null);
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState('');
+  const [userDetails, setUserDetails] = useState({});
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const messageContainerRef = useRef(null);
-  const { id } = useParams(); // 채팅방 ID
-
-  const formatMessageTime = (timestamp) => {
-    const date = new Date(timestamp);
-    // 오후 3:10 형식으로 포매팅
-    return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
-  };
-
+  const { chatRoomId } = useParams(); // 채팅방 ID
+  
   useEffect(() => {
-    const storedMessages = JSON.parse(localStorage.getItem(`chatMessages-${id}`)) || [];
-    setMessages(storedMessages);
+  console.log("Chat Room ID: ", chatRoomId);
+}, [chatRoomId]);
 
-    // 웹소켓 URL 수정
-    const wsUrl = `ws://localhost:8080/ws/chatRoom/${id}`;
-    const webSocket = new WebSocket(wsUrl);
-
-    webSocket.onopen = () => {
-      setWs(webSocket);
-      // 채팅방 입장 메시지 전송
-      const enterMessage = {
-        type: 'ENTER',
-        chatRoomId: id,
-        memberId: '사용자ID', // 사용자 식별 정보 (예시)
-        message: '사용자닉네임이 채팅방에 입장했습니다.',
-      };
-      webSocket.send(JSON.stringify(enterMessage));
-    };
-
-    webSocket.onmessage = (event) => {
-      const receivedMessage = JSON.parse(event.data);
-      addMessage(receivedMessage.content, receivedMessage.author);
-    };
-
-    return () => {
-      if (webSocket.readyState === WebSocket.OPEN) {
-        // 채팅방 퇴장 메시지 전송
-        const exitMessage = {
-          type: 'EXIT',
-          chatRoomId: id,
-          memberId: '사용자ID', // 사용자 식별 정보 (예시)
-          message: '사용자닉네임이 채팅방에서 퇴장했습니다.',
-        };
-        webSocket.send(JSON.stringify(exitMessage));
-        webSocket.close();
+   useEffect(() => {
+    const accessToken = localStorage.getItem('accessToken') || '';
+    axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+    setUserDetails(JSON.parse(localStorage.getItem('userDetails')) || {});
+   }, []);
+  
+    useEffect(() => {
+  if (chatRoomId) { // chatRoomId가 유효한 값인 경우에만 실행
+    const loadChatMessages = async () => {
+      try {
+        const fetchedMessages = await fetchChatMessages(localStorage.getItem('accessToken'), chatRoomId);
+        if (Array.isArray(fetchedMessages)) {
+          setMessages(fetchedMessages);
+        } else {
+          console.error('Fetched data is not an array:', fetchedMessages);
+          setMessages([]); // 데이터 형태가 배열이 아니면 빈 배열로 설정
+        }
+      } catch (error) {
+        console.error('Failed to fetch chat messages:', error);
       }
     };
-  }, [id]);
+    loadChatMessages();
+  }
+}, []);
+    
+   useEffect(() => {
+    const tryConnectWebSocket = async () => {
+      if (stompClient?.connected) return;
+
+      const accessToken = localStorage.getItem('accessToken') || '';
+      const wsUrl = `ws://gotogether.site/ws`;
+      const client = Stomp.over(new WebSocket(wsUrl));
+
+      client.connect(
+        { 'Authorization': `Bearer ${accessToken}` },
+        () => {
+          setStompClient(client);
+          const subscription = client.subscribe(`/exchange/chat.exchange/room.${chatRoomId}`, message => {
+            const receivedMessage = JSON.parse(message.body);
+            // 현재 사용자가 보낸 메시지는 화면에 다시 추가하지 않음
+            if (receivedMessage.email === userDetails.email && receivedMessage.createdAt && messages.find(m => m.createdAt === receivedMessage.createdAt)) {
+              setMessages(prevMessages => [...prevMessages, receivedMessage]);
+            }
+          });
+          return () => subscription.unsubscribe();
+        },
+        async (error) => {
+         if (error.headers?.message === 'Expired Token') {
+            const newAccessToken = await reissueToken(localStorage.getItem('refreshToken'));
+            localStorage.setItem('accessToken', newAccessToken);
+            axios.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
+            tryConnectWebSocket(); // 재시도
+          }
+        }
+      );
+    };
+    tryConnectWebSocket();
+
+    return () => stompClient?.disconnect();
+  }, []);// Dependency array to re-run the effect when chatRoomId or stompClient changes.
+   
+
 
   useEffect(() => {
-    if (messageContainerRef.current) {
-      const scroll = () => {
-        messageContainerRef.current.scrollTop = messageContainerRef.current.scrollHeight;
-      };
-      setTimeout(scroll, 100);
+    const messageContainer = document.getElementById('messageContainer');
+    if (messageContainer) {
+      messageContainer.scrollTop = messageContainer.scrollHeight;
     }
-  }, [messages, id]);
+  }, []);
 
-  const addMessage = (text, author = 'me') => {
-    setMessages((prevMessages) => {
-      const newMessage = {
-        text,
-        author,
-        timestamp: new Date().getTime(), // 메시지 전송 시간
-      };
-      const updatedMessages = [...prevMessages, newMessage];
-      updatedMessages.sort((a, b) => a.timestamp - b.timestamp);
-      localStorage.setItem(`chatMessages-${id}`, JSON.stringify(updatedMessages));
-      return updatedMessages;
-    });
-  };
+  
 
   const handleMessageSend = () => {
-    if (ws && inputMessage.trim() !== '') {
-      const messagePayload = {
-        content: inputMessage,
-        chatRoomId: id,
-        // 추가적으로 필요한 메시지 속성들을 여기에 포함시킬 수 있습니다.
-      };
-      // 메시지 송신 형식 조정
-      ws.send(JSON.stringify(messagePayload));
-      setInputMessage('');
-      addMessage(inputMessage); // 내가 보낸 채팅 렌더링
-    }
+    if (!inputMessage.trim() || !stompClient) return;
+
+  const createdAt = new Date().toISOString();
+const messagePayload = {
+  email: userDetails.email,
+  content: inputMessage,
+  createdAt, // ISO 8601 형식의 문자열
+};
+
+    stompClient.send(`/pub/chat/${chatRoomId}`, {}, JSON.stringify(messagePayload));
+    setInputMessage(''); // 입력 필드 초기화
+    setMessages(prevMessages => [...prevMessages, {...messagePayload, id: createdAt}]);
   };
 
-  const handleInputChange = (e) => {
-    setInputMessage(e.target.value);
-  };
+  const handleInputChange = (e) => setInputMessage(e.target.value);
 
+ 
+
+
+  const formatTime = (dateString) => {
+  // 서버로부터 받은 ISO 문자열을 Date 객체로 변환
+  const date = new Date(dateString);
+  // 로컬 시간대로 시간을 포맷팅하지만, 서버 시간대를 기준으로 한 것으로 간주
+  return date.toLocaleTimeString('ko-KR', {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true
+  });
+};
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////
   useEffect(() => {
     const toggleButton = document.getElementById('toggleButton');
     const sidebar = document.getElementById('sidebar');
@@ -122,27 +150,24 @@ const ChatRoom = () => {
     };
   }, []);
 
+  
+  ////////////////////////////////////////////////////////////////////////////////////////////
+
   return (
     <div className="flex flex-col h-screen">
-      <div ref={messageContainerRef} className="flex-1 p-4 overflow-y-auto pt-8 pb-36">
+      <div id="messageContainer" className="flex-1 pb-36 p-4 overflow-y-auto">
         {messages.map((message, index) => (
-          <div key={index} className={`mb-2 flex ${message.author === 'me' ? 'justify-end' : 'justify-start'}`}>
-            <div className="max-w-64 flex justify-end items-end">
-              {/* 메시지 전송 시간 표시 */}
-              {message.author === 'me' && (
-                <span className="text-xs mr-2 w-32 flex justify-end">
-                  {formatMessageTime(message.timestamp)}
-                </span>
-              )}
-              <div className={`p-3 rounded-lg shadow ${message.author === 'me' ? 'bg-blue-100 text-left' : 'bg-gray-100 text-left'}`}>
-                {message.text}
-              </div>
-              {/* 상대방 메시지의 경우 시간을 오른쪽에 표시 */}
-              {message.author !== 'me' && (
-                <span className={`text-xs ${message.author === 'me' ? 'ml-2' : 'mr-2'}`}>
-                  {formatMessageTime(message.timestamp)}
-                </span>
-              )}
+          <div key={index} className={`mb-2 flex ${message.email === userDetails.email ? 'justify-end' : 'justify-start'}`}>
+            <div className={`max-w-xl flex items-end ${message.email === userDetails.email ? 'justify-end' : ''}`}>
+              <div className="flex-col">
+                <div className="flex justify-end">{message.nickname}</div>
+                  <div className="flex items-end">
+                    <div className="text-xs mr-2">{formatTime(message.createdAt)}</div>
+                    <div className={`p-3 rounded-lg shadow ${message.email === userDetails.email ? 'bg-blue-100' : 'bg-gray-100'}`}>
+                      {message.content}
+                    </div>
+                </div>
+              </div>  
             </div>
           </div>
         ))}
@@ -156,7 +181,7 @@ const ChatRoom = () => {
               +
             </button>
             <div id="sidebar" className="fixed h-full top-0 outline-none right-[-100%] shadow-2xl bg-sky-100 w-64 rounded-lg transition-all duration-300 ease-in-out overflow-y-auto">
-              <ChatSideBar chatRoomId={id} />
+              <ChatSideBar chatRoomId={chatRoomId} />
             </div>
           </div>
 

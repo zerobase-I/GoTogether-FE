@@ -12,28 +12,27 @@ import { categoryList } from '../components/config/data';
 import usePosts from '../components/hooks/usePosts';
 import Loading from '../components/Loading';
 
-const date = new Date();
-const formatDate = moment(date.toDateString()).format('MM-DD-YYYY');
-
 const UpdatePostList = () => {
   const { UpdatePostMutation } = usePosts();
   const [success, setSuccess] = useState(); // 업로드 성공/ 실패 상태
   const {
     state: {
-      id: postId,
-      title,
-      category,
-      startDate,
-      endDate,
-      gender,
-      travelCountry,
-      travelCity,
-      minimumAge,
-      maximumAge,
-      recruitsPeople,
-      estimatedTravelExpense,
-      content,
-      image,
+      post: {
+        postId,
+        title,
+        category,
+        startDate,
+        endDate,
+        gender,
+        travelCountry,
+        travelCity,
+        minimumAge,
+        maximumAge,
+        recruitsPeople,
+        estimatedTravelExpense,
+        content,
+        imagesUrl,
+      },
     },
   } = useLocation();
 
@@ -52,7 +51,8 @@ const UpdatePostList = () => {
     category: category,
     title: title,
     content: content,
-    image: image,
+    newImages: '',
+    imageIdsToDelete: '',
   });
 
   console.log(inputs);
@@ -66,14 +66,14 @@ const UpdatePostList = () => {
     setInputs(() => ({
       ...inputs,
       startDate: moment(dates[0].toDateString()).format('MM-DD-YYYY'),
-      finishDate: moment(dates[1].toDateString()).format('MM-DD-YYYY'),
+      endDate: moment(dates[1].toDateString()).format('MM-DD-YYYY'),
     }));
   };
 
   const handleFileChange = (files) => {
     setInputs(() => ({
       ...inputs,
-      image: files,
+      newImages: files,
     }));
   };
 
@@ -111,12 +111,10 @@ const UpdatePostList = () => {
       }
     }
 
-    console.log(formData);
-
     try {
       // 서버로 POST 요청 보내기
       UpdatePostMutation.mutate(
-        { inputs: formData, postId },
+        { formData, postId },
         {
           onSuccess: () => {
             setSuccess('성공적으로 게시글이 수정되었습니다.');
@@ -169,8 +167,8 @@ const UpdatePostList = () => {
             함께하고 싶은 성별
           </span>
           <RadioBtn
-            option1="모두 포함"
-            option2="동일 성별"
+            option1="ALL"
+            option2="MAN"
             name="gender"
             onChange={handleChangeInfo}
             beforeGender={inputs.gender}

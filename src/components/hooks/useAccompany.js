@@ -4,6 +4,8 @@ import {
   getRequestAccompanyList,
   postAccompanyCancel,
   postAccompanyRequest,
+  postApproveAccompany,
+  postRejectAccompany,
 } from '../../api/accompany';
 
 const useAccompany = () => {
@@ -13,24 +15,39 @@ const useAccompany = () => {
   const getRequestListQuery = useQuery({
     queryKey: ['accompany', 'request'],
     queryFn: getRequestAccompanyList,
+    // select: (requestList) => requestList.map((list) => list.postId),
   });
 
   // 내가 받은 동행 요청목록
   const getReceiveListQuery = useQuery({
     queryKey: ['accompany', 'receive'],
     queryFn: getReceiveAccompanyList,
+    //  select: (receiveList) =>
+    //   receiveList.map((list) => [list.requestMemberId, list.postId]),
   });
 
-  //동행 요청 보내기
+  //게시글에서 동행 요청 보내기
   const requestAccompany = useMutation({
     mutationFn: postAccompanyRequest,
     onSuccess: () => queryClient.invalidateQueries(['requestAccompany']),
   });
 
-  // 동행 요청 취소하기
+  //게시글에서 동행 요청 취소하기
   const requestCancleAccompany = useMutation({
     mutationFn: postAccompanyCancel,
     onSuccess: () => queryClient.invalidateQueries(['requestCancleAccompany']),
+  });
+
+  // 동행 요청 승인하기
+  const approveAccompany = useMutation({
+    mutationFn: postApproveAccompany,
+    onSuccess: () => queryClient.invalidateQueries(['accompany', 'receive']),
+  });
+
+  //동행 요청 거절하기
+  const rejectAccompany = useMutation({
+    mutationFn: postRejectAccompany,
+    onSuccess: () => queryClient.invalidateQueries(['accompany', 'receive']),
   });
 
   return {
@@ -38,6 +55,8 @@ const useAccompany = () => {
     getReceiveListQuery,
     requestAccompany,
     requestCancleAccompany,
+    approveAccompany,
+    rejectAccompany,
   };
 };
 

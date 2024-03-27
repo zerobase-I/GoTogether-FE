@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import RadioBtnSingle from './Ui/RadioBtnSingle';
 
 const RadioBtn = ({ option1, option2, name, onChange, beforeGender }) => {
