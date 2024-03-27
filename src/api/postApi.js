@@ -1,4 +1,6 @@
 import axios from 'axios';
+
+const BASE_URL = `https://gotogether.site/api`;
 import { BASE_URL } from '../components/config/data';
 
 export const getPosts = async (page = 0, size = 10) => {
@@ -27,7 +29,9 @@ export const getMyPosts = async (page = 0, size = 10, userId) => {
 
 export const getPostDetail = async (postId) => {
   try {
-    const response = await axios.get(`${BASE_URL}/post/${postId}`);
+    const response = await axios.get(
+      `${BASE_URL}/post/myPosts/${userId}?page=${page}&size=${size}`,
+    );
 
     return response.data;
   } catch (error) {
@@ -37,7 +41,7 @@ export const getPostDetail = async (postId) => {
 
 export const createPost = async (formData) => {
   const accessToken = localStorage.getItem('accessToken');
-
+  console.log(accessToken);
   const form = new FormData();
   const requestData = {};
 
@@ -128,7 +132,7 @@ export const deletePost = async (postId) => {
     const response = await axios.delete(`${BASE_URL}/post/${postId}`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
-        Accept: '*/*',
+        Accept: '/',
       },
     });
 

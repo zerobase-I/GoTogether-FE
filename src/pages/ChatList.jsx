@@ -22,12 +22,11 @@ const ChatList = () => {
         setIsLoading(false);
       }
     };
-
     fetchData();
   }, []);
-
-  if (isLoading) return <div>Loading...</div>;
-  if (isError) return <div>Error: 데이터를 불러올 수 없습니다.</div>;
+  useEffect(() => {
+    console.log(chatRooms);
+  }, [chatRooms]);
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error: 데이터를 불러올 수 없습니다.</div>;
 
@@ -40,18 +39,15 @@ const ChatList = () => {
         {chatRooms && chatRooms.length > 0 ? (
           chatRooms.map((room) => (
             <section
-              key={room.chatRoomId} // 수정된 부분: chatRoomId 사용
+              key={room.chatRoomId}
               className="bg-white p-4 rounded-md shadow-md hover:shadow-lg cursor-pointer transition duration-300 ease-in-out flex items-center justify-between"
               onClick={() =>
                 navigate(`/chatroom/${room.chatRoomId}`, {
                   state: { roomName: room.name },
                 })
-              } // 수정된 부분: postId 사용
+              }
             >
               <div className="flex items-center gap-4">
-                {/* <div className="w-16 rounded-md">
-                  <img src={room.imageUrls[0]} alt="chat room" /> 이미지 URL이 없으므로 이 부분은 주석 처리하거나 제거
-                </div> */}
                 <div className="text-xm font-bold whitespace-nowrap">
                   {room.name}
                 </div>
