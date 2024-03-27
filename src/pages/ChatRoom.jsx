@@ -112,11 +112,10 @@ const messagePayload = {
 
 
   const formatTime = (dateString) => {
-  // ISO 문자열을 Date 객체로 변환
+  // 서버로부터 받은 ISO 문자열을 Date 객체로 변환
   const date = new Date(dateString);
-  // 한국 시간대로 시간을 포맷팅
+  // 로컬 시간대로 시간을 포맷팅하지만, 서버 시간대를 기준으로 한 것으로 간주
   return date.toLocaleTimeString('ko-KR', {
-    timeZone: 'Asia/Seoul',
     hour: '2-digit',
     minute: '2-digit',
     hour12: true

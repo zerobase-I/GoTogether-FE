@@ -22,10 +22,11 @@ const ChatList = () => {
         setIsLoading(false);
       }
     };
-
     fetchData();
    }, []);
-  
+  useEffect(() => {
+    console.log(chatRooms); 
+  },[chatRooms])
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error: 데이터를 불러올 수 없습니다.</div>;
 
