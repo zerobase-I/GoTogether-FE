@@ -128,17 +128,13 @@ export const getReviewerList = async (postId) => {
 };
 
 // 동행 후기 작성
-export const writeCompanionReview = async () => {
+export const writeCompanionReview = async (reviews) => {
   try {
-    await axios.post(
-      `${BASE_URL}/accompany/review/submit`,
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
+    await axios.post(`${BASE_URL}/accompany/review/submit`, reviews, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
       },
-    );
+    });
   } catch (error) {
     console.error(error);
   }
