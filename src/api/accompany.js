@@ -74,7 +74,7 @@ export const postAccompanyCancel = async (requestId) => {
 //동행 요청 승인하기
 export const postApproveAccompany = async (requestListId) => {
   try {
-    await axios.post(
+    const response = await axios.post(
       `${BASE_URL}/accompany/request/approve/${requestListId}`,
       {},
       {
@@ -83,6 +83,11 @@ export const postApproveAccompany = async (requestListId) => {
         },
       },
     );
+
+    // 채팅방 있을경우, 채팅방 번호 / 없을경우 null 또는 undefined
+    const isChatroom = response.data.chatRomId;
+
+    return isChatroom;
   } catch (error) {
     console.error(error);
   }

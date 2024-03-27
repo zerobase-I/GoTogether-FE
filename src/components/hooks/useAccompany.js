@@ -39,7 +39,7 @@ const useAccompany = () => {
   });
 
   // 동행 요청 승인하기
-  const approveApprove = useMutation({
+  const approveAccompany = useMutation({
     mutationFn: postApproveAccompany,
     onSuccess: () => queryClient.invalidateQueries(['accompany', 'receive']),
   });
@@ -55,7 +55,7 @@ const useAccompany = () => {
     getReceiveListQuery,
     requestAccompany,
     requestCancleAccompany,
-    approveApprove,
+    approveAccompany,
     rejectAccompany,
   };
 };
