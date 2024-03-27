@@ -1,29 +1,31 @@
-import React, { useState } from 'react';
-import PostItem from './PostItem';
-import Loading from './Loading';
-import Pagination from 'react-js-pagination';
-import '../styles/pagination.css';
 import { useQuery } from '@tanstack/react-query';
-import { getPosts } from '../api/postApi';
+import React, { useState } from 'react';
+import { getMyPosts } from '../../api/postApi';
+import Loading from '../Loading';
+import PostItem from '../PostItem';
+import '../../styles/pagination.css';
+import Pagination from 'react-js-pagination';
+import { useRecoilValue } from 'recoil';
+import { UserInfoAtom } from '../../recoil/userInfoAtom';
 
-const PostBox = () => {
+const MyPostBox = () => {
+  const userInfo = useRecoilValue(UserInfoAtom);
+  const loginUserId = userInfo.id;
   const [currentPage, setCurrentPage] = useState(1);
-  const postPerPage = 5; //한 페이지에서 보여줄 post 개수
+  const postPerPage = 3; //한 페이지에서 보여줄 post 개수
 
   /*   const {
     postQuery: { isLoading, error, data: postsData },
   } = usePosts(currentPage, postPerPage); */
 
-  //쿼리 키는 가져오는 데이터를 고유하게 설명하므로
-  //쿼리 함수에서 사용하는 변경되는 모든 변수를 포함해야 한다.
   const {
     data: postsData,
     error,
     isError,
     isLoading,
   } = useQuery({
-    queryKey: ['posts', currentPage - 1, postPerPage],
-    queryFn: () => getPosts(currentPage - 1, postPerPage),
+    queryKey: ['myPosts', currentPage - 1],
+    queryFn: () => getMyPosts(currentPage - 1, postPerPage, loginUserId),
     keepPreviousData: true,
   });
 
@@ -58,4 +60,4 @@ const PostBox = () => {
   );
 };
 
-export default PostBox;
+export default MyPostBox;

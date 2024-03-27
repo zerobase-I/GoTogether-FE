@@ -4,8 +4,8 @@ import COUNTRY_CITY_DATA from '../mocks/countryCity.json';
 const SelectCountry = ({ onChange, beforeCountry, beforeCity }) => {
   //const [countries, setCountries] = useState(null);
   const [cities, setCities] = useState([]);
-  const [country, setCountry] = useState();
-  const [city, setCity] = useState();
+  const [country, setCountry] = useState(beforeCountry);
+  const [city, setCity] = useState(beforeCity);
 
   useEffect(() => {
     const selectedCountryData = COUNTRY_CITY_DATA.find(

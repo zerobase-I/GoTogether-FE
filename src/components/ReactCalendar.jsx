@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Calendar from 'react-calendar';
 import '../../src/styles/Calendar.css'; // css import
 import moment from 'moment';
 
-const ReactCalendar = ({ onDateChange, startDate, finishDate }) => {
+const ReactCalendar = ({ onDateChange, startDate, endDate }) => {
   const [date, setDate] = useState(new Date());
 
   /*   const formattedSDate = moment(startDate, 'YY-MM-DD').format(
@@ -38,7 +38,7 @@ const ReactCalendar = ({ onDateChange, startDate, finishDate }) => {
         {date.length > 0 ? (
           <p className="text-center mt-2">
             <span className="bold ">기존 여행 시작/종료 날짜:</span> {startDate}{' '}
-            ~ {finishDate}
+            ~ {endDate}
             <br />
             <span className="bold text-xl text-red-500 ">
               여행 시작 날짜:
@@ -57,7 +57,7 @@ const ReactCalendar = ({ onDateChange, startDate, finishDate }) => {
         ) : (
           <p className="text-center">
             <span className="bold ">기존 여행 시작/종료 날짜:</span> {startDate}
-            ~ {finishDate}
+            ~ {endDate}
             <br />
             <span className="bold">오늘 날짜 : </span>{' '}
             {moment(date.toDateString()).format('MM-DD-YYYY')}

@@ -35,5 +35,3 @@ export const getUserDetails = async (accessToken) => {
     throw new Error('사용자 정보를 가져오는데 실패했습니다.');
   }
 };
-
-
