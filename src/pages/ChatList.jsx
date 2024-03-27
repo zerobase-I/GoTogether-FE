@@ -43,7 +43,7 @@ const ChatList = () => {
               key={room.chatRoomId} // 수정된 부분: chatRoomId 사용
               className="bg-white p-4 rounded-md shadow-md hover:shadow-lg cursor-pointer transition duration-300 ease-in-out flex items-center justify-between"
               onClick={() =>
-                navigate(`/chatroom/${room.postId}`, {
+                navigate(`/chatroom/${room.chatRoomId}`, {
                   state: { roomName: room.name },
                 })
               } // 수정된 부분: postId 사용

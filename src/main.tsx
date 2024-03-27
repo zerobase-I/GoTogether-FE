@@ -56,7 +56,7 @@ const router = createBrowserRouter([
       { path: 'updatePostList/:id', element: <UpdatePostList /> },
       { path: 'filter', element: <Filter /> },
       { path: 'createpost', element: <CreatePost /> },
-      { path: 'chatroom/:id', element: <ChatRoom /> },
+      { path: 'chatroom/:chatRoomId', element: <ChatRoom /> },
       { path: 'editprofile', element: <EditProfile /> },
       { path: 'reviewdetail', element: <ReviewDetail /> },
       { path: 'alarm', element: <Alarm /> },
