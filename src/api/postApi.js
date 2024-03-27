@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 const BASE_URL = `https://gotogether.site/api`;
+import { BASE_URL } from '../components/config/data';
 
 export const getPosts = async (page = 0, size = 10) => {
   try {
@@ -13,6 +14,7 @@ export const getPosts = async (page = 0, size = 10) => {
     console.error(error);
   }
 };
+
 export const getMyPosts = async (page = 0, size = 10, userId) => {
   try {
     const response = await axios.get(
@@ -24,6 +26,19 @@ export const getMyPosts = async (page = 0, size = 10, userId) => {
     console.error(error);
   }
 };
+
+export const getPostDetail = async (postId) => {
+  try {
+    const response = await axios.get(
+      `${BASE_URL}/post/myPosts/${userId}?page=${page}&size=${size}`,
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export const createPost = async (formData) => {
   const accessToken = localStorage.getItem('accessToken');
   console.log(accessToken);
@@ -32,7 +47,7 @@ export const createPost = async (formData) => {
 
   for (const [key, value] of formData.entries()) {
     if (value instanceof File) {
-      form.append(files, value);
+      form.append(`files`, value);
     } else {
       // 비파일 값은 requestData 객체에 추가
       if (key !== 'image') {
@@ -41,12 +56,13 @@ export const createPost = async (formData) => {
       }
     }
   }
+
   console.log(requestData);
   console.log(form);
 
   const json = JSON.stringify(requestData);
-  const blob = new Blob([json], { type: "application/json" });
-  form.append("request", blob);
+  const blob = new Blob([json], { type: 'application/json' });
+  form.append('request', blob);
 
   // 토큰이 존재하는지 확인하고 없다면 에러 처리
   if (!accessToken) {
@@ -57,8 +73,8 @@ export const createPost = async (formData) => {
   try {
     // 서버에 데이터를 보내는 비동기 작업 수행
     const response = await axios.post(`${BASE_URL}/post`, form, {
-      headers : {
-        Authorization: `Bearer ${accessToken}`
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
       },
     });
     console.log(response);
@@ -72,11 +88,34 @@ export const createPost = async (formData) => {
     }
   }
 };
+
 export const updatePost = async (inputValue) => {
-  const { inputs, postId } = inputValue;
+  const { formData, postId } = inputValue;
+
+  const form = new FormData();
+  const requestData = {};
+
+  for (const [key, value] of formData.entries()) {
+    if (value instanceof File) {
+      form.append(`files`, value);
+    } else {
+      // 비파일 값은 requestData 객체에 추가
+      if (key !== 'image') {
+        // 'image' 키를 제외한 모든 데이터를 처리
+        requestData[key] = value;
+      }
+    }
+  }
+
+  console.log(requestData);
+  console.log(form);
+
+  const json = JSON.stringify(requestData);
+  const blob = new Blob([json], { type: 'application/json' });
+  form.append('request', blob);
 
   try {
-    const response = await axios.put(`${BASE_URL}/post/${postId}`, inputs);
+    const response = await axios.put(`${BASE_URL}/post/${postId}`, form);
 
     console.log(response);
 
