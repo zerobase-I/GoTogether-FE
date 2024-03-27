@@ -8,12 +8,13 @@ import { UserInfoAtom } from '../recoil/userInfoAtom';
 import moment from 'moment';
 import { IoRocketOutline } from 'react-icons/io5';
 import { sampleImage } from '../components/config/sampleImg';
+import useChatRoom from '../components/hooks/useChatRoom';
+import Loading from '../components/Loading';
 
 const PostList = () => {
   const { deletePostMutation } = usePosts();
   const userInfo = useRecoilValue(UserInfoAtom);
   const loginUserEmail = userInfo.email;
-
   const {
     state: {
       post,
@@ -38,29 +39,63 @@ const PostList = () => {
       },
     },
   } = useLocation();
-
   const navigate = useNavigate();
   const goToHome = () => {
     navigate('/');
   };
-
-  const [isRequest, setIsRequest] = useState(false); // 요청유무
-  const [isMyPost, setIsMyPost] = useState(false); //내 게시물 유무
-
   const { requestAccompany, requestCancleAccompany } = useAccompany();
-  const [isBtnClick, setIsBtnClick] = useState(false);
-  const [cancelId, setCancelId] = useState(null); // 취소요청 내역 고유 아이디
-
   const {
     getRequestListQuery: { data: requestList },
   } = useAccompany();
 
+  const [isRequest, setIsRequest] = useState(false); // 요청유무
+  const [isMyPost, setIsMyPost] = useState(false); //내 게시물 유무
+  const [participantPosts, setParticipantPosts] = useState(false);
+
+  const [isBtnClick, setIsBtnClick] = useState(false);
+  const [cancelId, setCancelId] = useState(null); // 취소요청 내역 고유 아이디
+
+  const [isNotChatRoom, setIsNotChatRoom] = useState(true);
+  const [chatRoomId, setChatRoomId] = useState(null);
+
+  const {
+    getChatRoomListsQuery: {
+      data: chatRoomLists,
+      isLoading: isChatRoomLoading,
+      isError: isChatRoomError,
+      error: ChatRoomError,
+    },
+  } = useChatRoom();
+
+  console.log(chatRoomLists && chatRoomLists);
+
   useEffect(() => {
+    if (isChatRoomLoading) return <Loading />;
+    if (isChatRoomError) return <p>{ChatRoomError.message}</p>;
+
     if (loginUserEmail === postUserEmail) {
       setIsMyPost(true);
+      const isChatRoom =
+        chatRoomLists && chatRoomLists.filter((list) => list.postId === postId);
+
+      console.log(isChatRoom);
+      if (isChatRoom.length) {
+        setIsNotChatRoom(false);
+        setChatRoomId(isChatRoom.chatRoomId);
+      }
       return;
     }
 
+    const participantPosts =
+      chatRoomLists && chatRoomLists.filter((list) => list.postId === postId);
+    if (participantPosts) {
+      setParticipantPosts(true);
+    }
+  }, [chatRoomLists, isChatRoomLoading, isChatRoomError]);
+
+  console.log(chatRoomId && chatRoomId);
+
+  useEffect(() => {
     const isMatched =
       requestList &&
       requestList.some(
@@ -71,18 +106,15 @@ const PostList = () => {
     if (isMatched) {
       const findMatchedPost =
         requestList && requestList.find((item) => item.postId === postId);
-      console.log(findMatchedPost);
       requestList && setCancelId(findMatchedPost && findMatchedPost.id);
     }
 
-    //2-1.  게시글 작성자의 id 와  비교해서 같은게 있으면, 동행 요청 버튼이 "동행 취소" 버튼으로 보여야함
-    //3. 같은게 없으면, "동행 요청 버튼으로 보여야 함"
     if (isMatched) {
       setIsRequest(true);
     } else {
       setIsRequest(false);
     }
-  }, [requestList, cancelId]);
+  }, [requestList]);
 
   const handleRequestBtnClick = (e) => {
     console.log('동행요청 버튼 클릭');
@@ -231,7 +263,10 @@ const PostList = () => {
         <button
           type="submit"
           className="btn btn-outline  btn-success w-full mb-20 "
-          onClick={() => navigate(`/chatroom/${postId}`)}
+          onClick={() =>
+            navigate(`/chatroom/${chatRoomLists && chatRoomLists.chatRoomId}`)
+          }
+          disabled={isNotChatRoom}
         >
           채팅방으로
         </button>
