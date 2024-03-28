@@ -90,6 +90,10 @@ const UpdatePostList = () => {
     setInputs({ ...inputs, [name]: value });
   };
 
+  const handleCityChange = (firstSelectCity) => {
+    setInputs({ ...inputs, travelCity: firstSelectCity });
+  };
+
   const navigate = useNavigate();
   const goToHome = () => {
     navigate('/');
@@ -111,25 +115,22 @@ const UpdatePostList = () => {
       }
     }
 
-    try {
-      // 서버로 POST 요청 보내기
-      UpdatePostMutation.mutate(
-        { formData, postId },
-        {
-          onSuccess: () => {
-            setSuccess('성공적으로 게시글이 수정되었습니다.');
-            alert('성공적으로 게시글이 수정되었습니다 ');
-            goToHome();
-            setTimeout(() => {
-              setSuccess(null);
-            }, 1000);
-          },
+    UpdatePostMutation.mutate(
+      { formData, postId },
+      {
+        onSuccess: () => {
+          setSuccess('성공적으로 게시글이 수정되었습니다.');
+          alert('성공적으로 게시글이 수정되었습니다 ');
+          goToHome();
+          setTimeout(() => {
+            setSuccess(null);
+          }, 1000);
         },
-      );
-      console.log('데이터 업로드 성공');
-    } catch (error) {
-      console.error('데이터 업로드 실패', error);
-    }
+        onError: () => {
+          alert('게시글 수정이 네트워크 문제로 실패했습니다 다시시도해주세요!');
+        },
+      },
+    );
   };
 
   return (
@@ -151,6 +152,7 @@ const UpdatePostList = () => {
 
         <SelectCountry
           onChange={handleChangeInfo}
+          onCityChange={handleCityChange}
           beforeCountry={inputs.travelCountry}
           beforeCity={inputs.travelCity}
         />

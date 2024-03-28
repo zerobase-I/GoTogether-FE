@@ -49,6 +49,10 @@ const CreatePost = () => {
     setInputs({ ...inputs, [name]: value });
   };
 
+  const handleCityChange = (firstSelectCity) => {
+    setInputs({ ...inputs, travelCity: firstSelectCity });
+  };
+
   const handleDateChange = (dates) => {
     setInputs(() => ({
       ...inputs,
@@ -87,45 +91,27 @@ const CreatePost = () => {
       }
     }
 
-    try {
-      // 서버로 POST 요청 보내기
-      createPostMutation.mutate(formData, {
-        onSuccess: () => {
-          setSuccess('성공적으로 게시글이 등록되었습니다.');
-          alert('성공적으로 게시글이 등록되었습니다 ');
-          goToHome();
-          setTimeout(() => {
-            setSuccess(null);
-          }, 1000);
-        },
-        onError: () => {
-          console.log('post요청 에러');
-        },
-      });
-    } catch (error) {
-      console.error('데이터 업로드 실패', error);
-    }
+    createPostMutation.mutate(formData, {
+      onSuccess: () => {
+        setSuccess('성공적으로 게시글이 등록되었습니다.');
+        alert('성공적으로 게시글이 등록되었습니다 ');
+        goToHome();
+        setTimeout(() => {
+          setSuccess(null);
+        }, 1000);
+      },
+      onError: () => {
+        alert('post요청 네트워크 에러 발생했습니다. 다시 등록해주세요!');
+      },
+    });
   };
 
   return (
     <main className="flex flex-col mx-4 mt-4">
       <form onSubmit={handleSubmit}>
-        <section className="mt-2 mb-10 border-t border-b">
-          <Link to="" className="w-full h-6 mb-10 ">
-            <div className="flex justify-center items-center">
-              <span className="text-xl font-bold">
-                {' '}
-                작성 가이드로(화면이동) 구현X
-              </span>
-              <span>
-                <VscZoomIn />
-              </span>
-            </div>
-          </Link>
-        </section>
-
         <SelectCountry
           onChange={handleChangeInfo}
+          onCityChange={handleCityChange}
           beforeCountry={inputs.travelCountry}
           beforeCity={inputs.travelCity}
         />

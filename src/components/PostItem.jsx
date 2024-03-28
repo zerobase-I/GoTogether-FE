@@ -54,9 +54,6 @@ const PostItem = ({
               {content}
             </span>
           </div>
-          <p className="ml-4 mt-2 text-sm max-h-24 overflow-hidden text-ellipsis">
-            {content}
-          </p>
         </div>
       </div>
     </section>
