@@ -30,7 +30,7 @@ const ReviewDetail = () => {
 
   console.log();
   return (
-    <>
+    <section className="mb-20">
       <div className="overflow-y-auto">
         <div className="flex justify-between items-center">
           <div className="flex items-center">
@@ -65,7 +65,10 @@ const ReviewDetail = () => {
           {isError && <p>{error.message}</p>}
           {myReview && console.log(Object.entries(myReview))}
           {myReview && console.log(myReview)}
-
+          <div className="text-2xl mt-4 mb-2">
+            나의 동행 점수 :{' '}
+            <span className="text-red-700">{myReview && myReview.rating}</span>
+          </div>
           {characteristic.map((item) => {
             return (
               <div key={item} className="p-2.5  flex justify-between gap-12">
@@ -75,9 +78,7 @@ const ReviewDetail = () => {
                     className="w-10 transform scale-x-[-1] w-100"
                     alt="Left Arrow"
                   />
-                  <span className="text-xl ">
-                    {myReview && myReview.memberId}
-                  </span>
+                  <span className="text-xl ">{myReview && myReview[item]}</span>
                 </div>
                 <div>
                   <div className="bg-blue-300 w-48 p-4 rounded-md">{item}</div>
@@ -87,7 +88,7 @@ const ReviewDetail = () => {
           })}
         </div>
       </div>
-    </>
+    </section>
   );
 };
 
