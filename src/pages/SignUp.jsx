@@ -58,8 +58,14 @@ const SignUp = () => {
   };
 
   const handleFileChange = (event) => {
-    setImage(event.target.files[0]); // 파일 상태 업데이트
-  };
+  const file = event.target.files[0]; // 선택된 파일
+  if (file && file.size > 1048576) { // 1MB = 1,048,576 bytes
+    alert('파일 용량이 1MB를 초과합니다. 1MB 미만의 이미지를 선택해주세요.');
+    event.target.value = ''; // 파일 선택 필드 초기화
+  } else {
+    setImage(file); // 파일 상태 업데이트
+  }
+};
 
   const handleRequestEmailVerification = async () => {
     try {
@@ -347,6 +353,7 @@ const SignUp = () => {
                 name="nickname"
                 type="text"
                 required
+                maxLength="8"
                 className="aappearance-none rounded-none block m-auto w-full px-3 py-3 border-b-2 border-gray-500 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 placeholder="닉네임"
                 value={nickname}
@@ -431,7 +438,7 @@ const SignUp = () => {
                 className="appearance-none mb-7 rounded-none block m-auto w-full px-3 py-3 border-b-2 border-gray-500 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 placeholder="MBTI (선택 사항)"
                 value={mbti}
-                onChange={(e) => setMbti(e.target.value)}
+                onChange={(e) => setMbti(e.target.value.toUpperCase())}
               />
             </div>
             <div>
