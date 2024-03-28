@@ -43,7 +43,7 @@ const ChatList = () => {
               className="bg-white p-4 rounded-md shadow-md hover:shadow-lg cursor-pointer transition duration-300 ease-in-out flex items-center justify-between"
               onClick={() =>
                 navigate(`/chatroom/${room.chatRoomId}`, {
-                  state: { roomName: room.name },
+                  state: { roomName: room.name, postId:room.postId },
                 })
               }
             >

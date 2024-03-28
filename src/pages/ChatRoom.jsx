@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import ChatSideBar from '/src/components/chatSideBar.jsx';
 import {reissueToken, fetchChatMessages } from '/src/api/chatService.js';
 import axios from 'axios';
@@ -7,6 +7,7 @@ import * as Stomp from 'stomp-websocket';
 // import { useQuery } from '@tanstack/react-query';
 
 const ChatRoom = () => {
+  const location = useLocation();
   const [stompClient, setStompClient] = useState(null);
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState('');
@@ -14,6 +15,7 @@ const ChatRoom = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const messageContainerRef = useRef(null);
   const { chatRoomId } = useParams(); // 채팅방 ID
+  const { postId } = location.state || {};
   
   useEffect(() => {
   console.log("Chat Room ID: ", chatRoomId);
@@ -25,55 +27,38 @@ const ChatRoom = () => {
     setUserDetails(JSON.parse(localStorage.getItem('userDetails')) || {});
    }, []);
   
+   
    useEffect(() => {
-    if (chatRoomId) {
-      const loadChatMessages = async () => {
-        try {
-          const fetchedMessages = await fetchChatMessages(localStorage.getItem('accessToken'), chatRoomId);
-          setMessages(fetchedMessages);
-        } catch (error) {
-          console.error('Failed to fetch chat messages:', error);
-        }
-      };
-      loadChatMessages();
-    }
-  }, [chatRoomId]);
-    
-   useEffect(() => {
-    const tryConnectWebSocket = async () => {
-      if (stompClient?.connected) return;
+  const tryConnectWebSocket = async () => {
+    if (stompClient?.connected) return;
 
-      const accessToken = localStorage.getItem('accessToken') || '';
-      const wsUrl = `ws://gotogether.site/ws`;
-      const client = Stomp.over(new WebSocket(wsUrl));
+    const accessToken = localStorage.getItem('accessToken') || '';
+    const wsUrl = `ws://gotogether.site/ws`;
+    const client = Stomp.over(new WebSocket(wsUrl));
 
-      client.connect(
-        { 'Authorization': `Bearer ${accessToken}` },
-        () => {
-          setStompClient(client);
-          const subscription = client.subscribe(`/exchange/chat.exchange/room.${chatRoomId}`, message => {
-            const receivedMessage = JSON.parse(message.body);
-            // 현재 사용자가 보낸 메시지는 화면에 다시 추가하지 않음
-            if (receivedMessage.email === userDetails.email && receivedMessage.createdAt && messages.find(m => m.createdAt === receivedMessage.createdAt)) {
-              setMessages(prevMessages => [...prevMessages, receivedMessage]);
-            }
-          });
-          return () => subscription.unsubscribe();
-        },
-        async (error) => {
-         if (error.headers?.message === 'Expired Token') {
-            const newAccessToken = await reissueToken(localStorage.getItem('refreshToken'));
-            localStorage.setItem('accessToken', newAccessToken);
-            axios.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
-            tryConnectWebSocket(); // 재시도
+    client.connect({ 'Authorization': `Bearer ${accessToken}` }, () => {
+      setStompClient(client);
+      
+      client.subscribe(`/exchange/chat.exchange/room.${chatRoomId}`, message => {
+        const receivedMessage = JSON.parse(message.body);
+        setMessages(prevMessages => {
+          // 수신된 메시지의 ID가 현재 메시지 목록에 없을 경우에만 추가
+          const messageExists = prevMessages.some(m => m.id === receivedMessage.id);
+          if (!messageExists) {
+            return [...prevMessages, receivedMessage];
+          } else {
+            return prevMessages; // 중복된 메시지는 추가하지 않음
           }
-        }
-      );
-    };
-    tryConnectWebSocket();
+        });
+      });
+    }, async (error) => {
+      // 에러 처리...
+    });
+  };
+  tryConnectWebSocket();
 
-    return () => stompClient?.disconnect();
-  }, [chatRoomId]);// Dependency array to re-run the effect when chatRoomId or stompClient changes.
+  return () => stompClient?.disconnect();
+}, [chatRoomId]);// Dependency array to re-run the effect when chatRoomId or stompClient changes.
    
 
 
@@ -87,19 +72,41 @@ const ChatRoom = () => {
   
 
   const handleMessageSend = () => {
-    if (!inputMessage.trim() || !stompClient) return;
+  if (!inputMessage.trim() || !stompClient) return;
 
-  const createdAt = new Date().toISOString();
-const messagePayload = {
-  email: userDetails.email,
-  content: inputMessage,
-  createdAt, // ISO 8601 형식의 문자열
+  const messagePayload = {
+    email: userDetails.email,
+    nickname: userDetails.nickname,
+    content: inputMessage,
+    createdAt: new Date().toISOString(),
+  };
+
+  // 메시지를 서버에 전송
+  stompClient.send(`/pub/chat/${chatRoomId}`, {}, JSON.stringify(messagePayload));
+  
+  // 입력 필드 초기화
+  setInputMessage('');
+
+  // 메시지 전송 후, 최신 메시지를 데이터베이스에서 로드
+  loadLatestMessages();
 };
 
-    stompClient.send(`/pub/chat/${chatRoomId}`, {}, JSON.stringify(messagePayload));
-    setInputMessage(''); // 입력 필드 초기화
-    setMessages(prevMessages => [...prevMessages, {...messagePayload, id: createdAt}]);
-  };
+// 데이터베이스에서 최신 메시지를 로드하는 함수
+const loadLatestMessages = async () => {
+  try {
+    const fetchedMessages = await fetchChatMessages(localStorage.getItem('accessToken'), chatRoomId);
+    setMessages(fetchedMessages);
+  } catch (error) {
+    console.error('Failed to fetch chat messages:', error);
+  }
+};
+
+// useEffect 내에 존재하는 loadChatMessages 호출 부분을 loadLatestMessages로 변경
+useEffect(() => {
+  if (chatRoomId) {
+    loadLatestMessages();
+  }
+}, [chatRoomId]);
 
   const handleInputChange = (e) => setInputMessage(e.target.value);
 
@@ -119,63 +126,71 @@ const messagePayload = {
 
 
 
-/////////////////////////////////////////////////////////////////////////////////////////////
-  useEffect(() => {
-    const toggleButton = document.getElementById('toggleButton');
-    const sidebar = document.getElementById('sidebar');
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  
+  const handleButtonClick = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
 
-    const handleButtonClick = () => {
-      // 사이드바가 화면 왼쪽 바깥에 있는지 확인하여 조건부로 클래스를 토글합니다.
-      if (sidebar.classList.contains('right-[-100%]')) {
-        // 사이드바를 화면으로 슬라이드 시킵니다.
+
+  useEffect(() => {
+    const sidebar = document.getElementById('sidebar');
+    if (sidebar) {
+      if (isMenuOpen) {
         sidebar.classList.remove('right-[-100%]');
         sidebar.classList.add('right-0');
       } else {
-        // 사이드바를 화면 왼쪽 바깥으로 슬라이드 시킵니다.
         sidebar.classList.remove('right-0');
         sidebar.classList.add('right-[-100%]');
       }
-    };
+    }
+  }, [isMenuOpen]);
 
-    toggleButton.addEventListener('click', handleButtonClick);
-
-    // 컴포넌트가 언마운트될 때 이벤트 리스너 정리
-    return () => {
-      toggleButton.removeEventListener('click', handleButtonClick);
-    };
-  }, []);
-
-  
+ 
   ////////////////////////////////////////////////////////////////////////////////////////////
 
   return (
     <div className="flex flex-col h-screen">
+           <button
+        id="toggleButton"
+        onClick={handleButtonClick}
+        className={`fixed top-4 z-50 text-4xl px-3 py-1 rounded-full text-white ${isMenuOpen ? 'right-48' : 'right-4'} transition-all ease-in-out duration-200`}
+      >
+        {isMenuOpen ? 'x' : '='}
+      </button>
       <div id="messageContainer" className="flex-1 pb-36 p-4 overflow-y-auto">
         {messages.map((message, index) => (
   <div key={index} className={`mb-2 flex ${message.email === userDetails.email ? 'justify-end' : 'justify-start'}`}>
     <div className={`max-w-xl ${message.email === userDetails.email ? 'items-end' : ''}`}>
       {/* 사용자 자신의 메시지일 경우 메시지 본문과 시간 표시 위치 조정 */}
-      {message.email === userDetails.email ? (
-                <div className="flex flex-col items-end">
-                  <div className="flex justify-start">{message.nickname}</div>
-                  <div className="flex items-end">
-                    <div className="text-xs mr-2">{formatTime(message.createdAt)}</div>
-                    <div className={`p-3 rounded-lg shadow bg-blue-100`}>
-                      {message.content}
-                    </div>
-                  </div> 
-        </div>
+              {message.email === userDetails.email ? (
+                <div className="flex">
+                  
+                  <div className="flex flex-col items-end">
+                    <div className="flex justify-start">{message.nickname}</div>
+                    <div className="flex items-end">
+                      <div className="text-xs mr-2">{formatTime(message.createdAt)}</div>
+                      <div className={`p-3 rounded-lg shadow bg-blue-100`}>
+                        {message.content}
+                      </div>
+                    </div> 
+                  </div>
+                  <img className="rounded-full ml-2 mt-7 h-10 w-14" src="/src/assets/profileImage.png" alt="profileImg"/>
+                </div>
       ) : (
-        // 상대방 메시지일 경우
-        <div className="flex flex-col items-start">
-          <div className="flex justify-start">{message.nickname}</div>
-          <div className="flex items-end">
-            <div className={`p-3 rounded-lg shadow bg-gray-100`}>
-              {message.content}
-            </div>
-            <div className="text-xs ml-2">{formatTime(message.createdAt)}</div>
-          </div>
-        </div>
+                  // 상대방 메시지일 경우
+                  <div className="flex">
+                    <img className="rounded-full mr-2 mt-7 h-10 w-14" src="/src/assets/profileImage.png" alt="profileImg"/>
+                      <div className="flex flex-col items-start">
+                        <div className="flex justify-start">{message.nickname}</div>
+                        <div className="flex items-end">
+                          <div className={`p-3 rounded-lg shadow bg-gray-100`}>
+                            {message.content}
+                          </div>
+                          <div className="text-xs ml-2">{formatTime(message.createdAt)}</div>
+                        </div>
+                      </div>
+                  </div>
       )}
     </div>
   </div>
@@ -186,15 +201,12 @@ const messagePayload = {
         <div className="flex items-center">
 
           <div className="relative">
-            <button id="toggleButton" className="bg-blue-500 text-white px-3 py-1 mr-1 rounded-full">
-              +
-            </button>
             <div id="sidebar" className="fixed h-full top-0 outline-none right-[-100%] shadow-2xl bg-sky-100 w-64 rounded-lg transition-all duration-300 ease-in-out overflow-y-auto">
-              <ChatSideBar chatRoomId={chatRoomId} />
+              <ChatSideBar chatRoomId={chatRoomId} postId={postId} />
             </div>
           </div>
 
-          <textarea
+          <textarea 
             value={inputMessage}
             onChange={handleInputChange}
             placeholder="메시지를 입력하세요..."
