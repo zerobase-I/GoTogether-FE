@@ -37,3 +37,16 @@ export const getOtherMemberInfo = async (memberId) => {
 // 알림 설정 조회 -> get / 토큰
 
 // 알림 on/off  -> patch /토큰
+
+// 평가 조회
+export const getMyReviewInfo = async (memberId) => {
+  try {
+    const response = await axios.get(
+      `${BASE_URL}/member/assessment/${memberId}`,
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};

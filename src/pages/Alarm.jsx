@@ -1,14 +1,35 @@
 import React from 'react';
 import AlarmBox from '../components/AlarmBox';
+import useNotification from '../components/hooks/useNotification';
+import Loading from '../components/Loading';
 
 const Alarm = () => {
+  const {
+    inQuiryNotificationQuery: {
+      data: notificationList,
+      isLoading,
+      isError,
+      error,
+    },
+  } = useNotification();
+
+  if (isLoading) return <Loading />;
+  if (isError) return <p>{error.message}</p>;
+  console.log(notificationList);
+
   return (
-    <main>
+    <main className="mb-40">
       <h2 className="text-2xl mt-10">알림창 </h2>
-      <AlarmBox />
-      <AlarmBox />
-      <AlarmBox />
-      <AlarmBox />
+      {notificationList?.map((list) => {
+        return (
+          <AlarmBox
+            key={list.id}
+            notificationId={list.id}
+            postTitle={list.postTitle}
+            postId={list.postId}
+          />
+        );
+      })}
     </main>
   );
 };

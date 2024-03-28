@@ -71,7 +71,7 @@ export const postAccompanyCancel = async (requestId) => {
   }
 };
 
-//동행 요청 승인하기
+//travelrequestlist 페이지 - 동행 요청 승인하기
 export const postApproveAccompany = async (requestListId) => {
   try {
     const response = await axios.post(
@@ -93,7 +93,8 @@ export const postApproveAccompany = async (requestListId) => {
   }
 };
 
-//동행 요청 거절하기
+//
+//travelrequestlist 페이지 - 동행 요청 거절하기
 export const postRejectAccompany = async (requestListId) => {
   try {
     await axios.post(
@@ -105,6 +106,35 @@ export const postRejectAccompany = async (requestListId) => {
         },
       },
     );
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+// 리뷰 대상 조회
+export const getReviewerList = async (postId) => {
+  console.log(postId);
+  try {
+    const response = await axios.get(`${BASE_URL}/accompany/review/${postId}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+// 동행 후기 작성
+export const writeCompanionReview = async (reviews) => {
+  try {
+    await axios.post(`${BASE_URL}/accompany/review/submit`, reviews, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
   } catch (error) {
     console.error(error);
   }
