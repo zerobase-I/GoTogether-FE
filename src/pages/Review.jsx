@@ -4,8 +4,6 @@ import { useGetReviewerList } from '../components/hooks/useAccompany';
 import { useLocation } from 'react-router-dom';
 import Loading from '../components/Loading';
 import { sampleImage } from '../components/config/sampleImg';
-import { useRecoilValue } from 'recoil';
-import { UserInfoAtom } from '../recoil/userInfoAtom';
 
 const checkBoxList = [
   {
