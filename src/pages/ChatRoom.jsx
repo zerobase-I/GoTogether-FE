@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import ChatSideBar from '/src/components/chatSideBar.jsx';
 import {reissueToken, fetchChatMessages } from '/src/api/chatService.js';
 import axios from 'axios';
@@ -7,6 +7,7 @@ import * as Stomp from 'stomp-websocket';
 // import { useQuery } from '@tanstack/react-query';
 
 const ChatRoom = () => {
+  const location = useLocation();
   const [stompClient, setStompClient] = useState(null);
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState('');
@@ -14,6 +15,7 @@ const ChatRoom = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const messageContainerRef = useRef(null);
   const { chatRoomId } = useParams(); // 채팅방 ID
+  const { postId } = location.state || {};
   
   useEffect(() => {
   console.log("Chat Room ID: ", chatRoomId);
@@ -36,6 +38,7 @@ const ChatRoom = () => {
 
     client.connect({ 'Authorization': `Bearer ${accessToken}` }, () => {
       setStompClient(client);
+      
       client.subscribe(`/exchange/chat.exchange/room.${chatRoomId}`, message => {
         const receivedMessage = JSON.parse(message.body);
         setMessages(prevMessages => {
@@ -172,12 +175,12 @@ useEffect(() => {
                       </div>
                     </div> 
                   </div>
-                  <img className="rounded-full ml-2 mt-7 h-10 w-10" src={message.content} alt="profileImg"/>
+                  <img className="rounded-full ml-2 mt-7 h-10 w-14" src="/src/assets/profileImage.png" alt="profileImg"/>
                 </div>
       ) : (
                   // 상대방 메시지일 경우
                   <div className="flex">
-                    <img className="rounded-full mr-2 mt-7 h-10 w-10" src={message.content} alt="profileImg"/>
+                    <img className="rounded-full mr-2 mt-7 h-10 w-14" src="/src/assets/profileImage.png" alt="profileImg"/>
                       <div className="flex flex-col items-start">
                         <div className="flex justify-start">{message.nickname}</div>
                         <div className="flex items-end">
@@ -199,7 +202,7 @@ useEffect(() => {
 
           <div className="relative">
             <div id="sidebar" className="fixed h-full top-0 outline-none right-[-100%] shadow-2xl bg-sky-100 w-64 rounded-lg transition-all duration-300 ease-in-out overflow-y-auto">
-              <ChatSideBar chatRoomId={chatRoomId} />
+              <ChatSideBar chatRoomId={chatRoomId} postId={postId} />
             </div>
           </div>
 
