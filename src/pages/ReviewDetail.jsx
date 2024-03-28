@@ -1,8 +1,34 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { AiOutlineTrademark } from 'react-icons/ai';
+import useMember from '../components/hooks/useMember';
+import { useRecoilValue } from 'recoil';
+import { UserInfoAtom } from '../recoil/userInfoAtom';
+import Loading from '../components/Loading';
+import { sampleImage } from '../components/config/sampleImg';
+
+const characteristic = [
+  'adaptability',
+  'humor',
+  'manner',
+  'navigation',
+  'photography',
+  'punctuality',
+  'responsiveness',
+];
 
 const ReviewDetail = () => {
+  const {
+    name,
+    id: loginUserMemberId,
+    profileImageUrl,
+  } = useRecoilValue(UserInfoAtom);
+
+  const {
+    getMyReviewQuery: { data: myReview, isLoading, isError, error },
+  } = useMember(loginUserMemberId);
+
+  console.log();
   return (
     <>
       <div className="overflow-y-auto">
@@ -10,14 +36,11 @@ const ReviewDetail = () => {
           <div className="flex items-center">
             <div className="avatar">
               <div className="w-24 ml-10 mt-5 rounded-full">
-                <img
-                  src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-                  alt="Avatar"
-                />
+                <img src={profileImageUrl || sampleImage} alt="Avatar" />
               </div>
             </div>
 
-            <span className="text-xl ml-5 flex justify-start">홍길동</span>
+            <span className="text-xl ml-5 flex justify-start">{name}</span>
           </div>
 
           <div className="flex justify-end pr-10 w-1/4">
@@ -38,21 +61,30 @@ const ReviewDetail = () => {
         </div>
 
         <div className="container mx-auto px-3 sm:px-6 pt-2 lg:px-8">
-          {[5, 4, 7, 2, 4, 4, 9].map((count, index) => (
-            <div key={index} className="p-2.5  flex justify-between gap-12">
-              <div className="flex items-center gap-5 ml-5">
-                <img
-                  src="/src/assets/reviewCount.png"
-                  className="w-10 transform scale-x-[-1] w-100"
-                  alt="Left Arrow"
-                />
-                <span className="text-xl ">{count}</span>
+          {isLoading && <Loading />}
+          {isError && <p>{error.message}</p>}
+          {myReview && console.log(Object.entries(myReview))}
+          {myReview && console.log(myReview)}
+
+          {characteristic.map((item) => {
+            return (
+              <div key={item} className="p-2.5  flex justify-between gap-12">
+                <div className="flex items-center gap-5 ml-5">
+                  <img
+                    src="/src/assets/reviewCount.png"
+                    className="w-10 transform scale-x-[-1] w-100"
+                    alt="Left Arrow"
+                  />
+                  <span className="text-xl ">
+                    {myReview && myReview.memberId}
+                  </span>
+                </div>
+                <div>
+                  <div className="bg-blue-300 w-48 p-4 rounded-md">{item}</div>
+                </div>
               </div>
-              <div>
-                <div className="bg-blue-300 w-48 p-4 rounded-md">리뷰 내용</div>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </>

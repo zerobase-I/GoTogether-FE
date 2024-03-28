@@ -4,6 +4,8 @@ import { useGetReviewerList } from '../components/hooks/useAccompany';
 import { useLocation } from 'react-router-dom';
 import Loading from '../components/Loading';
 import { sampleImage } from '../components/config/sampleImg';
+import { useRecoilValue } from 'recoil';
+import { UserInfoAtom } from '../recoil/userInfoAtom';
 
 const checkBoxList = [
   {
@@ -127,7 +129,7 @@ const Review = () => {
       <form onSubmit={handleSubmit} className="mb-24">
         {isLoading && <Loading />}
         {isError && <p>{error.message}</p>}
-        {reviewerList &&
+        {reviewerList && Array.isArray(reviewerList) ? (
           reviewerList.map((memberList) => {
             return (
               <section className="border mt-4 mx-4" key={memberList.memberId}>
@@ -198,7 +200,10 @@ const Review = () => {
                 <button onClick={addReviews}>저장</button>
               </section>
             );
-          })}
+          })
+        ) : (
+          <p>리뷰 대상자가 없습니다</p>
+        )}
         <button className="btn btn-outline btn-success mt-4">제출하기</button>
       </form>
     </main>
