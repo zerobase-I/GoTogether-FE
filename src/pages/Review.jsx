@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import UserInfoSimple from './UserInfoSimple';
 import { useGetReviewerList } from '../components/hooks/useAccompany';
-import { useLocation } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import Loading from '../components/Loading';
 import { sampleImage } from '../components/config/sampleImg';
 
@@ -70,6 +70,7 @@ const Review = () => {
     };
 
     setReviews([...reviews, newReviews]);
+    alert('저장완료');
   };
 
   console.log(reviewerList);
@@ -99,16 +100,21 @@ const Review = () => {
     } else setReviewsValue({ ...reviewsValue, [name]: +value });
   };
 
+  const goToHome = () => {
+    Navigate('/');
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     writeReview.mutate(reviews, {
       onSuccess: () => {
-        console.log('리뷰 남기기 성공');
+        alert('리뷰가 성공적으로 남겨졌습니다.!');
       },
       onError: () => {
-        console.log('리뷰 남기기 실패');
+        alert('리뷰 남기기요청이 네트워크 문제로 실패했습니다.!');
       },
     });
+    goToHome();
   };
 
   return (

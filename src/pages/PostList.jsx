@@ -63,7 +63,6 @@ const PostList = () => {
       data: chatRoomLists,
       isLoading: isChatRoomLoading,
       isError: isChatRoomError,
-      error: ChatRoomError,
     },
   } = useChatRoom();
 
@@ -71,7 +70,6 @@ const PostList = () => {
 
   useEffect(() => {
     if (isChatRoomLoading) return <Loading />;
-    if (isChatRoomError) return <p>{ChatRoomError.message}</p>;
 
     if (loginUserEmail === postUserEmail) {
       setIsMyPost(true);
@@ -83,7 +81,7 @@ const PostList = () => {
         setIsNotChatRoom(false);
         setChatRoomId(isChatRoom.chatRoomId);
       }
-      return;
+      return () => {};
     }
 
     const participantPosts =
@@ -91,7 +89,14 @@ const PostList = () => {
     if (participantPosts) {
       setParticipantPosts(true);
     }
-  }, [chatRoomLists, isChatRoomLoading, isChatRoomError]);
+  }, [
+    chatRoomLists,
+    isChatRoomLoading,
+    isChatRoomError,
+    postId,
+    loginUserEmail,
+    postUserEmail,
+  ]);
 
   console.log(chatRoomId && chatRoomId);
 
@@ -114,7 +119,9 @@ const PostList = () => {
     } else {
       setIsRequest(false);
     }
-  }, [requestList]);
+
+    return () => {}; // Add an empty cleanup function
+  }, [requestList, postAuthorId, postId]);
 
   const handleRequestBtnClick = (e) => {
     console.log('동행요청 버튼 클릭');
