@@ -30,7 +30,7 @@ const PostItem = ({
       <div className="flex flex-col pt-3 rounded-2xl">
         <div className="flex ">
           <img
-            className="w-24 md:w-40 h-40"
+            className="w-24 md:w-40 md:h-40 "
             src={(imagesUrl && imagesUrl[0]) || sampleImage}
             alt="샘플이미지"
             height="100"

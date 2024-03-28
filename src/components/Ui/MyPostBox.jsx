@@ -29,9 +29,9 @@ const MyPostBox = () => {
   if (isError) return <p>{error.message}</p>;
   //console.log(postsData);
 
-  const handlePageChange = (currentPage) => {
+  /*   const handlePageChange = (currentPage) => {
     setCurrentPage(currentPage);
-  };
+  }; */
 
   return (
     <article className="mb-20">
@@ -41,7 +41,7 @@ const MyPostBox = () => {
         <p>게시물이 존재하지 않습니다.</p>
       )}
 
-      <Pagination
+      {/*       <Pagination
         activePage={currentPage} // 현재 페이지
         itemsCountPerPage={postPerPage} // 한 페이지에서 보여줄 post 개수
         totalItemsCount={postsData && postsData.totalElements} // 총 post 개수
@@ -51,7 +51,7 @@ const MyPostBox = () => {
         firstPageText="<<"
         lastPageText=">>"
         onChange={handlePageChange}
-      ></Pagination>
+      ></Pagination> */}
     </article>
   );
 };

@@ -2,13 +2,15 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   getReceiveAccompanyList,
   getRequestAccompanyList,
+  getReviewerList,
   postAccompanyCancel,
   postAccompanyRequest,
   postApproveAccompany,
   postRejectAccompany,
+  writeCompanionReview,
 } from '../../api/accompany';
 
-const useAccompany = () => {
+export const useAccompany = () => {
   const queryClient = useQueryClient();
 
   //내가 보낸 동행 요청목록
@@ -60,4 +62,18 @@ const useAccompany = () => {
   };
 };
 
-export default useAccompany;
+// 리뷰 대상 조회
+export const useGetReviewerList = (postIds) => {
+  const ReviewerList = useQuery({
+    queryKey: ['ReviewerList'],
+    queryFn: () => getReviewerList(postIds),
+  });
+
+  //동행 후기 작성
+  const writeReview = useMutation({
+    mutationFn: writeCompanionReview,
+    onSuccess: () => console.log('동행 후기 작성 성공'),
+  });
+
+  return { ReviewerList, writeReview };
+};

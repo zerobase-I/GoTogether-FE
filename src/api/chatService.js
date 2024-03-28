@@ -4,7 +4,6 @@ const apiClient = axios.create({
   baseURL: 'https://gotogether.site/api/',
 
 });
-// 채팅방 입장을 처리하는 함수
 
 export const reissueToken = async (refreshToken) => {
   try {

@@ -1,6 +1,4 @@
 import axios from 'axios';
-
-const BASE_URL = `https://gotogether.site/api`;
 import { BASE_URL } from '../components/config/data';
 
 export const getPosts = async (page = 0, size = 10) => {

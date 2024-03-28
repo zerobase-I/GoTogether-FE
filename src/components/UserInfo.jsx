@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { TbPencilSearch } from 'react-icons/tb';
 import { useRecoilValue } from 'recoil';
 import { UserInfoAtom } from '../recoil/userInfoAtom';
+import { sampleImageProfile } from './config/sampleImg';
 
 const UserInfo = () => {
   const { nickname, profileImageUrl } = useRecoilValue(UserInfoAtom);
@@ -17,7 +18,7 @@ const UserInfo = () => {
         <div className="avatar">
           <div className="w-40 rounded-full md:w-60 relative">
             <Link to="/editprofile">
-              <img src={profileImageUrl} />
+              <img src={profileImageUrl || sampleImageProfile} />
               <TbPencilSearch className="absolute top-28 right-8 md:absolute md:top-44 md:right-10 text-2xl" />
             </Link>
           </div>
