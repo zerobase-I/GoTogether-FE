@@ -19,7 +19,7 @@ const CreatePost = () => {
   const [success, setSuccess] = useState(); // 업로드 성공/ 실패 상태
   const [inputs, setInputs] = useState({
     travelCountry: 'KOREA',
-    travelCity: '',
+    travelCity: 'SEOUL',
     startDate: formatDate,
     endDate: formatDate,
     postGenderType: '',
@@ -124,7 +124,11 @@ const CreatePost = () => {
           </Link>
         </section>
 
-        <SelectCountry onChange={handleChangeInfo} />
+        <SelectCountry
+          onChange={handleChangeInfo}
+          beforeCountry={inputs.travelCountry}
+          beforeCity={inputs.travelCity}
+        />
         <ReactCalendar
           onDateChange={handleDateChange}
           startDate={inputs.startDate}
