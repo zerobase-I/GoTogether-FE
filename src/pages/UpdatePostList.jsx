@@ -1,7 +1,7 @@
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { VscZoomIn } from 'react-icons/vsc';
+import { useLocation } from 'react-router-dom';
+
 import SelectCountry from '../components/SelectCountry';
 import ReactCalendar from '../components/ReactCalendar';
 import RadioBtn from '../components/RadioBtn';
@@ -11,9 +11,9 @@ import { ImageUpload2 } from '../api/ImageUpload2';
 import { categoryLists, genders } from '../components/config/data';
 import usePosts from '../components/hooks/usePosts';
 import Loading from '../components/Loading';
+import { useGoToPage } from '../utils/utils';
 
 const UpdatePostList = () => {
-  const { UpdatePostMutation } = usePosts();
   const [success, setSuccess] = useState(); // 업로드 성공/ 실패 상태
   const {
     state: {
@@ -57,6 +57,9 @@ const UpdatePostList = () => {
 
   console.log(inputs);
 
+  const { UpdatePostMutation } = usePosts();
+  const { goToHome } = useGoToPage();
+
   // inputs 변경시 테스트 코드
   useEffect(() => {
     console.log(inputs);
@@ -92,11 +95,6 @@ const UpdatePostList = () => {
 
   const handleCityChange = (firstSelectCity) => {
     setInputs({ ...inputs, travelCity: firstSelectCity });
-  };
-
-  const navigate = useNavigate();
-  const goToHome = () => {
-    navigate('/');
   };
 
   const handleSubmit = async (e) => {

@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import ReactCalendar from '../components/ReactCalendar';
 import RadioBtn from '../components/RadioBtn';
@@ -9,8 +8,10 @@ import moment from 'moment';
 import { ImageUpload2 } from '../api/ImageUpload2';
 import usePosts from '../components/hooks/usePosts';
 import RadioBtnCategory from '../components/Ui/RadioBtnCategory';
+import { useGoToPage } from '../utils/utils';
 
 const CreatePost = () => {
+  const { goToHome } = useGoToPage();
   const { createPostMutation } = usePosts();
   const [success, setSuccess] = useState(); // 업로드 성공/ 실패 상태
   const [inputs, setInputs] = useState({
@@ -28,11 +29,6 @@ const CreatePost = () => {
     content: '',
     image: [],
   });
-
-  const navigate = useNavigate();
-  const goToHome = () => {
-    navigate('/');
-  };
 
   /*ㅡㅡㅡㅡ inputs 출력 테스트 코드ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */
   useEffect(() => {
@@ -239,6 +235,7 @@ const CreatePost = () => {
             name="title"
             onChange={handleChangeInfo}
           />
+          {/* 내용 빈 문자열일시 서버에러 -> alert로 막아놈 */}
           <EditorQuill onTextChange={handleQuillTextChange} />
         </section>
 
