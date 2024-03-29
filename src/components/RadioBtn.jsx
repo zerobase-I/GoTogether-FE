@@ -1,29 +1,14 @@
 import React from 'react';
 import RadioBtnSingle from './Ui/RadioBtnSingle';
 
-const RadioBtn = ({ option1, option2, name, onChange, beforeGender }) => {
-  /*   useEffect(() => {
-    console.log(beforeGender);
-  }); */
+const RadioBtn = ({ option, name, onChange }) => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2 p-4">
-      <RadioBtnSingle
-        key={option1}
-        option={option1}
-        name={name}
-        onChange={onChange}
-        value="1"
-        beforeGender={beforeGender && beforeGender === '모두'}
-      />
-      <RadioBtnSingle
-        key={option2}
-        option={option2}
-        name={name}
-        onChange={onChange}
-        beforeGender={beforeGender && beforeGender === '동성'}
-        value="2"
-      />
-    </div>
+    <RadioBtnSingle
+      key={Object.keys(option)}
+      option={option}
+      name={name}
+      onChange={onChange}
+    />
   );
 };
 

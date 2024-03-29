@@ -5,6 +5,15 @@ export const categoryList = [
   'EXHIBITION_PERFORMANCE',
   'ETC',
 ];
+export const categoryLists = [
+  { FOOD_CAFE: '카페' },
+  { ALCOHOL_FRIENDSHIP: '술친구' },
+  { ACTIVITY_TOUR: '액티비티한 여행' },
+  { EXHIBITION_PERFORMANCE: '전시공연' },
+  { ETC: '기타' },
+];
+
+export const genders = [{ ALL: '모두' }, { MAN: '남자' }, { WOMAN: '여자' }];
 
 export const accessToken = localStorage.getItem('accessToken');
 

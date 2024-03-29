@@ -1,6 +1,8 @@
+@import 'react-calendar/dist/Calendar.css';
+
 .react-calendar {
   margin: 0 auto;
-  width: 1000px;
+  width: max-content;
   max-width: 100%;
   background-color: #fff;
   color: #222;
@@ -8,6 +10,7 @@
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
   font-family: Arial, Helvetica, sans-serif;
   line-height: 1.5em;
+  border: 2px solid #3b82f6;
 }
 
 .react-calendar--doubleView {
@@ -43,17 +46,20 @@
   cursor: pointer;
 }
 
+/*리액트 캘린더 년도/월   */
 .react-calendar__navigation {
   display: flex;
   height: 44px;
-  margin-bottom: 1em;
+  margin-bottom: 0.7em;
 }
 
+/* 리액트 캘린더 년도/월  */
 .react-calendar__navigation button {
-  color: #6f48eb;
   min-width: 44px;
+  color: #000000;
+  font-weight: 700;
   background: none;
-  font-size: 16px;
+  font-size: 1.5rem;
   margin-top: 8px;
 }
 
@@ -92,7 +98,7 @@ abbr[title] {
 }
 
 .react-calendar__month-view__days__day--weekend {
-  color: #d10000;
+  color: #ff0000;
 }
 
 .react-calendar__month-view__days__day--neighboringMonth,
@@ -130,16 +136,18 @@ abbr[title] {
 
 .react-calendar__tile:enabled:hover,
 .react-calendar__tile:enabled:focus {
-  background: #f8f8fa;
-  color: #6f48eb;
+  background: #3b82f6;
+  color: #050505;
   border-radius: 6px;
 }
 
+/* 오늘 날짜 */
 .react-calendar__tile--now {
-  background: #6f48eb33;
+  background: #f31212e5;
   border-radius: 6px;
-  font-weight: bold;
-  color: #6f48eb;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #0cda27;
 }
 
 .react-calendar__tile--now:enabled:hover,
@@ -147,7 +155,7 @@ abbr[title] {
   background: #6f48eb33;
   border-radius: 6px;
   font-weight: bold;
-  color: #6f48eb;
+  color: #3b82f6;
 }
 
 .react-calendar__tile--hasActive {
@@ -160,40 +168,51 @@ abbr[title] {
 }
 
 .react-calendar__tile--active {
-  background: #6f48eb;
+  color: white;
+  background: #3b82f6;
   border-radius: 6px;
   font-weight: bold;
-  color: white;
 }
 
 .react-calendar__tile--active:enabled:hover,
 .react-calendar__tile--active:enabled:focus {
-  background: #6f48eb;
   color: white;
+  background: #3b82f6;
 }
 
+/* hover시 범위 배경 */
 .react-calendar--selectRange .react-calendar__tile--hover {
-  background-color: #f8f8fa;
+  background: #e8e8eb;
 }
 
 .react-calendar__tile--range {
-  background: #f8f8fa;
-  color: #6f48eb;
+  color: #000000;
+  background: #3b82f6 !important;
   border-radius: 0;
+  font-weight: 900;
+  font-size: 1.1rem;
 }
+
 .react-calendar__tile--rangeStart {
+  color: white;
+  background: #3b82f6 !important;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
   border-top-left-radius: 6px;
   border-bottom-left-radius: 6px;
-  background: #6f48eb;
-  color: white;
 }
 .react-calendar__tile--rangeEnd {
+  color: white;
+  background: #3b82f6 !important;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
   border-top-right-radius: 6px;
   border-bottom-right-radius: 6px;
-  background: #6f48eb;
-  color: white;
 }
+
+/* 이것 떄문 위에 !important 적용해 준것 */
+/* button,
+[type='button'] {
+  background-color: transparent !important;
+}
+ */
