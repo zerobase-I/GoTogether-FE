@@ -1,19 +1,19 @@
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { VscZoomIn } from 'react-icons/vsc';
+import { useLocation } from 'react-router-dom';
+
 import SelectCountry from '../components/SelectCountry';
 import ReactCalendar from '../components/ReactCalendar';
 import RadioBtn from '../components/RadioBtn';
 import RadioBtnSingle from '../components/Ui/RadioBtnSingle';
 import EditorQuill from '../components/EditorQuill';
 import { ImageUpload2 } from '../api/ImageUpload2';
-import { categoryList } from '../components/config/data';
+import { categoryLists, genders } from '../components/config/data';
 import usePosts from '../components/hooks/usePosts';
 import Loading from '../components/Loading';
+import { useGoToPage } from '../utils/utils';
 
 const UpdatePostList = () => {
-  const { UpdatePostMutation } = usePosts();
   const [success, setSuccess] = useState(); // 업로드 성공/ 실패 상태
   const {
     state: {
@@ -57,6 +57,9 @@ const UpdatePostList = () => {
 
   console.log(inputs);
 
+  const { UpdatePostMutation } = usePosts();
+  const { goToHome } = useGoToPage();
+
   // inputs 변경시 테스트 코드
   useEffect(() => {
     console.log(inputs);
@@ -90,13 +93,22 @@ const UpdatePostList = () => {
     setInputs({ ...inputs, [name]: value });
   };
 
-  const navigate = useNavigate();
-  const goToHome = () => {
-    navigate('/');
+  const handleCityChange = (firstSelectCity) => {
+    setInputs({ ...inputs, travelCity: firstSelectCity });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (inputs.content === '') {
+      alert('내용을 입력해주세요!');
+      return;
+    } else if (inputs.postGenderType === '') {
+      alert('원하는 성별을 선택해주세요');
+      return;
+    } else if (inputs.postCategory === '') {
+      alert('카테고리를 선택해 주세요!');
+      return;
+    }
     console.log('submit 이벤트 발생');
 
     const formData = new FormData();
@@ -111,46 +123,30 @@ const UpdatePostList = () => {
       }
     }
 
-    try {
-      // 서버로 POST 요청 보내기
-      UpdatePostMutation.mutate(
-        { formData, postId },
-        {
-          onSuccess: () => {
-            setSuccess('성공적으로 게시글이 수정되었습니다.');
-            alert('성공적으로 게시글이 수정되었습니다 ');
-            goToHome();
-            setTimeout(() => {
-              setSuccess(null);
-            }, 1000);
-          },
+    UpdatePostMutation.mutate(
+      { formData, postId },
+      {
+        onSuccess: () => {
+          setSuccess('성공적으로 게시글이 수정되었습니다.');
+          alert('성공적으로 게시글이 수정되었습니다 ');
+          goToHome();
+          setTimeout(() => {
+            setSuccess(null);
+          }, 1000);
         },
-      );
-      console.log('데이터 업로드 성공');
-    } catch (error) {
-      console.error('데이터 업로드 실패', error);
-    }
+        onError: () => {
+          alert('게시글 수정이 네트워크 문제로 실패했습니다 다시시도해주세요!');
+        },
+      },
+    );
   };
 
   return (
     <main className="flex flex-col mx-4 mt-4">
       <form onSubmit={handleSubmit}>
-        <section className="mt-2 mb-10 border-t border-b">
-          <Link to="/guide" className="w-full h-6 mb-10 ">
-            <div className="flex justify-center items-center">
-              <span className="text-xl font-bold">
-                {' '}
-                작성 가이드로(화면이동) 구현X
-              </span>
-              <span>
-                <VscZoomIn />
-              </span>
-            </div>
-          </Link>
-        </section>
-
         <SelectCountry
           onChange={handleChangeInfo}
+          onCityChange={handleCityChange}
           beforeCountry={inputs.travelCountry}
           beforeCity={inputs.travelCity}
         />
@@ -166,13 +162,19 @@ const UpdatePostList = () => {
           <span className="text-xl text-left font-semibold w-max block ">
             함께하고 싶은 성별
           </span>
-          <RadioBtn
-            option1="ALL"
-            option2="MAN"
-            name="gender"
-            onChange={handleChangeInfo}
-            beforeGender={inputs.gender}
-          />
+          <div className="flex">
+            {genders.map((gender) => {
+              return (
+                <RadioBtn
+                  key={Object.keys(gender)}
+                  option={gender}
+                  name="postGenderType"
+                  onChange={handleChangeInfo}
+                  beforeGender={inputs.gender}
+                />
+              );
+            })}
+          </div>
         </section>
 
         <section className="mb-6">
@@ -225,14 +227,16 @@ const UpdatePostList = () => {
           <span className="text-xl w-full text-left font-semibold block mb-2">
             카테고리를 선택하세요
           </span>
-          {categoryList.map((category) => (
-            <RadioBtnSingle
-              option={category}
-              name="category"
-              key={category}
-              onChange={handleChangeInfo}
-            />
-          ))}
+          <div className="flex flex-col md:flex-row ">
+            {categoryLists.map((category) => (
+              <RadioBtnSingle
+                option={category}
+                name="category"
+                key={Object.keys(category)}
+                onChange={handleChangeInfo}
+              />
+            ))}
+          </div>
         </section>
 
         <section className="mb-6">

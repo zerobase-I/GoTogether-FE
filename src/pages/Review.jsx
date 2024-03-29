@@ -4,6 +4,7 @@ import { useGetReviewerList } from '../components/hooks/useAccompany';
 import { Navigate, useLocation } from 'react-router-dom';
 import Loading from '../components/Loading';
 import { sampleImage } from '../components/config/sampleImg';
+import { useGoToPage } from '../utils/utils';
 
 const checkBoxList = [
   {
@@ -51,6 +52,9 @@ const Review = () => {
     humor: false,
     adaptability: false,
   });
+
+  const { goToHome } = useGoToPage();
+
   const {
     ReviewerList: { data: reviewerList, isLoading, isError, error },
     writeReview,
@@ -98,10 +102,6 @@ const Review = () => {
     ) {
       setReviewsValue({ ...reviewsValue, [name]: checked });
     } else setReviewsValue({ ...reviewsValue, [name]: +value });
-  };
-
-  const goToHome = () => {
-    Navigate('/');
   };
 
   const handleSubmit = (e) => {

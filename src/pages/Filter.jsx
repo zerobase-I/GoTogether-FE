@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ReactCalendar from '../components/ReactCalendar';
-import { categoryList } from '../components/config/data';
+import { categoryLists } from '../components/config/data';
 import RadioBtnSingle from '../components/Ui/RadioBtnSingle';
 
 const Filter = () => {
@@ -58,7 +58,7 @@ const Filter = () => {
         <span className="text-xl w-full text-left font-semibold block mb-2">
           카테고리를 선택하세요
         </span>
-        {categoryList.map((category) => (
+        {categoryLists.map((category) => (
           <RadioBtnSingle
             option={category}
             name="category"

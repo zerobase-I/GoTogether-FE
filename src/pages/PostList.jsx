@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import usePosts from '../components/hooks/usePosts';
 import { useAccompany } from '../components/hooks/useAccompany';
 import { useRecoilValue } from 'recoil';
 import { UserInfoAtom } from '../recoil/userInfoAtom';
-
 import moment from 'moment';
 import { IoRocketOutline } from 'react-icons/io5';
 import { sampleImage } from '../components/config/sampleImg';
 import useChatRoom from '../components/hooks/useChatRoom';
+import { useGoToPage } from '../utils/utils';
 import Loading from '../components/Loading';
 
 const PostList = () => {
-  const { deletePostMutation } = usePosts();
   const userInfo = useRecoilValue(UserInfoAtom);
   const loginUserEmail = userInfo.email;
   const {
@@ -39,67 +38,62 @@ const PostList = () => {
       },
     },
   } = useLocation();
-  const navigate = useNavigate();
-  const goToHome = () => {
-    navigate('/');
-  };
-  const { requestAccompany, requestCancleAccompany } = useAccompany();
+
+  const { goToHome, navigate } = useGoToPage();
+  const { deletePostMutation } = usePosts();
   const {
+    requestAccompany,
+    requestCancelAccompany,
     getRequestListQuery: { data: requestList },
   } = useAccompany();
-
-  const [isRequest, setIsRequest] = useState(false); // 요청유무
-  const [isMyPost, setIsMyPost] = useState(false); //내 게시물 유무
-  const [participantPosts, setParticipantPosts] = useState(false);
-
-  const [isBtnClick, setIsBtnClick] = useState(false);
-  const [cancelId, setCancelId] = useState(null); // 취소요청 내역 고유 아이디
-
-  const [isNotChatRoom, setIsNotChatRoom] = useState(true);
-  const [chatRoomId, setChatRoomId] = useState(null);
-
   const {
     getChatRoomListsQuery: {
       data: chatRoomLists,
       isLoading: isChatRoomLoading,
       isError: isChatRoomError,
+      error,
     },
   } = useChatRoom();
 
-  console.log(chatRoomLists && chatRoomLists);
+  const [isRequest, setIsRequest] = useState(false); // 요청유무
+  const [isMyPost, setIsMyPost] = useState(false); //내 게시물 유무
+  const [participantPosts, setParticipantPosts] = useState(false); //다른 사람 게시물인데, 이미 채팅참여중인지
+  const [isBtnClick, setIsBtnClick] = useState(false);
+  const [cancelId, setCancelId] = useState(null); // 취소요청 내역 고유 아이디
+  const [isNotChatRoom, setIsNotChatRoom] = useState(true); //채팅방이 존재하지 않는지
+  const [chatRoomId, setChatRoomId] = useState(null);
 
   useEffect(() => {
-    if (isChatRoomLoading) return <Loading />;
-
     if (loginUserEmail === postUserEmail) {
       setIsMyPost(true);
-      const isChatRoom =
-        chatRoomLists && chatRoomLists.filter((list) => list.postId === postId);
+    }
+  }, []);
 
-      console.log(isChatRoom);
-      if (isChatRoom.length) {
+  useEffect(() => {
+    if (chatRoomLists) {
+      console.log(chatRoomLists);
+      const isChatRoom =
+        chatRoomLists && Array.isArray(chatRoomLists)
+          ? chatRoomLists?.filter((list) => list.postId === postId)
+          : null;
+
+      if (isChatRoom && isChatRoom.length) {
         setIsNotChatRoom(false);
         setChatRoomId(isChatRoom.chatRoomId);
       }
-      return () => {};
+
+      const participantPosts =
+        chatRoomLists &&
+        Array.isArray(chatRoomLists) &&
+        chatRoomLists.filter((list) => list.postId === postId);
+
+      if (participantPosts) {
+        setParticipantPosts(true);
+      }
     }
+  }, [chatRoomLists]);
 
-    const participantPosts =
-      chatRoomLists && chatRoomLists.filter((list) => list.postId === postId);
-    if (participantPosts) {
-      setParticipantPosts(true);
-    }
-  }, [
-    chatRoomLists,
-    isChatRoomLoading,
-    isChatRoomError,
-    postId,
-    loginUserEmail,
-    postUserEmail,
-  ]);
-
-  console.log(chatRoomId && chatRoomId);
-
+  /* 
   useEffect(() => {
     const isMatched =
       requestList &&
@@ -119,9 +113,7 @@ const PostList = () => {
     } else {
       setIsRequest(false);
     }
-
-    return () => {}; // Add an empty cleanup function
-  }, [requestList, postAuthorId, postId]);
+  }, [requestList, postAuthorId, postId]); */
 
   const handleRequestBtnClick = (e) => {
     console.log('동행요청 버튼 클릭');
@@ -145,7 +137,7 @@ const PostList = () => {
       );
     } else {
       setIsBtnClick(true);
-      requestCancleAccompany.mutate(cancelId, {
+      requestCancelAccompany.mutate(cancelId, {
         onSuccess: () => {
           setTimeout(() => {
             setIsRequest(false);
@@ -161,7 +153,6 @@ const PostList = () => {
   };
 
   const handleEditClick = () => {
-    //1. 글쓰기 페이지로 이동 -> 이동시, 현재 데이터들을 넘겨준다.
     navigate(`/updatePostList/${postId}`, {
       state: { post },
     });
@@ -174,7 +165,7 @@ const PostList = () => {
         goToHome();
       },
       onError: () => {
-        alert('게시글 삭제에 실패했습니다.');
+        alert('게시글 삭제에 실패했습니다. 잠시후, 다시 시도해주세요!');
       },
     });
   };

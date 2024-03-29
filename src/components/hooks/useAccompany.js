@@ -35,7 +35,7 @@ export const useAccompany = () => {
   });
 
   //게시글에서 동행 요청 취소하기
-  const requestCancleAccompany = useMutation({
+  const requestCancelAccompany = useMutation({
     mutationFn: postAccompanyCancel,
     onSuccess: () => queryClient.invalidateQueries(['requestCancleAccompany']),
   });
@@ -56,7 +56,7 @@ export const useAccompany = () => {
     getRequestListQuery,
     getReceiveListQuery,
     requestAccompany,
-    requestCancleAccompany,
+    requestCancelAccompany,
     approveAccompany,
     rejectAccompany,
   };

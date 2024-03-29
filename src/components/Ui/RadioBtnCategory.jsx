@@ -1,8 +1,8 @@
 import React from 'react';
 
-const RadioBtnSingle = ({ option, name, onChange, beforeGender }) => {
+const RadioBtnCategory = ({ option, name, onChange }) => {
   return (
-    <label className="w-full m-1 ">
+    <label className="md:w-1/3 m-1 ">
       <input
         className="peer hidden "
         type="radio"
@@ -32,4 +32,4 @@ const RadioBtnSingle = ({ option, name, onChange, beforeGender }) => {
   );
 };
 
-export default RadioBtnSingle;
+export default RadioBtnCategory;
