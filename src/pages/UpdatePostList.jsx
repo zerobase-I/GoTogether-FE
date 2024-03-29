@@ -136,20 +136,6 @@ const UpdatePostList = () => {
   return (
     <main className="flex flex-col mx-4 mt-4">
       <form onSubmit={handleSubmit}>
-        <section className="mt-2 mb-10 border-t border-b">
-          <Link to="/guide" className="w-full h-6 mb-10 ">
-            <div className="flex justify-center items-center">
-              <span className="text-xl font-bold">
-                {' '}
-                작성 가이드로(화면이동) 구현X
-              </span>
-              <span>
-                <VscZoomIn />
-              </span>
-            </div>
-          </Link>
-        </section>
-
         <SelectCountry
           onChange={handleChangeInfo}
           onCityChange={handleCityChange}

@@ -12,7 +12,7 @@ import { ImageUpload2 } from '../api/ImageUpload2';
 import usePosts from '../components/hooks/usePosts';
 
 const date = new Date();
-const formatDate = moment(date.toDateString()).format('MM-DD-YYYY');
+const today = moment(date.toDateString()).format('MM-DD-YYYY');
 
 const CreatePost = () => {
   const { createPostMutation } = usePosts();
@@ -20,8 +20,8 @@ const CreatePost = () => {
   const [inputs, setInputs] = useState({
     travelCountry: 'KOREA',
     travelCity: 'SEOUL',
-    startDate: formatDate,
-    endDate: formatDate,
+    startDate: moment(new Date().toDateString()).format('YYYY-MM-DDTHH:mm:ss'),
+    endDate: moment(new Date().toDateString()).format('YYYY-MM-DDTHH:mm:ss'),
     postGenderType: '',
     minimumAge: '18',
     maximumAge: '100',
@@ -38,11 +38,11 @@ const CreatePost = () => {
     navigate('/');
   };
 
-  /* inputs 출력 테스트 코드 */
+  /*ㅡㅡㅡㅡ inputs 출력 테스트 코드ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */
   useEffect(() => {
     console.log(inputs); // 상태가 업데이트된 후에 실행됨
   }, [inputs]); // inputs 상태가 변경될 때마다 실행
-
+  /* ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */
   const handleChangeInfo = (e) => {
     const { name, value } = e.target;
 
@@ -128,6 +128,7 @@ const CreatePost = () => {
           <RadioBtn
             option1="ALL"
             option2="MAN"
+            option3="WOMAN"
             name="postGenderType"
             onChange={handleChangeInfo}
           />
