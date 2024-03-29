@@ -69,11 +69,7 @@ const PostList = () => {
     }
   }, []);
 
-  if (isChatRoomLoading) {
-    return <Loading />;
-  } else if (isChatRoomError) {
-    return <p>{error.message}</p>;
-  } else {
+  useEffect(() => {
     if (chatRoomLists) {
       console.log(chatRoomLists);
       const isChatRoom =
@@ -95,7 +91,7 @@ const PostList = () => {
         setParticipantPosts(true);
       }
     }
-  }
+  }, [chatRoomLists]);
 
   /* 
   useEffect(() => {
