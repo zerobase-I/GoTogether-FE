@@ -8,7 +8,7 @@ import RadioBtn from '../components/RadioBtn';
 import RadioBtnSingle from '../components/Ui/RadioBtnSingle';
 import EditorQuill from '../components/EditorQuill';
 import { ImageUpload2 } from '../api/ImageUpload2';
-import { categoryList } from '../components/config/data';
+import { categoryLists, genders } from '../components/config/data';
 import usePosts from '../components/hooks/usePosts';
 import Loading from '../components/Loading';
 
@@ -101,6 +101,16 @@ const UpdatePostList = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (inputs.content === '') {
+      alert('내용을 입력해주세요!');
+      return;
+    } else if (inputs.postGenderType === '') {
+      alert('원하는 성별을 선택해주세요');
+      return;
+    } else if (inputs.postCategory === '') {
+      alert('카테고리를 선택해 주세요!');
+      return;
+    }
     console.log('submit 이벤트 발생');
 
     const formData = new FormData();
@@ -154,13 +164,19 @@ const UpdatePostList = () => {
           <span className="text-xl text-left font-semibold w-max block ">
             함께하고 싶은 성별
           </span>
-          <RadioBtn
-            option1="ALL"
-            option2="MAN"
-            name="gender"
-            onChange={handleChangeInfo}
-            beforeGender={inputs.gender}
-          />
+          <div className="flex">
+            {genders.map((gender) => {
+              return (
+                <RadioBtn
+                  key={Object.keys(gender)}
+                  option={gender}
+                  name="postGenderType"
+                  onChange={handleChangeInfo}
+                  beforeGender={inputs.gender}
+                />
+              );
+            })}
+          </div>
         </section>
 
         <section className="mb-6">
@@ -213,14 +229,16 @@ const UpdatePostList = () => {
           <span className="text-xl w-full text-left font-semibold block mb-2">
             카테고리를 선택하세요
           </span>
-          {categoryList.map((category) => (
-            <RadioBtnSingle
-              option={category}
-              name="category"
-              key={category}
-              onChange={handleChangeInfo}
-            />
-          ))}
+          <div className="flex flex-col md:flex-row ">
+            {categoryLists.map((category) => (
+              <RadioBtnSingle
+                option={category}
+                name="category"
+                key={Object.keys(category)}
+                onChange={handleChangeInfo}
+              />
+            ))}
+          </div>
         </section>
 
         <section className="mb-6">

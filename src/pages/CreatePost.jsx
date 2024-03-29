@@ -1,18 +1,14 @@
-import { Link, useNavigate } from 'react-router-dom';
-import { VscZoomIn } from 'react-icons/vsc';
+import { useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import ReactCalendar from '../components/ReactCalendar';
 import RadioBtn from '../components/RadioBtn';
-import RadioBtnSingle from '../components/Ui/RadioBtnSingle';
 import EditorQuill from '../components/EditorQuill';
-import { categoryList } from '../components/config/data';
+import { categoryLists, genders } from '../components/config/data';
 import SelectCountry from '../components/SelectCountry';
 import moment from 'moment';
 import { ImageUpload2 } from '../api/ImageUpload2';
 import usePosts from '../components/hooks/usePosts';
-
-const date = new Date();
-const today = moment(date.toDateString()).format('MM-DD-YYYY');
+import RadioBtnCategory from '../components/Ui/RadioBtnCategory';
 
 const CreatePost = () => {
   const { createPostMutation } = usePosts();
@@ -26,7 +22,7 @@ const CreatePost = () => {
     minimumAge: '18',
     maximumAge: '100',
     recruitsPeople: '6',
-    estimatedTravelExpense: '',
+    estimatedTravelExpense: '0',
     postCategory: '',
     title: '',
     content: '',
@@ -77,6 +73,16 @@ const CreatePost = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (inputs.content === '') {
+      alert('내용을 입력해주세요!');
+      return;
+    } else if (inputs.postGenderType === '') {
+      alert('원하는 성별을 선택해주세요');
+      return;
+    } else if (inputs.postCategory === '') {
+      alert('카테고리를 선택해 주세요!');
+      return;
+    }
     console.log('createPost submit 이벤트 발생');
 
     const formData = new FormData();
@@ -125,13 +131,18 @@ const CreatePost = () => {
           <span className="text-xl text-left font-semibold w-max block ">
             함께하고 싶은 성별
           </span>
-          <RadioBtn
-            option1="ALL"
-            option2="MAN"
-            option3="WOMAN"
-            name="postGenderType"
-            onChange={handleChangeInfo}
-          />
+          <div className="flex">
+            {genders.map((gender) => {
+              return (
+                <RadioBtn
+                  key={Object.keys(gender)}
+                  option={gender}
+                  name="postGenderType"
+                  onChange={handleChangeInfo}
+                />
+              );
+            })}
+          </div>
         </section>
 
         <section className="mb-6">
@@ -142,28 +153,30 @@ const CreatePost = () => {
             <input
               type="number"
               placeholder="최소 나이 (18세 이상)"
-              className="input input-bordered input-info w-full max-w-xs mb-1"
+              className="input input-bordered input-info w-full max-w-xs mb-1 border-blue-500 border-2"
               min={18}
               max={100}
               required
               onChange={handleChangeInfo}
               name="minimumAge"
+              defaultValue="18"
             />
             <input
               type="number"
               placeholder="최대 나이 (100세 이하)"
-              className="input input-bordered input-info w-full max-w-xs "
+              className="input input-bordered input-info w-full max-w-xs border-blue-500 border-2"
               min={18}
               max={100}
               required
               onChange={handleChangeInfo}
               name="maximumAge"
+              defaultValue="100"
             />
           </div>
         </section>
 
         <section className="mb-6">
-          <span className="text-xl w-full text-left font-semibold block mb-2">
+          <span className="text-xl w-full text-left font-semibold block mb-2 ">
             모집 인원(본인포함) : {inputs.recruitsPeople} 명
           </span>
           <input
@@ -182,14 +195,16 @@ const CreatePost = () => {
           <span className="text-xl w-full text-left font-semibold block mb-2">
             카테고리를 선택하세요
           </span>
-          {categoryList.map((category) => (
-            <RadioBtnSingle
-              option={category}
-              name="postCategory"
-              key={category}
-              onChange={handleChangeInfo}
-            />
-          ))}
+          <div className="flex flex-col md:flex-row ">
+            {categoryLists.map((category) => (
+              <RadioBtnCategory
+                option={category}
+                name="postCategory"
+                key={Object.keys(category)}
+                onChange={handleChangeInfo}
+              />
+            ))}
+          </div>
         </section>
 
         <section className="mb-6">
@@ -200,11 +215,12 @@ const CreatePost = () => {
             <input
               type="number"
               placeholder="예상 여행 경비 1000원 단위 (숫자 입력)"
-              className="input input-bordered input-info w-full max-w-xs "
+              className="input input-bordered input-info w-full max-w-xs border-2 border-blue-500 "
               required
               onChange={handleChangeInfo}
               name="estimatedTravelExpense"
               step="1000"
+              defaultValue="0"
             />
           </div>
         </section>
@@ -214,9 +230,9 @@ const CreatePost = () => {
             제목/내용을 입력하세요
           </label>
           <input
+            className="input input-bordered input-info w-full max-w-full mb-1 border-blue-500 border-2"
             type="text"
             placeholder="제목 "
-            className="input input-bordered input-info w-full max-w-full mb-1"
             required
             minLength="4"
             maxLength="40"
