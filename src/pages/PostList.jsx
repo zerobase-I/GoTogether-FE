@@ -15,11 +15,11 @@ import {
   useChatParticipantList,
 } from '../components/hooks/useChatRoom';
 import { useGoToPage } from '../utils/utils';
-import Loading from '../components/Loading';
+import SuccessAlert from '../components/Ui/SuccessAlert.jsx';
+import RejectAlert from '../components/Ui/RejectAlert.jsx';
 
 const PostList = () => {
   const { email: loginUserEmail } = useRecoilValue(UserInfoAtom);
-
   const {
     state: {
       post,
@@ -88,7 +88,8 @@ const PostList = () => {
         Array.isArray(chatRoomLists) &&
         chatRoomLists.filter((list) => list.postId === postId);
 
-      if (participantPosts) {
+      if (participantPosts.length > 0) {
+        console.log(123);
         setParticipantPosts(true);
       }
     }
@@ -131,7 +132,6 @@ const PostList = () => {
   const handleRequestBtnClick = (e) => {
     console.log('동행요청 버튼 클릭');
 
-    console.log(postAuthorId);
     if (e.target.innerText === '동행요청') {
       setIsBtnClick(true);
       requestAccompany.mutate(
@@ -144,7 +144,7 @@ const PostList = () => {
 
             setTimeout(() => {
               setIsRequestSuccess(false);
-            }, 2000);
+            }, 1000);
           },
           onError: () => {
             console.log('동행 요청 실패');
@@ -161,7 +161,7 @@ const PostList = () => {
           setIsRejectSuccess(true);
           setTimeout(() => {
             setIsRejectSuccess(false);
-          }, 2000);
+          }, 1000);
         },
         onError: () => {
           console.log(' 동행 요청취소 실패');
@@ -277,45 +277,24 @@ const PostList = () => {
         </div>
       </div>
       {isRequestSuccess && (
-        <div role="alert" className="alert alert-success flex justify-center">
-          <span className="text-sm text-center">
-            동행요청이 성공적으로 처리됬습니다.!
-          </span>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="stroke-current shrink-0 h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
-          </svg>
-        </div>
+        <SuccessAlert text="동행요청이 성공적으로 처리됬습니다.!" />
       )}
       {isRejectSuccess && (
-        <div role="alert" className="alert alert-error flex justify-center">
-          <span className="text-sm text-center">
-            동행이 성공적으로 취소됬습니다.!
-          </span>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="stroke-current shrink-0 h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
-          </svg>
-        </div>
+        <RejectAlert text="동행취소요청이 성공적으로 처리됬습니다.!" />
       )}
+      {/* 다른게시물인데 참여중인 게시물일 경우 */}
+      {isMyPost ||
+        (participantPosts && (
+          <button
+            type="submit"
+            className="btn btn-outline  btn-success w-full mb-20 mt-5 "
+            onClick={() => navigate(`/chatroom/${chatRoomLists && chatRoomId}`)}
+            disabled={isNotChatRoom}
+          >
+            채팅방으로
+          </button>
+        ))}
+      {/* 내 게시물일 경우 */}
       {isMyPost && (
         <button
           type="submit"
@@ -326,6 +305,7 @@ const PostList = () => {
           채팅방으로
         </button>
       )}
+      {/* 내 게시물이 아니면서, 요청중인 게시물일 경우 */}
       {isMyPost ||
         (isRequest && (
           <button
@@ -337,7 +317,10 @@ const PostList = () => {
             요청취소
           </button>
         ))}
-      {isMyPost || isRequest || (
+      {/* 내 게시물과 참여중인 게시물이 아니면서 요청하지 않은 게시물일 경우 보여야함*/}
+      {/* 내 게시물이거나 참여중인 게시물이면 보이면 안됨 */}
+
+      {!isMyPost && !participantPosts && !isRequest && (
         <button
           type="submit"
           className="btn btn-outline btn-info w-full mb-20 mt-5"
