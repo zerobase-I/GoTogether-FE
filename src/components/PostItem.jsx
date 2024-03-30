@@ -8,6 +8,8 @@ import { sampleImage } from './config/sampleImg';
 const PostItem = ({
   post,
   post: {
+    category,
+    gender,
     title,
     startDate,
     endDate,
@@ -24,33 +26,44 @@ const PostItem = ({
 
   return (
     <section
-      className="mb-4 mt-8 shadow transition duration-200 ease-in-out transform hover:shadow-md rounded-lg cursor-pointer"
+      className="overflow-hidden mb-4 mt-8 shadow transition duration-200 ease-in-out transform hover:shadow-md rounded-lg cursor-pointer"
       onClick={() => navigate(`/postlists/${id}`, { state: { post } })}
     >
-      <div className="flex flex-col pt-3 rounded-2xl">
-        <div className="flex ">
+      <div className="flex  pt-2 rounded-b-2xl">
+        <div className="flex w-full">
           <img
-            className="w-24 md:w-40 md:h-40 "
+            className="w-24 h-34 md:w-40 md:h-40 rounded-2xl "
             src={(imagesUrl && imagesUrl[0]) || sampleImage}
             alt="샘플이미지"
             height="100"
           />
-          <div className="flex flex-col items-start justify-between">
-            <div>
-              <h3 className="text-base md:text-2xl ml-4 mt-2 font-bold">
+
+          <div className="flex flex-col items-start justify-between w-full  mr-1 ">
+            <div className="flex w-full flex-col md:flex-row-reverse justify-end ">
+              <div className="flex text-sm mt-1">
+                <span className="badge badge-secondary mr-1 text-xs ml-1 ">
+                  {gender}
+                </span>
+                <span className="badge badge-primary text-xs">{category}</span>
+              </div>
+              <h3 className="text-start  text-base md:text-2xl ml-4 mt-1 font-extrabold">
                 {title}
               </h3>
             </div>
-            <span className="text-sm md:text-base ml-4 mt-2 flex">
+
+            <span className="text-sm md:text-base ml-4 mt-1 flex w-full">
               <MdCalendarMonth />
+              &nbsp;
               {moment(startDate).format('YYYY-MM-DD')} ~{' '}
               {moment(endDate).format('YYYY-MM-DD')}
             </span>
-            <div className="flex text-xs my-1">
+
+            <div className="flex text-xs text-gray-500">
               <GiCommercialAirplane className="ml-4" />
               {travelCity}({travelCountry})
             </div>
-            <span className="ml-4 mb-2 font-light text-xs md:text-sm inline-block  max-h-9  text-left line-clamp-3  ">
+
+            <span className="mt-1 block w-7/12 text-left ml-4 mb-2 text-gray-400 text-xs md:text-sm  max-h-9  whitespace-nowrap overflow-hidden   text-ellipsis">
               {content}
             </span>
           </div>
