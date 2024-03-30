@@ -181,29 +181,36 @@ const UpdatePostList = () => {
           <span className="text-xl w-full text-left font-semibold block mb-1">
             함께하고 싶은 나이대
           </span>
-          <div className="flex flex-col items-center flex-grow-1">
-            <input
-              type="number"
-              placeholder="최소 나이 (18세 이상)"
-              className="input input-bordered input-info w-full max-w-xs mb-1"
-              min={18}
-              max={100}
-              required
-              onChange={handleChangeInfo}
-              name="minimumAge"
-              value={inputs.minimumAge}
-            />
-            <input
-              type="number"
-              placeholder="최대 나이 (100세 이하)"
-              className="input input-bordered input-info w-full max-w-xs "
-              min={18}
-              max={100}
-              required
-              onChange={handleChangeInfo}
-              name="maximumAge"
-              value={inputs.maximumAge}
-            />
+
+          <div className="flex  w-full">
+            <div className="w-full">
+              <span className="text-start text-gray-400">최소나이</span>
+              <input
+                className="input input-bordered input-info w-full mb-1 border-blue-500 border-2"
+                type="number"
+                placeholder="최소 나이 (18세 이상)"
+                min={18}
+                max={100}
+                required
+                onChange={handleChangeInfo}
+                name="minimumAge"
+                value={inputs.minimumAge}
+              />
+            </div>
+            <div className="w-full">
+              <span className="text-gray-400">최대나이</span>
+              <input
+                className="input input-bordered input-info w-full  border-blue-500 border-2 ml-2"
+                type="number"
+                placeholder="최대 나이 (100세 이하)"
+                min={18}
+                max={100}
+                required
+                onChange={handleChangeInfo}
+                name="maximumAge"
+                value={inputs.maximumAge}
+              />
+            </div>
           </div>
         </section>
 
@@ -243,11 +250,11 @@ const UpdatePostList = () => {
           <span className="text-xl w-full text-left font-semibold block mb-1">
             예상 여행 경비
           </span>
-          <div className="flex flex-col items-center flex-grow-1">
+          <div className="flex flex-col  w-full">
             <input
+              className="input input-bordered input-info w-full  border-2 border-blue-500   "
               type="number"
               placeholder="예상 여행 경비 1000원 단위 (숫자 입력)"
-              className="input input-bordered input-info w-full max-w-xs "
               required
               onChange={handleChangeInfo}
               name="estimatedTravelExpense"
@@ -262,9 +269,9 @@ const UpdatePostList = () => {
             제목/내용을 입력하세요
           </label>
           <input
+            className="input input-bordered input-info w-full max-w-full mb-1  border-2 border-blue-500 "
             type="text"
             placeholder="제목 "
-            className="input input-bordered input-info w-full max-w-full mb-1"
             required
             minLength="4"
             maxLength="40"

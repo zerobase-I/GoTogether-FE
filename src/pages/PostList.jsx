@@ -6,14 +6,20 @@ import { useRecoilValue } from 'recoil';
 import { UserInfoAtom } from '../recoil/userInfoAtom';
 import moment from 'moment';
 import { IoRocketOutline } from 'react-icons/io5';
-import { sampleImage } from '../components/config/sampleImg';
-import useChatRoom from '../components/hooks/useChatRoom';
+import {
+  sampleImage,
+  sampleImageProfile,
+} from '../components/config/sampleImg';
+import {
+  useChatRoom,
+  useChatParticipantList,
+} from '../components/hooks/useChatRoom';
 import { useGoToPage } from '../utils/utils';
 import Loading from '../components/Loading';
 
 const PostList = () => {
-  const userInfo = useRecoilValue(UserInfoAtom);
-  const loginUserEmail = userInfo.email;
+  const { email: loginUserEmail } = useRecoilValue(UserInfoAtom);
+
   const {
     state: {
       post,
@@ -47,12 +53,7 @@ const PostList = () => {
     getRequestListQuery: { data: requestList },
   } = useAccompany();
   const {
-    getChatRoomListsQuery: {
-      data: chatRoomLists,
-      isLoading: isChatRoomLoading,
-      isError: isChatRoomError,
-      error,
-    },
+    getChatRoomListsQuery: { data: chatRoomLists },
   } = useChatRoom();
 
   const [isRequest, setIsRequest] = useState(false); // 요청유무
@@ -79,7 +80,7 @@ const PostList = () => {
 
       if (isChatRoom && isChatRoom.length) {
         setIsNotChatRoom(false);
-        setChatRoomId(isChatRoom.chatRoomId);
+        setChatRoomId(isChatRoom[0].chatRoomId);
       }
 
       const participantPosts =
@@ -91,12 +92,21 @@ const PostList = () => {
         setParticipantPosts(true);
       }
     }
-  }, [chatRoomLists]);
+    console.log(chatRoomId);
+  }, [chatRoomLists, postId, chatRoomId]);
 
-  /* 
+  const {
+    getChatParticipantListQuery: { data: chatRoomParticipantList },
+  } = useChatParticipantList(chatRoomId && chatRoomId);
+
+  useEffect(() => {
+    console.log(chatRoomParticipantList);
+  }, [chatRoomParticipantList]);
+
   useEffect(() => {
     const isMatched =
       requestList &&
+      Array.isArray(requestList) &&
       requestList.some(
         (item) =>
           item.requestedMemberId === postAuthorId && item.postId === postId,
@@ -113,22 +123,28 @@ const PostList = () => {
     } else {
       setIsRequest(false);
     }
-  }, [requestList, postAuthorId, postId]); */
+  }, [requestList, postAuthorId, postId]);
+
+  const [isRequestSuccess, setIsRequestSuccess] = useState(false); // 동행 요청 성공 여부
+  const [isRejectSuccess, setIsRejectSuccess] = useState(false);
 
   const handleRequestBtnClick = (e) => {
     console.log('동행요청 버튼 클릭');
 
+    console.log(postAuthorId);
     if (e.target.innerText === '동행요청') {
       setIsBtnClick(true);
       requestAccompany.mutate(
         { postId, postAuthorId },
         {
           onSuccess: () => {
+            setIsRequest(true);
+            setIsBtnClick(false);
+            setIsRequestSuccess(true);
+
             setTimeout(() => {
-              setIsRequest(true);
-              setIsBtnClick(false);
-              alert('동행 요청 성공!.');
-            }, 1000);
+              setIsRequestSuccess(false);
+            }, 2000);
           },
           onError: () => {
             console.log('동행 요청 실패');
@@ -136,14 +152,16 @@ const PostList = () => {
         },
       );
     } else {
+      console.log(cancelId);
       setIsBtnClick(true);
       requestCancelAccompany.mutate(cancelId, {
         onSuccess: () => {
+          setIsRequest(false);
+          setIsBtnClick(false);
+          setIsRejectSuccess(true);
           setTimeout(() => {
-            setIsRequest(false);
-            setIsBtnClick(false);
-            alert('동행 요청 취소 완료!.');
-          }, 1000);
+            setIsRejectSuccess(false);
+          }, 2000);
         },
         onError: () => {
           console.log(' 동행 요청취소 실패');
@@ -210,25 +228,26 @@ const PostList = () => {
           </h2>
           <section>
             <div className="text-start text-lg">
-              동행인원 : 2/{recruitsPeople}
+              동행인원 :{' '}
+              {chatRoomParticipantList && chatRoomParticipantList.length}/
+              {recruitsPeople}
             </div>
             <div className="flex">
-              <div className="mr-4">
-                <img
-                  src="https://via.placeholder.com/30"
-                  alt=""
-                  className="rounded-full"
-                />
-                <span>조이</span>
-              </div>
-              <div>
-                <img
-                  src="https://via.placeholder.com/30"
-                  alt=""
-                  className="rounded-full"
-                />
-                <span>순신</span>
-              </div>
+              {chatRoomParticipantList &&
+                chatRoomParticipantList.map((item) => {
+                  return (
+                    <div key={item.memberId} className="flex">
+                      <div className="mr-4">
+                        <img
+                          src={item.profileUrl || sampleImageProfile}
+                          alt=""
+                          className="rounded-full w-12 h-12"
+                        />
+                        <span className="text-xs">{item.nickName}</span>
+                      </div>
+                    </div>
+                  );
+                })}
             </div>
           </section>
 
@@ -257,13 +276,51 @@ const PostList = () => {
           </div>
         </div>
       </div>
+      {isRequestSuccess && (
+        <div role="alert" className="alert alert-success flex justify-center">
+          <span className="text-sm text-center">
+            동행요청이 성공적으로 처리됬습니다.!
+          </span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="stroke-current shrink-0 h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+        </div>
+      )}
+      {isRejectSuccess && (
+        <div role="alert" className="alert alert-error flex justify-center">
+          <span className="text-sm text-center">
+            동행이 성공적으로 취소됬습니다.!
+          </span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="stroke-current shrink-0 h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+        </div>
+      )}
       {isMyPost && (
         <button
           type="submit"
-          className="btn btn-outline  btn-success w-full mb-20 "
-          onClick={() =>
-            navigate(`/chatroom/${chatRoomLists && chatRoomLists.chatRoomId}`)
-          }
+          className="btn btn-outline  btn-success w-full mb-20 mt-5 "
+          onClick={() => navigate(`/chatroom/${chatRoomLists && chatRoomId}`)}
           disabled={isNotChatRoom}
         >
           채팅방으로
@@ -273,7 +330,7 @@ const PostList = () => {
         (isRequest && (
           <button
             type="submit"
-            className="btn btn-outline btn-error w-full mb-20 "
+            className="btn btn-outline btn-error w-full mb-20 mt-5 "
             onClick={handleRequestBtnClick}
             disabled={isBtnClick}
           >
@@ -283,7 +340,7 @@ const PostList = () => {
       {isMyPost || isRequest || (
         <button
           type="submit"
-          className="btn btn-outline btn-info w-full mb-20"
+          className="btn btn-outline btn-info w-full mb-20 mt-5"
           onClick={handleRequestBtnClick}
           disabled={isBtnClick}
         >
