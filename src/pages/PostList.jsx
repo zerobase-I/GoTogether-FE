@@ -19,7 +19,11 @@ import SuccessAlert from '../components/Ui/SuccessAlert.jsx';
 import RejectAlert from '../components/Ui/RejectAlert.jsx';
 
 const PostList = () => {
-  const { email: loginUserEmail } = useRecoilValue(UserInfoAtom);
+  const {
+    email: loginUserEmail,
+    nickname: loginUsernickName,
+    profileUrl: loginUserprofileUrl,
+  } = useRecoilValue(UserInfoAtom);
   const {
     state: {
       post,
@@ -221,19 +225,19 @@ const PostList = () => {
         </figure>
 
         <div className="card-body">
-          <h2 className="card-title flex flex-col">
-            {title}
-            <div className="badge badge-secondary">모집성별 {gender}</div>
-            <span className="badge badge-outline">{category}</span>
-          </h2>
+          <div className="flex justify-end ">
+            <div className="badge badge-secondary mr-1">{gender}</div>
+            <span className="badge  badge-primary ">{category}</span>
+          </div>
+          <h2 className="card-title flex flex-col">{title}</h2>
           <section>
             <div className="text-start text-lg">
               동행인원 :{' '}
-              {chatRoomParticipantList && chatRoomParticipantList.length}/
-              {recruitsPeople}
+              {(chatRoomParticipantList && chatRoomParticipantList.length) || 1}
+              /{recruitsPeople}
             </div>
             <div className="flex">
-              {chatRoomParticipantList &&
+              {chatRoomParticipantList ? (
                 chatRoomParticipantList.map((item) => {
                   return (
                     <div key={item.memberId} className="flex">
@@ -247,32 +251,58 @@ const PostList = () => {
                       </div>
                     </div>
                   );
-                })}
+                })
+              ) : (
+                <div className="flex">
+                  <div className="mr-4">
+                    <img
+                      src={sampleImageProfile}
+                      alt=""
+                      className="rounded-full w-12 h-12"
+                    />
+                    <span className="text-xs">방장</span>
+                  </div>
+                </div>
+              )}
             </div>
           </section>
 
-          <p className="mt-10 text-xl md:text-2xl flex justify-center">
-            <IoRocketOutline className="mr-2" />
+          <p className="mt-5 text-xl md:text-2xl flex justify-center font-bold">
+            <IoRocketOutline className="mr-1" />
             자세한 여행 정보
           </p>
           <div className="card-actions justify-end"></div>
-          <div>
-            <p className="test-sm">
-              {travelCountry}: {travelCity}
-            </p>
-            <p className="test-sm">
+          <div className="text-start">
+            <div className="mb-1">
+              <p className="test-sm">
+                여행국가:&nbsp; &nbsp;
+                {travelCountry}
+              </p>
+              <p>여행도시:&nbsp; &nbsp;{travelCity}</p>
+            </div>
+            <p className="test-sm mb-1">
+              여행날짜:&nbsp; &nbsp;
               {moment(startDate).format('YYYY-MM-DD')} ~{' '}
               {moment(endDate).format('YYYY-MM-DD')}
             </p>
-            <p className="test-sm">현재인원/모집인원: 2/{recruitsPeople}</p>
             <p className="test-sm">
-              {gender} , 나이: {minimumAge} ~ {maximumAge}
+              모집인원:&nbsp; &nbsp;
+              {(chatRoomParticipantList && chatRoomParticipantList.length) || 1}
+              /{recruitsPeople}
             </p>
-            <p className="test-sm">{category}</p>
-            <p className="test-sm">예상 금액 : {estimatedTravelExpense}</p>
+            <p className="test-sm mb-1">
+              모집성별:&nbsp; &nbsp;{gender} <br />
+              모집나이:&nbsp; &nbsp;{minimumAge} ~ {maximumAge}
+            </p>
+            <p className="test-sm">카테고리:&nbsp; &nbsp;{category}</p>
+            <p className="test-sm mt-1">
+              예상금액:&nbsp; &nbsp;{estimatedTravelExpense}
+            </p>
           </div>
-          <div className="border-t mt-10">
-            <span className="mt-10">{content}</span>
+          <div className="border-t mt-5">
+            <span className="text-gray-800 block text-left mt-5 ">
+              {content}
+            </span>
           </div>
         </div>
       </div>
