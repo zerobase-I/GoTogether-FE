@@ -6,10 +6,10 @@ export const categoryList = [
   'ETC',
 ];
 export const categoryLists = [
-  { FOOD_CAFE: '카페' },
-  { ALCOHOL_FRIENDSHIP: '술친구' },
-  { ACTIVITY_TOUR: '액티비티한 여행' },
-  { EXHIBITION_PERFORMANCE: '전시공연' },
+  { FOOD_CAFE: '맛집 / 카페' },
+  { ALCOHOL_FRIENDSHIP: '음주 여행/ 술친구' },
+  { ACTIVITY_TOUR: '활동적인 여행' },
+  { EXHIBITION_PERFORMANCE: '전시회 /  공연' },
   { ETC: '기타' },
 ];
 

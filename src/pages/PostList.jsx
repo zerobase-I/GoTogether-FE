@@ -6,14 +6,24 @@ import { useRecoilValue } from 'recoil';
 import { UserInfoAtom } from '../recoil/userInfoAtom';
 import moment from 'moment';
 import { IoRocketOutline } from 'react-icons/io5';
-import { sampleImage } from '../components/config/sampleImg';
-import useChatRoom from '../components/hooks/useChatRoom';
+import {
+  sampleImage,
+  sampleImageProfile,
+} from '../components/config/sampleImg';
+import {
+  useChatRoom,
+  useChatParticipantList,
+} from '../components/hooks/useChatRoom';
 import { useGoToPage } from '../utils/utils';
-import Loading from '../components/Loading';
+import SuccessAlert from '../components/Ui/SuccessAlert.jsx';
+import RejectAlert from '../components/Ui/RejectAlert.jsx';
 
 const PostList = () => {
-  const userInfo = useRecoilValue(UserInfoAtom);
-  const loginUserEmail = userInfo.email;
+  const {
+    email: loginUserEmail,
+    nickname: loginUsernickName,
+    profileUrl: loginUserprofileUrl,
+  } = useRecoilValue(UserInfoAtom);
   const {
     state: {
       post,
@@ -47,12 +57,7 @@ const PostList = () => {
     getRequestListQuery: { data: requestList },
   } = useAccompany();
   const {
-    getChatRoomListsQuery: {
-      data: chatRoomLists,
-      isLoading: isChatRoomLoading,
-      isError: isChatRoomError,
-      error,
-    },
+    getChatRoomListsQuery: { data: chatRoomLists },
   } = useChatRoom();
 
   const [isRequest, setIsRequest] = useState(false); // 요청유무
@@ -79,7 +84,7 @@ const PostList = () => {
 
       if (isChatRoom && isChatRoom.length) {
         setIsNotChatRoom(false);
-        setChatRoomId(isChatRoom.chatRoomId);
+        setChatRoomId(isChatRoom[0].chatRoomId);
       }
 
       const participantPosts =
@@ -87,16 +92,26 @@ const PostList = () => {
         Array.isArray(chatRoomLists) &&
         chatRoomLists.filter((list) => list.postId === postId);
 
-      if (participantPosts) {
+      if (participantPosts.length > 0) {
+        console.log(123);
         setParticipantPosts(true);
       }
     }
-  }, [chatRoomLists]);
+    console.log(chatRoomId);
+  }, [chatRoomLists, postId, chatRoomId]);
 
-  /* 
+  const {
+    getChatParticipantListQuery: { data: chatRoomParticipantList },
+  } = useChatParticipantList(chatRoomId && chatRoomId);
+
+  useEffect(() => {
+    console.log(chatRoomParticipantList);
+  }, [chatRoomParticipantList]);
+
   useEffect(() => {
     const isMatched =
       requestList &&
+      Array.isArray(requestList) &&
       requestList.some(
         (item) =>
           item.requestedMemberId === postAuthorId && item.postId === postId,
@@ -113,7 +128,10 @@ const PostList = () => {
     } else {
       setIsRequest(false);
     }
-  }, [requestList, postAuthorId, postId]); */
+  }, [requestList, postAuthorId, postId]);
+
+  const [isRequestSuccess, setIsRequestSuccess] = useState(false); // 동행 요청 성공 여부
+  const [isRejectSuccess, setIsRejectSuccess] = useState(false);
 
   const handleRequestBtnClick = (e) => {
     console.log('동행요청 버튼 클릭');
@@ -124,10 +142,12 @@ const PostList = () => {
         { postId, postAuthorId },
         {
           onSuccess: () => {
+            setIsRequest(true);
+            setIsBtnClick(false);
+            setIsRequestSuccess(true);
+
             setTimeout(() => {
-              setIsRequest(true);
-              setIsBtnClick(false);
-              alert('동행 요청 성공!.');
+              setIsRequestSuccess(false);
             }, 1000);
           },
           onError: () => {
@@ -136,13 +156,15 @@ const PostList = () => {
         },
       );
     } else {
+      console.log(cancelId);
       setIsBtnClick(true);
       requestCancelAccompany.mutate(cancelId, {
         onSuccess: () => {
+          setIsRequest(false);
+          setIsBtnClick(false);
+          setIsRejectSuccess(true);
           setTimeout(() => {
-            setIsRequest(false);
-            setIsBtnClick(false);
-            alert('동행 요청 취소 완료!.');
+            setIsRejectSuccess(false);
           }, 1000);
         },
         onError: () => {
@@ -203,87 +225,135 @@ const PostList = () => {
         </figure>
 
         <div className="card-body">
-          <h2 className="card-title flex flex-col">
-            {title}
-            <div className="badge badge-secondary">모집성별 {gender}</div>
-            <span className="badge badge-outline">{category}</span>
-          </h2>
+          <div className="flex justify-end ">
+            <div className="badge badge-secondary mr-1">{gender}</div>
+            <span className="badge  badge-primary ">{category}</span>
+          </div>
+          <h2 className="card-title flex flex-col">{title}</h2>
           <section>
             <div className="text-start text-lg">
-              동행인원 : 2/{recruitsPeople}
+              동행인원 :{' '}
+              {(chatRoomParticipantList && chatRoomParticipantList.length) || 1}
+              /{recruitsPeople}
             </div>
             <div className="flex">
-              <div className="mr-4">
-                <img
-                  src="https://via.placeholder.com/30"
-                  alt=""
-                  className="rounded-full"
-                />
-                <span>조이</span>
-              </div>
-              <div>
-                <img
-                  src="https://via.placeholder.com/30"
-                  alt=""
-                  className="rounded-full"
-                />
-                <span>순신</span>
-              </div>
+              {chatRoomParticipantList ? (
+                chatRoomParticipantList.map((item) => {
+                  return (
+                    <div key={item.memberId} className="flex">
+                      <div className="mr-4">
+                        <img
+                          src={item.profileUrl || sampleImageProfile}
+                          alt=""
+                          className="rounded-full w-12 h-12"
+                        />
+                        <span className="text-xs">{item.nickName}</span>
+                      </div>
+                    </div>
+                  );
+                })
+              ) : (
+                <div className="flex">
+                  <div className="mr-4">
+                    <img
+                      src={sampleImageProfile}
+                      alt=""
+                      className="rounded-full w-12 h-12"
+                    />
+                    <span className="text-xs">방장</span>
+                  </div>
+                </div>
+              )}
             </div>
           </section>
 
-          <p className="mt-10 text-xl md:text-2xl flex justify-center">
-            <IoRocketOutline className="mr-2" />
+          <p className="mt-5 text-xl md:text-2xl flex justify-center font-bold">
+            <IoRocketOutline className="mr-1" />
             자세한 여행 정보
           </p>
           <div className="card-actions justify-end"></div>
-          <div>
-            <p className="test-sm">
-              {travelCountry}: {travelCity}
-            </p>
-            <p className="test-sm">
+          <div className="text-start">
+            <div className="mb-1">
+              <p className="test-sm">
+                여행국가:&nbsp; &nbsp;
+                {travelCountry}
+              </p>
+              <p>여행도시:&nbsp; &nbsp;{travelCity}</p>
+            </div>
+            <p className="test-sm mb-1">
+              여행날짜:&nbsp; &nbsp;
               {moment(startDate).format('YYYY-MM-DD')} ~{' '}
               {moment(endDate).format('YYYY-MM-DD')}
             </p>
-            <p className="test-sm">현재인원/모집인원: 2/{recruitsPeople}</p>
             <p className="test-sm">
-              {gender} , 나이: {minimumAge} ~ {maximumAge}
+              모집인원:&nbsp; &nbsp;
+              {(chatRoomParticipantList && chatRoomParticipantList.length) || 1}
+              /{recruitsPeople}
             </p>
-            <p className="test-sm">{category}</p>
-            <p className="test-sm">예상 금액 : {estimatedTravelExpense}</p>
+            <p className="test-sm mb-1">
+              모집성별:&nbsp; &nbsp;{gender} <br />
+              모집나이:&nbsp; &nbsp;{minimumAge} ~ {maximumAge}
+            </p>
+            <p className="test-sm">카테고리:&nbsp; &nbsp;{category}</p>
+            <p className="test-sm mt-1">
+              예상금액:&nbsp; &nbsp;{estimatedTravelExpense}
+            </p>
           </div>
-          <div className="border-t mt-10">
-            <span className="mt-10">{content}</span>
+          <div className="border-t mt-5">
+            <span className="text-gray-800 block text-left mt-5 ">
+              {content}
+            </span>
           </div>
         </div>
       </div>
+      {isRequestSuccess && (
+        <SuccessAlert text="동행요청이 성공적으로 처리됬습니다.!" />
+      )}
+      {isRejectSuccess && (
+        <RejectAlert text="동행취소요청이 성공적으로 처리됬습니다.!" />
+      )}
+      {/* 다른게시물인데 참여중인 게시물일 경우 */}
+      {isMyPost ||
+        (participantPosts && (
+          <button
+            type="submit"
+            className="btn btn-outline  btn-success w-full mb-20 mt-5 "
+            onClick={() => navigate(`/chatroom/${chatRoomLists && chatRoomId}`)}
+            disabled={isNotChatRoom}
+          >
+            채팅방으로
+          </button>
+        ))}
+      {/* 내 게시물일 경우 */}
       {isMyPost && (
         <button
           type="submit"
-          className="btn btn-outline  btn-success w-full mb-20 "
-          onClick={() =>
-            navigate(`/chatroom/${chatRoomLists && chatRoomLists.chatRoomId}`)
-          }
+          className="btn btn-outline  btn-success w-full mb-20 mt-5 "
+          onClick={() => navigate(`/chatroom/${chatRoomLists && chatRoomId}`)}
           disabled={isNotChatRoom}
         >
           채팅방으로
         </button>
       )}
+      {/* 내 게시물이 아니면서, 요청중인 게시물일 경우 */}
       {isMyPost ||
         (isRequest && (
           <button
             type="submit"
-            className="btn btn-outline btn-error w-full mb-20 "
+            className="btn btn-outline btn-error w-full mb-20 mt-5 "
             onClick={handleRequestBtnClick}
             disabled={isBtnClick}
           >
             요청취소
           </button>
         ))}
-      {isMyPost || isRequest || (
+      {/* 내 게시물과 참여중인 게시물이 아니면서 요청하지 않은 게시물일 경우 보여야함*/}
+      {/* 내 게시물이거나 참여중인 게시물이면 보이면 안됨 */}
+
+      {!isMyPost && !participantPosts && !isRequest && (
         <button
           type="submit"
-          className="btn btn-outline btn-info w-full mb-20"
+          className="btn btn-outline btn-info w-full mb-20 mt-5"
           onClick={handleRequestBtnClick}
           disabled={isBtnClick}
         >

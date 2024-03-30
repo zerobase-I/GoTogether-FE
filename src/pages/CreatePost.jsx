@@ -69,8 +69,8 @@ const CreatePost = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (inputs.content === '') {
-      alert('내용을 입력해주세요!');
+    if (inputs.content.length < 10) {
+      alert('내용을 10글자 이상 입력해주세요!');
       return;
     } else if (inputs.postGenderType === '') {
       alert('원하는 성별을 선택해주세요');
@@ -145,29 +145,35 @@ const CreatePost = () => {
           <span className="text-xl w-full text-left font-semibold block mb-1">
             함께하고 싶은 나이대
           </span>
-          <div className="flex flex-col items-center flex-grow-1">
-            <input
-              type="number"
-              placeholder="최소 나이 (18세 이상)"
-              className="input input-bordered input-info w-full max-w-xs mb-1 border-blue-500 border-2"
-              min={18}
-              max={100}
-              required
-              onChange={handleChangeInfo}
-              name="minimumAge"
-              defaultValue="18"
-            />
-            <input
-              type="number"
-              placeholder="최대 나이 (100세 이하)"
-              className="input input-bordered input-info w-full max-w-xs border-blue-500 border-2"
-              min={18}
-              max={100}
-              required
-              onChange={handleChangeInfo}
-              name="maximumAge"
-              defaultValue="100"
-            />
+          <div className="flex  w-full">
+            <div className="w-full">
+              <span className="text-start text-gray-400">최소나이</span>
+              <input
+                className="input input-bordered input-info w-full mb-1 border-blue-500 border-2"
+                type="number"
+                placeholder="최소 나이 (18세 이상)"
+                min={18}
+                max={100}
+                required
+                onChange={handleChangeInfo}
+                name="minimumAge"
+                defaultValue="18"
+              />
+            </div>
+            <div className="w-full">
+              <span className="text-gray-400">최대나이</span>
+              <input
+                className="input input-bordered input-info w-full  border-blue-500 border-2 ml-2"
+                type="number"
+                placeholder="최대 나이 (100세 이하)"
+                min={18}
+                max={100}
+                required
+                onChange={handleChangeInfo}
+                name="maximumAge"
+                defaultValue="100"
+              />
+            </div>
           </div>
         </section>
 
@@ -207,11 +213,11 @@ const CreatePost = () => {
           <span className="text-xl w-full text-left font-semibold block mb-1">
             예상 여행 경비
           </span>
-          <div className="flex flex-col items-center flex-grow-1">
+          <div className="flex flex-col w-full">
             <input
               type="number"
               placeholder="예상 여행 경비 1000원 단위 (숫자 입력)"
-              className="input input-bordered input-info w-full max-w-xs border-2 border-blue-500 "
+              className="input input-bordered input-info w-full border-2 border-blue-500 "
               required
               onChange={handleChangeInfo}
               name="estimatedTravelExpense"

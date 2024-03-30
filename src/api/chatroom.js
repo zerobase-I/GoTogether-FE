@@ -40,8 +40,6 @@ export const getChatRoomLists = async () => {
   }
 };
 
-
-     
 // 채팅방 퇴장을 처리하는 함수
 export const exitChatRoom = async (accessToken, chatRoomId) => {
   try {
@@ -79,3 +77,21 @@ export const enterChatRoom = async (chatRoomId, accompanyRequestMemberId) => {
 // 채팅방 퇴장
 
 // 채팅방 메시지 조회
+
+//참여자 목록 조회
+export const getChatParticipantList = async (chatRoomId) => {
+  try {
+    const response = await apiClient.get(
+      `chat-room/member-list/${chatRoomId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
