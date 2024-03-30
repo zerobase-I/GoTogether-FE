@@ -1,6 +1,7 @@
 import axios from 'axios';
-import { BASE_URL } from '../components/config/data';
+import { BASE_URL, accessToken } from '../components/config/data';
 
+//전체 게시물 리스트 조회 -> 페이지네이션 백엔드 구현
 export const getPosts = async (page = 0, size = 10) => {
   try {
     const response = await axios.get(
@@ -13,10 +14,16 @@ export const getPosts = async (page = 0, size = 10) => {
   }
 };
 
+// 자신 또는 특정 회원이 작성한 게시물리스트 보기 -> 페이지네이션 백엔드 구현 -> 토큰
 export const getMyPosts = async (page = 0, size = 10, userId) => {
   try {
     const response = await axios.get(
       `${BASE_URL}/post/myPosts/${userId}?page=${page}&size=${size}`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
     );
 
     return response.data;
@@ -25,11 +32,10 @@ export const getMyPosts = async (page = 0, size = 10, userId) => {
   }
 };
 
+// 게시물 상세 정보 조회
 export const getPostDetail = async (postId) => {
   try {
-    const response = await axios.get(
-      `${BASE_URL}/post/myPosts/${userId}?page=${page}&size=${size}`,
-    );
+    const response = await axios.get(`${BASE_URL}/post/myPosts/${postId}`);
 
     return response.data;
   } catch (error) {
@@ -37,9 +43,8 @@ export const getPostDetail = async (postId) => {
   }
 };
 
+// 게시물 생성 -> 토큰
 export const createPost = async (formData) => {
-  const accessToken = localStorage.getItem('accessToken');
-  console.log(accessToken);
   const form = new FormData();
   const requestData = {};
 
@@ -87,6 +92,7 @@ export const createPost = async (formData) => {
   }
 };
 
+//게시물 수정 -> 토큰
 export const updatePost = async (inputValue) => {
   const { formData, postId } = inputValue;
 
@@ -113,7 +119,11 @@ export const updatePost = async (inputValue) => {
   form.append('request', blob);
 
   try {
-    const response = await axios.put(`${BASE_URL}/post/${postId}`, form);
+    const response = await axios.put(`${BASE_URL}/post/${postId}`, form, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
 
     console.log(response);
 
@@ -123,9 +133,10 @@ export const updatePost = async (inputValue) => {
   }
 };
 
+// 게시물 삭제 -> 토큰
 export const deletePost = async (postId) => {
   console.log(postId);
-  const accessToken = localStorage.getItem('accessToken');
+
   try {
     const response = await axios.delete(`${BASE_URL}/post/${postId}`, {
       headers: {
@@ -139,5 +150,70 @@ export const deletePost = async (postId) => {
     return response.data;
   } catch (error) {
     throw new Error('게시글 수정 실패');
+  }
+};
+
+// 게시물 키워드 검색 조회 -> 토큰
+export const getKeywordFilterPost = async (keyword, page, size) => {
+  try {
+    const response = await axios.get(
+      `${BASE_URL}/post/keyword?keyword=${keyword}&page=${page}$size=${size}`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
+
+    return response.data;
+  } catch (error) {
+    throw new Error('게시글 키워드 검색 조회 실패');
+  }
+};
+
+// 게시물 찜(스크랩) 하기 -> 토큰
+export const getMyScrapPost = async (postId) => {
+  try {
+    await axios.post(
+      `${BASE_URL}/post/scrap/${postId}`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
+  } catch (error) {
+    throw new Error('게시글 찜하기 에러발생');
+  }
+};
+
+// 게시글 동행모집 마감 -> 토큰
+export const postCompanionRecruitmentClosed = async (postId) => {
+  try {
+    await axios.put(
+      `${BASE_URL}/recrument-end/${postId}`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
+  } catch (error) {
+    throw new Error('게시글 동행모집 마감 에러발생');
+  }
+};
+
+//참여한 동행 리스트 -> 토큰
+export const participantCompanionList = async (id) => {
+  try {
+    await axios.get(`${BASE_URL}/list/user/accompany/${id}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+  } catch (error) {
+    throw new Error('게시글 동행모집 마감 에러발생');
   }
 };
