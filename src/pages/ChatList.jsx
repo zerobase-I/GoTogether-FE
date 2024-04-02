@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { getChatRoomLists } from '../api/chatroom.js';
 import { useNavigate } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+import { TokenAtom } from '/src/recoil/tokenAtom.js';
 
 const ChatList = () => {
+  const tokenInfo = useRecoilValue(TokenAtom);
   const navigate = useNavigate();
   const [chatRooms, setChatRooms] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -23,7 +26,7 @@ const ChatList = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [tokenInfo]);
   useEffect(() => {
     console.log(chatRooms);
   }, [chatRooms]);
