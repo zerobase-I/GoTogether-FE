@@ -170,7 +170,7 @@ useEffect(() => {
                     <div className="flex justify-start">{message.nickname}</div>
                     <div className="flex items-end">
                       <div className="text-xs mr-2">{formatTime(message.createdAt)}</div>
-                      <div className={`p-3 rounded-lg shadow bg-blue-100`}>
+                      <div className={`p-3 rounded-lg max-w-72 text-start shadow bg-blue-100`}>
                         {message.content}
                       </div>
                     </div> 
@@ -184,7 +184,7 @@ useEffect(() => {
                       <div className="flex flex-col items-start">
                         <div className="flex justify-start">{message.nickname}</div>
                         <div className="flex items-end">
-                          <div className={`p-3 rounded-lg shadow bg-gray-100`}>
+                          <div className={`p-3 rounded-lg text-start shadow bg-gray-100`}>
                             {message.content}
                           </div>
                           <div className="text-xs ml-2">{formatTime(message.createdAt)}</div>
