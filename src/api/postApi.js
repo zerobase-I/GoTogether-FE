@@ -95,7 +95,6 @@ export const createPost = async (formData) => {
 //게시물 수정 -> 토큰
 export const updatePost = async (inputValue) => {
   const { formData, postId } = inputValue;
-  console.log(postId);
 
   const form = new FormData();
   const requestData = {};
@@ -118,6 +117,11 @@ export const updatePost = async (inputValue) => {
   const json = JSON.stringify(requestData);
   const blob = new Blob([json], { type: 'application/json' });
   form.append('request', blob);
+
+  for (const [key, value] of form.entries()) {
+    console.log(key);
+    console.log(value);
+  }
 
   try {
     const response = await axios.put(`${BASE_URL}/post/${postId}`, form, {

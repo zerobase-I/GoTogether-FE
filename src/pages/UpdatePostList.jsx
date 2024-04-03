@@ -70,8 +70,8 @@ const UpdatePostList = () => {
   const handleDateChange = (dates) => {
     setInputs(() => ({
       ...inputs,
-      startDate: moment(dates[0].toDateString()).format('MM-DD-YYYY'),
-      endDate: moment(dates[1].toDateString()).format('MM-DD-YYYY'),
+      startDate: moment(dates[0].toDateString()).format('YYYY-MM-DDTHH:mm:ss'),
+      endDate: moment(dates[1].toDateString()).format('YYYY-MM-DDTHH:mm:ss'),
     }));
   };
 
@@ -240,7 +240,7 @@ const UpdatePostList = () => {
             {categoryLists.map((category) => (
               <RadioBtnSingle
                 option={category}
-                name="category"
+                name="postCategory"
                 key={Object.keys(category)}
                 onChange={handleChangeInfo}
               />
