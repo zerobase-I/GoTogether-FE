@@ -6,16 +6,7 @@ import { useRecoilValue } from 'recoil';
 import { UserInfoAtom } from '../recoil/userInfoAtom';
 import Loading from '../components/Loading';
 import { sampleImage } from '../components/config/sampleImg';
-
-const characteristic = [
-  'adaptability',
-  'humor',
-  'manner',
-  'navigation',
-  'photography',
-  'punctuality',
-  'responsiveness',
-];
+import { characteristic } from '../components/config/data';
 
 const ReviewDetail = () => {
   const {
@@ -71,17 +62,21 @@ const ReviewDetail = () => {
           </div>
           {characteristic.map((item) => {
             return (
-              <div key={item} className="p-2.5  flex justify-between gap-12">
+              <div key={item[0]} className="p-2.5  flex justify-between gap-12">
                 <div className="flex items-center gap-5 ml-5">
                   <img
                     src="/src/assets/reviewCount.png"
                     className="w-10 transform scale-x-[-1] w-100"
                     alt="Left Arrow"
                   />
-                  <span className="text-xl ">{myReview && myReview[item]}</span>
+                  <span className="text-xl ">
+                    {myReview && myReview[item[0]]}
+                  </span>
                 </div>
                 <div>
-                  <div className="bg-blue-300 w-48 p-4 rounded-md">{item}</div>
+                  <div className="bg-blue-400 w-48 p-4 rounded-md">
+                    {item[1]}
+                  </div>
                 </div>
               </div>
             );

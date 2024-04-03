@@ -8,7 +8,9 @@ import { sampleImage } from './config/sampleImg';
 const PostItem = ({
   post,
   post: {
+    postCategory,
     category,
+    postGenderType,
     gender,
     title,
     startDate,
@@ -34,17 +36,18 @@ const PostItem = ({
           <img
             className="w-24 h-34 md:w-40 md:h-40 rounded-2xl "
             src={(imagesUrl && imagesUrl[0]) || sampleImage}
-            alt="샘플이미지"
-            height="100"
+            alt="여행사진"
           />
 
           <div className="flex flex-col items-start justify-between w-full  mr-1 ">
             <div className="flex w-full flex-col md:flex-row-reverse justify-end ">
               <div className="flex text-sm mt-1">
                 <span className="badge badge-secondary mr-1 text-xs ml-1 ">
-                  {gender}
+                  {gender || postGenderType}
                 </span>
-                <span className="badge badge-primary text-xs">{category}</span>
+                <span className="badge badge-primary text-xs">
+                  {category || postCategory}
+                </span>
               </div>
               <h3 className="text-start  text-base md:text-2xl ml-4 mt-1 font-extrabold">
                 {title}

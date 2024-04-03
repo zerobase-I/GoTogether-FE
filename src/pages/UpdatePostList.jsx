@@ -17,8 +17,8 @@ const UpdatePostList = () => {
   const [success, setSuccess] = useState(); // 업로드 성공/ 실패 상태
   const {
     state: {
+      post,
       post: {
-        postId,
         title,
         category,
         startDate,
@@ -31,31 +31,28 @@ const UpdatePostList = () => {
         recruitsPeople,
         estimatedTravelExpense,
         content,
+        id: postId,
         imagesUrl,
       },
     },
   } = useLocation();
 
-  console.log(postId);
-
   const [inputs, setInputs] = useState({
     travelCountry: travelCountry,
     travelCity: travelCity,
-    startDate: startDate,
-    endDate: endDate,
-    gender: gender,
-    minimumAge: minimumAge,
-    maximumAge: maximumAge,
+    postGenderType: gender,
+    postCategory: category,
     recruitsPeople: recruitsPeople,
     estimatedTravelExpense: estimatedTravelExpense,
-    category: category,
+    minimumAge: minimumAge,
+    maximumAge: maximumAge,
+    startDate: startDate,
+    endDate: endDate,
     title: title,
     content: content,
-    newImages: '',
-    imageIdsToDelete: '',
+    /*     newImages: '',
+    imageIdsToDelete: '', */
   });
-
-  console.log(inputs);
 
   const { UpdatePostMutation } = usePosts();
   const { goToHome } = useGoToPage();
@@ -63,6 +60,7 @@ const UpdatePostList = () => {
   // inputs 변경시 테스트 코드
   useEffect(() => {
     console.log(inputs);
+    console.log(post);
   }, [inputs]);
 
   const handleDateChange = (dates) => {
@@ -168,9 +166,9 @@ const UpdatePostList = () => {
                 <RadioBtn
                   key={Object.keys(gender)}
                   option={gender}
+                  beforeGender={inputs.gender}
                   name="postGenderType"
                   onChange={handleChangeInfo}
-                  beforeGender={inputs.gender}
                 />
               );
             })}

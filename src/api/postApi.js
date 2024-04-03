@@ -95,6 +95,7 @@ export const createPost = async (formData) => {
 //게시물 수정 -> 토큰
 export const updatePost = async (inputValue) => {
   const { formData, postId } = inputValue;
+  console.log(postId);
 
   const form = new FormData();
   const requestData = {};
