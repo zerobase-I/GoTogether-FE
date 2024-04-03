@@ -63,6 +63,10 @@ const UpdatePostList = () => {
     console.log(post);
   }, [inputs]);
 
+  useEffect(() => {
+    inputs.travelCity = travelCity && travelCity;
+  });
+
   const handleDateChange = (dates) => {
     setInputs(() => ({
       ...inputs,

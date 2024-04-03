@@ -96,7 +96,7 @@ const PostList = () => {
         setParticipantPosts(true);
       }
     }
-    console.log(chatRoomId);
+    //console.log(chatRoomId);
   }, [chatRoomLists, postId, chatRoomId]);
 
   const {
@@ -104,7 +104,7 @@ const PostList = () => {
   } = useChatParticipantList(chatRoomId && chatRoomId);
 
   useEffect(() => {
-    console.log(chatRoomParticipantList);
+    //  console.log(chatRoomParticipantList);
   }, [chatRoomParticipantList]);
 
   useEffect(() => {
