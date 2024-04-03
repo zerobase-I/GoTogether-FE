@@ -29,9 +29,13 @@ const TravelRequestList = () => {
     postId,
     requestMemberId,
   ) => {
+    console.log(`동행요청 고유 아이디 ${requestListId}`);
+    console.log(`게시글 아이디 ${postId}`);
+    console.log(`요청멤버아이디 ${requestMemberId}`);
     approveAccompany.mutate(requestListId, {
       onSuccess: (chatRoomId) => {
         alert('요청 수락이 성공적으로 이루어졌습니다!');
+        console.log(`요청멤버아이디 ${requestMemberId}`);
 
         if (!chatRoomId) {
           createChatroom(postId, requestMemberId)
@@ -142,9 +146,9 @@ const TravelRequestList = () => {
                         className="btn btn-outline btn-info bg-transparent text-blue-500 rounded text-sx p-3 "
                         onClick={() =>
                           handleApproveBtnClick(
-                            list.id,
-                            list.postId,
-                            list.requestMemberId,
+                            list.id, //동행요청 고유 아이디
+                            list.postId, // 게시글 id
+                            list.requestMemberId, //요청 멤버 id
                           )
                         }
                       >

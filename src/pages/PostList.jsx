@@ -93,11 +93,10 @@ const PostList = () => {
         chatRoomLists.filter((list) => list.postId === postId);
 
       if (participantPosts.length > 0) {
-        console.log(123);
         setParticipantPosts(true);
       }
     }
-    console.log(chatRoomId);
+    //console.log(chatRoomId);
   }, [chatRoomLists, postId, chatRoomId]);
 
   const {
@@ -105,7 +104,7 @@ const PostList = () => {
   } = useChatParticipantList(chatRoomId && chatRoomId);
 
   useEffect(() => {
-    console.log(chatRoomParticipantList);
+    //  console.log(chatRoomParticipantList);
   }, [chatRoomParticipantList]);
 
   useEffect(() => {
@@ -156,7 +155,6 @@ const PostList = () => {
         },
       );
     } else {
-      console.log(cancelId);
       setIsBtnClick(true);
       requestCancelAccompany.mutate(cancelId, {
         onSuccess: () => {
@@ -219,7 +217,7 @@ const PostList = () => {
         <figure className="h-50 w-full">
           <img
             className="w-60"
-            src={imagesUrl && imagesUrl.length > 0 ? imagesUrl : sampleImage}
+            src={imagesUrl && imagesUrl.length > 0 ? imagesUrl[0] : sampleImage}
             alt="샘플이미지"
           />
         </figure>

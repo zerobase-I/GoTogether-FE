@@ -7,9 +7,13 @@ const SelectCountry = ({
   beforeCountry,
   beforeCity,
 }) => {
-  const [country, setCountry] = useState(beforeCountry);
-  const [city, setCity] = useState(beforeCity);
+  const [country, setCountry] = useState(beforeCountry); //KOREA
+  const [city, setCity] = useState(beforeCity); // SEOUL
   const [cities, setCities] = useState([]);
+
+  useEffect(() => {
+    onCityChange(cities[0]);
+  }, [cities]);
 
   useEffect(() => {
     const selectedCountryData = COUNTRY_CITY_DATA.find(
@@ -21,10 +25,6 @@ const SelectCountry = ({
 
     setCities(selectedCountryData.cities); // 선택된 나라의 도시로 바꾸기
   }, [cities, beforeCity, beforeCountry]);
-
-  useEffect(() => {
-    onCityChange(cities[0]);
-  }, [cities]);
 
   const handleCountryChange = (e) => {
     const selectedCountry = e.target.value;
