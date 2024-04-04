@@ -127,7 +127,7 @@ const SignUp = () => {
     );
 
     if (image) {
-      formData.append('profileImageUrl', image);
+      formData.append('image', image);
     }
 
     console.log('Request Data:', requestData);
