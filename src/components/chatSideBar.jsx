@@ -93,7 +93,7 @@ const handleExitChatRoom = async () => {
         </div>
         <div className="mt-4 text-center font-light text-sm">
         <div className="font-medium">주요 일정</div>
-        <div className="bg-gray-700 rounded-xl h-40 px-1 py-3">{postDetails.content}</div>
+        <div className="bg-gray-700 rounded-xl text-left min-h-40 px-1 py-3 overflow-auto">{postDetails.content}</div>
       </div>
     
         <div className="mt-10 mb-10 text-center">

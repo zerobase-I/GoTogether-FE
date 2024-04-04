@@ -4,9 +4,13 @@ import ChatSideBar from '/src/components/chatSideBar.jsx';
 import {reissueToken, fetchChatMessages } from '/src/api/chatService.js';
 import axios from 'axios';
 import * as Stomp from 'stomp-websocket';
+import { UserInfoAtom } from '../recoil/userInfoAtom';
+import { sampleImageProfile } from '/src/components/config/sampleImg';
+import { useRecoilValue } from 'recoil';
 // import { useQuery } from '@tanstack/react-query';
 
 const ChatRoom = () => {
+  const {profileImageUrl } = useRecoilValue(UserInfoAtom);
   const location = useLocation();
   const [stompClient, setStompClient] = useState(null);
   const [messages, setMessages] = useState([]);
@@ -19,7 +23,12 @@ const ChatRoom = () => {
   
   useEffect(() => {
   console.log("Chat Room ID: ", chatRoomId);
-}, [chatRoomId]);
+  }, [chatRoomId]);
+  
+  useEffect(() => {
+  // profileImageUrl 상태가 변경될 때마다 콘솔에 출력
+  console.log("Profile Image URL:", profileImageUrl);
+}, [profileImageUrl]);
 
    useEffect(() => {
     const accessToken = localStorage.getItem('accessToken') || '';
@@ -27,6 +36,7 @@ const ChatRoom = () => {
     setUserDetails(JSON.parse(localStorage.getItem('userDetails')) || {});
    }, []);
   
+
    
    useEffect(() => {
   const tryConnectWebSocket = async () => {
@@ -57,8 +67,15 @@ const ChatRoom = () => {
   };
   tryConnectWebSocket();
 
-  return () => stompClient?.disconnect();
-}, [chatRoomId]);// Dependency array to re-run the effect when chatRoomId or stompClient changes.
+ return () => {
+    if (stompClient?.connected) {
+      console.log('Disconnecting Stomp Client...');
+      stompClient.disconnect(() => {
+        console.log('Disconnected Stomp Client');
+      });
+    }
+  };
+}, [chatRoomId, stompClient]);// Dependency array to re-run the effect when chatRoomId or stompClient changes.
    
 
 
@@ -159,10 +176,10 @@ useEffect(() => {
         {isMenuOpen ? 'x' : '='}
       </button>
       <div id="messageContainer" className="flex-1 pb-36 p-4 overflow-y-auto">
+        <div className="py-3 px-3 bg-slate-400 rounded-xl">채팅방에 입장하셨습니다.</div>
         {messages.map((message, index) => (
   <div key={index} className={`mb-2 flex ${message.email === userDetails.email ? 'justify-end' : 'justify-start'}`}>
     <div className={`max-w-xl ${message.email === userDetails.email ? 'items-end' : ''}`}>
-      {/* 사용자 자신의 메시지일 경우 메시지 본문과 시간 표시 위치 조정 */}
               {message.email === userDetails.email ? (
                 <div className="flex">
                   
@@ -170,17 +187,17 @@ useEffect(() => {
                     <div className="flex justify-start">{message.nickname}</div>
                     <div className="flex items-end">
                       <div className="text-xs mr-2">{formatTime(message.createdAt)}</div>
-                      <div className={`p-3 rounded-lg max-w-72 text-start shadow bg-blue-100`}>
+                      <div className={`p-3 rounded-lg max-w-72 shadow bg-blue-100`}>
                         {message.content}
                       </div>
                     </div> 
                   </div>
-                  <img className="rounded-full ml-2 mt-7 h-10 w-14" src="/src/assets/profileImage.png" alt="profileImg"/>
+                  <img className="rounded-full ml-2 mt-4 h-14 w-14" src={profileImageUrl || sampleImageProfile} alt="profileImg"/>
                 </div>
       ) : (
                   // 상대방 메시지일 경우
                   <div className="flex">
-                    <img className="rounded-full mr-2 mt-7 h-10 w-14" src="/src/assets/profileImage.png" alt="profileImg"/>
+                    <img className="rounded-full mr-2 mt-7 h-10 w-14" src={profileImageUrl || sampleImageProfile} alt="profileImg"/>
                       <div className="flex flex-col items-start">
                         <div className="flex justify-start">{message.nickname}</div>
                         <div className="flex items-end">
