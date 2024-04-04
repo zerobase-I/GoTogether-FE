@@ -74,14 +74,13 @@ export const createPost = async (formData) => {
     );
   }
   try {
-    // 서버에 데이터를 보내는 비동기 작업 수행
     const response = await axios.post(`${BASE_URL}/post`, form, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
     });
     console.log(response);
-    return response.data; // 성공 시 반환할 데이터
+    return response.data;
   } catch (error) {
     // 토큰이 만료되었거나 다른 이유로 요청이 실패한 경우
     if (error.response && error.response.status === 401) {
@@ -102,12 +101,14 @@ export const updatePost = async (inputValue) => {
   for (const [key, value] of formData.entries()) {
     if (value instanceof File) {
       form.append(`files`, value);
-    } else {
+    } else if (key === 'imageIdsToDelete') {
+      requestData[key] = [Number(value)];
+    } else if (
       // 비파일 값은 requestData 객체에 추가
-      if (key !== 'image') {
-        // 'image' 키를 제외한 모든 데이터를 처리
-        requestData[key] = value;
-      }
+      key !== 'newImages'
+    ) {
+      // 'image' 키를 제외한 모든 데이터를 처리
+      requestData[key] = value;
     }
   }
 
@@ -115,6 +116,7 @@ export const updatePost = async (inputValue) => {
   console.log(form);
 
   const json = JSON.stringify(requestData);
+  console.log(json);
   const blob = new Blob([json], { type: 'application/json' });
   form.append('request', blob);
 
@@ -158,7 +160,7 @@ export const deletePost = async (postId) => {
   }
 };
 
-// 게시물 키워드 검색 조회 -> 토큰
+// 게시물 키워드 검색 조회 :키워드 1개일 경우-> 토큰
 export const getKeywordFilterPost = async (keyword, page, size) => {
   try {
     const response = await axios.get(

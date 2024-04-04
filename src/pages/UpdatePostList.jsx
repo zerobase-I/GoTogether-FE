@@ -50,8 +50,8 @@ const UpdatePostList = () => {
     endDate: endDate,
     title: title,
     content: content,
-    /*     newImages: '',
-    imageIdsToDelete: '', */
+    /*     newImages: imagesUrl,
+    imageIdsToDelete: imagesUrl, */
   });
 
   const { UpdatePostMutation } = usePosts();
@@ -75,13 +75,13 @@ const UpdatePostList = () => {
     }));
   };
 
-  const handleFileChange = (files) => {
+  /*   const handleFileChange = (files) => {
     setInputs(() => ({
       ...inputs,
       newImages: files,
     }));
   };
-
+ */
   const handleQuillTextChange = (text) => {
     setInputs(() => ({
       ...inputs,
@@ -116,9 +116,9 @@ const UpdatePostList = () => {
     const formData = new FormData();
 
     for (const key in inputs) {
-      if (key === 'image' && inputs.image && inputs.image.length) {
-        for (let i = 0; i < inputs.image.length; i++) {
-          formData.append('image', inputs.image[i]);
+      if (key === 'newImages' && inputs.newImages && inputs.newImages.length) {
+        for (let i = 0; i < inputs.newImages.length; i++) {
+          formData.append('newImages', inputs.newImages[i]);
         }
       } else {
         formData.append(key, inputs[key]);
@@ -202,7 +202,7 @@ const UpdatePostList = () => {
             <div className="w-full">
               <span className="text-gray-400">최대나이</span>
               <input
-                className="input input-bordered input-info w-full  border-blue-500 border-2 ml-2"
+                className="input input-bordered input-info w-full  border-blue-500 border-2 ml-2 "
                 type="number"
                 placeholder="최대 나이 (100세 이하)"
                 min={18}
@@ -276,7 +276,7 @@ const UpdatePostList = () => {
             placeholder="제목 "
             required
             minLength="4"
-            maxLength="40"
+            maxLength="30"
             name="title"
             onChange={handleChangeInfo}
             value={inputs.title}
@@ -287,7 +287,7 @@ const UpdatePostList = () => {
           />
         </section>
 
-        <section className="mb-16">
+        {/*    <section className="mb-16">
           <label
             className="text-xl w-full text-left font-semibold  mb-2 flex flex-col"
             id="upLoadFile"
@@ -297,10 +297,10 @@ const UpdatePostList = () => {
             </span>
             <ImageUpload2
               onFileChange={handleFileChange}
-              value={inputs.image}
+              value={inputs.newImages}
             />
           </label>
-        </section>
+        </section> */}
         <p>{success}</p>
         <button type="submit" className="btn btn-outline btn-info w-full mb-20">
           수정하기

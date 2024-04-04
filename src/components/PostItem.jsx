@@ -33,11 +33,13 @@ const PostItem = ({
     >
       <div className="flex  pt-2 rounded-b-2xl">
         <div className="flex w-full">
-          <img
-            className="w-24 h-34 md:w-40 md:h-40 rounded-2xl "
-            src={(imagesUrl && imagesUrl[0]) || sampleImage}
-            alt="여행사진"
-          />
+          <div className=" w-40 h-32 md:w-60 md:h-full overflow-hidden">
+            <img
+              className="w-44 h-full md:w-60 md:h-40  object-cover rounded-2xl "
+              src={(imagesUrl && imagesUrl[0]) || sampleImage}
+              alt="여행사진"
+            />
+          </div>
 
           <div className="flex flex-col items-start justify-between w-full  mr-1 ">
             <div className="flex w-full flex-col md:flex-row-reverse justify-end ">

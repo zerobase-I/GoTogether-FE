@@ -75,6 +75,10 @@ const PostList = () => {
   }, []);
 
   useEffect(() => {
+    console.log(post);
+  }, []);
+
+  useEffect(() => {
     if (chatRoomLists) {
       console.log(chatRoomLists);
       const isChatRoom =
