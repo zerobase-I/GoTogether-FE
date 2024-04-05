@@ -8,6 +8,7 @@ export const getPosts = async (page = 0, size = 10) => {
       `${BASE_URL}/post/searchAll?page=${page}&size=${size}`,
     );
 
+    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -74,13 +75,14 @@ export const createPost = async (formData) => {
     );
   }
   try {
+    // 서버에 데이터를 보내는 비동기 작업 수행
     const response = await axios.post(`${BASE_URL}/post`, form, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
     });
     console.log(response);
-    return response.data;
+    return response.data; // 성공 시 반환할 데이터
   } catch (error) {
     // 토큰이 만료되었거나 다른 이유로 요청이 실패한 경우
     if (error.response && error.response.status === 401) {
@@ -94,6 +96,7 @@ export const createPost = async (formData) => {
 //게시물 수정 -> 토큰
 export const updatePost = async (inputValue) => {
   const { formData, postId } = inputValue;
+  console.log(postId);
 
   const form = new FormData();
   const requestData = {};
@@ -101,14 +104,12 @@ export const updatePost = async (inputValue) => {
   for (const [key, value] of formData.entries()) {
     if (value instanceof File) {
       form.append(`files`, value);
-    } else if (key === 'imageIdsToDelete') {
-      requestData[key] = [Number(value)];
-    } else if (
+    } else {
       // 비파일 값은 requestData 객체에 추가
-      key !== 'newImages'
-    ) {
-      // 'image' 키를 제외한 모든 데이터를 처리
-      requestData[key] = value;
+      if (key !== 'image') {
+        // 'image' 키를 제외한 모든 데이터를 처리
+        requestData[key] = value;
+      }
     }
   }
 
@@ -116,14 +117,8 @@ export const updatePost = async (inputValue) => {
   console.log(form);
 
   const json = JSON.stringify(requestData);
-  console.log(json);
   const blob = new Blob([json], { type: 'application/json' });
   form.append('request', blob);
-
-  for (const [key, value] of form.entries()) {
-    console.log(key);
-    console.log(value);
-  }
 
   try {
     const response = await axios.put(`${BASE_URL}/post/${postId}`, form, {
@@ -160,18 +155,123 @@ export const deletePost = async (postId) => {
   }
 };
 
-// 게시물 키워드 검색 조회 :키워드 1개일 경우-> 토큰
-export const getKeywordFilterPost = async (keyword, page, size) => {
-  try {
-    const response = await axios.get(
-      `${BASE_URL}/post/keyword?keyword=${keyword}&page=${page}$size=${size}`,
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      },
-    );
+// 게시물 키워드 검색 조회 -> 토큰
+//keyword  = { travelCountry, travelCity, startDate, endDate, postGenderType, postCategory }
+export const getKeywordFilterPost = async (keyword, page = 0, size = 5) => {
+  const filterKeyword = {}; // keyword 중 date를 제외한 keyword
+  const dateKeyword = {}; // keyword 중 startDate,endDate keyword
+  const filterList = {}; // 필터에 사용될 키워드 모음
 
+  for (const [key, value] of Object.entries(keyword)) {
+    if (key === 'startDate' || key === 'endDate') {
+      dateKeyword[key] = value;
+    } else {
+      filterKeyword[key] = value;
+    }
+  }
+
+  for (const [key, value] of Object.entries(filterKeyword)) {
+    if (value !== '') {
+      filterList[key] = value;
+    }
+  }
+
+  const filterListLength = Object.keys(filterList).length; // 필터에 사용될 키워드 개수
+  const dateListLength = Object.keys(dateKeyword).length; // date 길이가 0이 아니면 필터에 사용
+  const filterValue = Object.values(filterList); // 필터 사용 데이터 배열로
+  const filterDateValue = Object.values(dateKeyword); // 필터 사용 date 배열로
+  let response; // 비동기 반환값
+
+  try {
+    //keyword 1개이면서 date 존재하는 경우
+    if (filterListLength === 1 && dateListLength !== 0) {
+      response = await axios.get(
+        `${BASE_URL}/post/keyword?keyword=${filterValue[0]}&startDate=${filterDateValue[0]}&endDate=${filterDateValue[1]}&page=${page}&size=${size}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      );
+    } else if (filterListLength === 1) {
+      //keyword 1개 일 경우
+      response = await axios.get(
+        `${BASE_URL}/post/keyword?keyword=${filterValue[0]}&page=${page}&size=${size}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      );
+    }
+
+    //keyword 2개이면서 date 존재하는 경우
+    if (filterListLength === 2 && dateListLength !== 0) {
+      response = await axios.get(
+        `${BASE_URL}/post/keyword?keyword=${filterValue[0]}&keyword=${filterValue[1]}&startDate=${filterDateValue[0]}&endDate=${filterDateValue[1]}&page=${page}&size=${size}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      );
+    } else if (filterListLength === 2) {
+      //keyword 2개 일 경우
+      response = await axios.get(
+        `${BASE_URL}/post/keyword?keyword=${filterValue[0]}&keyword=${filterValue[1]}&page=${page}&size=${size}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      );
+    }
+
+    //keyword 3개이면서 date 존재하는 경우
+    if (filterListLength === 3 && dateListLength !== 0) {
+      response = await axios.get(
+        `${BASE_URL}/post/keyword?keyword=${filterValue[0]}&keyword=${filterValue[1]}&keyword=${filterValue[2]}&startDate=${filterDateValue[0]}&endDate=${filterDateValue[1]}&page=${page}&size=${size}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      );
+    } else if (filterListLength === 3) {
+      //keyword 3개 일 경우
+      response = await axios.get(
+        `${BASE_URL}/post/keyword?keyword=${filterValue[0]}&keyword=${filterValue[1]}&keyword=${filterValue[2]}&page=${page}&size=${size}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      );
+    }
+
+    //keyword 4개이면서 date 존재하는 경우
+    if (filterListLength === 4 && dateListLength !== 0) {
+      response = await axios.get(
+        `${BASE_URL}/post/keyword?keyword=${filterValue[0]}&keyword=${filterValue[1]}&keyword=${filterValue[2]}&keyword=${filterValue[3]}&startDate=${filterDateValue[0]}&endDate=${filterDateValue[1]}&page=${page}&size=${size}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      );
+    } else if (filterListLength === 4) {
+      //keyword 4개 일 경우
+      response = await axios.get(
+        `${BASE_URL}/post/keyword?keyword=${Object.values(filterList)[0]}&keyword=${filterValue[1]}&keyword=${filterValue[2]}&keyword=${filterValue[3]}&page=${page}&size=${size}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      );
+    }
+
+    console.log(response.data);
     return response.data;
   } catch (error) {
     throw new Error('게시글 키워드 검색 조회 실패');

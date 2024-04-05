@@ -1,68 +1,122 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactCalendar from '../components/ReactCalendar';
-import { categoryLists } from '../components/config/data';
+import { categoryLists, genders } from '../components/config/data';
 import RadioBtnSingle from '../components/Ui/RadioBtnSingle';
 import SelectCountry from '../components/SelectCountry';
 import moment from 'moment';
+import RadioBtn from '../components/RadioBtn';
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import { filterItem } from '../recoil/filterItem';
+import { isFilter } from '../recoil/isFilter';
+import { useGoToPage } from '../utils/utils';
 
 const Filter = () => {
-  const [inputs, setInputs] = useState({
-    travelCountry: 'KOREA',
-    travelCity: 'SEOUL',
-    startDate: moment(new Date().toDateString()).format('YYYY-MM-DDTHH:mm:ss'),
-    endDate: moment(new Date().toDateString()).format('YYYY-MM-DDTHH:mm:ss'),
-    postGenderType: '',
-    minimumAge: '18',
-    maximumAge: '100',
-    recruitsPeople: '6',
-    estimatedTravelExpense: '0',
-    postCategory: '',
-    title: '',
-    content: '',
-    image: [],
-  });
+  const [filterInputs, setFilterInputs] = useRecoilState(filterItem);
+  const setIsFilter = useSetRecoilState(isFilter);
 
   const handleChangeInfo = (e) => {
     const { name, value } = e.target;
 
-    setInputs({ ...inputs, [name]: value });
+    setFilterInputs({ ...filterInputs, [name]: value });
   };
 
   const handleCityChange = (firstSelectCity) => {
-    setInputs({ ...inputs, travelCity: firstSelectCity });
+    setFilterInputs({ ...filterInputs, travelCity: firstSelectCity });
   };
 
+  const handleDateChange = (dates) => {
+    setFilterInputs(() => ({
+      ...filterInputs,
+      startDate: moment(dates[0].toDateString()).format('YYYY-MM-DDTHH:mm:ss'),
+      endDate: moment(dates[1].toDateString()).format('YYYY-MM-DDTHH:mm:ss'),
+    }));
+  };
+
+  const { goToHome } = useGoToPage();
+  const handleFilterSetClick = () => {
+    console.log('filter 클릭');
+    // filter 상태 on
+    setIsFilter(true);
+    goToHome();
+  };
+
+  const handleFilterCancelClick = () => {
+    console.log('filter 해제');
+    //1.  filter 상태 off
+    setIsFilter(false);
+    //2. filterInputs 초기화
+    setFilterInputs({
+      travelCountry: 'KOREA',
+      travelCity: '',
+      startDate: '',
+      endDate: '',
+      postGenderType: '',
+      postCategory: '',
+    });
+    goToHome();
+  };
+
+  useEffect(() => {
+    console.log(filterInputs);
+  }, [filterInputs]);
+
   return (
-    <main className="mx-4 mb-40">
+    <main className="mt-4 mx-4 mb-40">
       <SelectCountry
         onChange={handleChangeInfo}
         onCityChange={handleCityChange}
-        beforeCountry={inputs.travelCountry}
-        beforeCity={inputs.travelCity}
+        beforeCountry={filterInputs.travelCountry}
+        beforeCity={filterInputs.travelCity}
       />
 
       <section className="mb-6">
-        <ReactCalendar />
+        <ReactCalendar onDateChange={handleDateChange} />
+      </section>
+
+      <section className="mb-2">
+        <span className="text-xl text-left font-semibold w-max block ">
+          함께하고 싶은 성별
+        </span>
+        <div className="flex">
+          {genders.map((gender) => {
+            return (
+              <RadioBtn
+                key={Object.keys(gender)}
+                option={gender}
+                name="postGenderType"
+                onChange={handleChangeInfo}
+              />
+            );
+          })}
+        </div>
       </section>
 
       <section className="mb-6">
         <span className="text-xl w-full text-left font-semibold block mb-2">
           카테고리를 선택하세요
         </span>
-        {categoryLists.map((category) => (
-          <RadioBtnSingle
-            option={category}
-            name="category"
-            key={Object.keys(category)}
-            onChange={handleChangeInfo}
-            value={inputs}
-          />
-        ))}
+        <div className="flex flex-col md:flex-row">
+          {categoryLists.map((category) => (
+            <RadioBtnSingle
+              option={category}
+              name="category"
+              key={Object.keys(category)}
+              onChange={handleChangeInfo}
+              value={filterInputs}
+            />
+          ))}
+        </div>
       </section>
-      <button type="submit" className="btn btn-outline btn-info w-full mb-1">
+      <button
+        className="btn btn-outline btn-info w-full mb-1"
+        onClick={handleFilterSetClick}
+      >
         필터 설정
       </button>
-      <button type="submit" className="btn btn-outline btn-error w-full">
+      <button
+        className="btn btn-outline btn-error w-full"
+        onClick={handleFilterCancelClick}
+      >
         <span className="text-red-700">필터 해제</span>
       </button>
     </main>

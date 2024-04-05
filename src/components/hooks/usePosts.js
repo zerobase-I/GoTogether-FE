@@ -1,6 +1,11 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-import { createPost, deletePost, updatePost } from '../../api/postApi';
+import {
+  createPost,
+  deletePost,
+  getKeywordFilterPost,
+  updatePost,
+} from '../../api/postApi';
 
 const usePosts = () => {
   const queryClient = useQueryClient();
@@ -31,6 +36,16 @@ const usePosts = () => {
     UpdatePostMutation,
     deletePostMutation,
   };
+};
+
+// 필터링 쿼리
+export const useFilterPosts = (filterInputs, page, size) => {
+  const filterPosts = useQuery({
+    queryKey: ['filterPost', filterInputs],
+    queryFn: () => getKeywordFilterPost(filterInputs, page, size),
+  });
+
+  return { filterPosts };
 };
 
 export default usePosts;
