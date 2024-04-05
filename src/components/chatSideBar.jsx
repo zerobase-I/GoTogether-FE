@@ -101,9 +101,9 @@ const handleExitChatRoom = async () => {
         </div>
       </div>
 
-      <div className="mt-4 mx-4 p-4 bg-gray-800 text-white rounded-lg">
+      <div className="mt-4 mb-10 mx-4 p-4 bg-gray-800 text-white rounded-lg">
         <div className="font-medium">참여자 목록</div>
-        <div className="mt-2 space-y-2">
+        <div className="mt-4 space-y-2">
           {participants.length > 0 ? (
             participants.map((nickName, index) => (
               <div key={index} className="flex justify-between items-center p-2 bg-gray-700 rounded-lg">
@@ -117,15 +117,17 @@ const handleExitChatRoom = async () => {
         </div>
       </div>
 
-      <div className="absolute bottom-20 right-16">
-        <button
+    
+        <div className="flex justify-end bottom-16 absolute bg-gray-500 w-full">
+          <img
           onClick={handleExitChatRoom}
-        className="w-full py-2 px-8 bg-red-600 text-white rounded-lg hover:bg-red-700 transition duration-300 ease-in-out">
-        퇴장하기
-            </button>
+          src="/src/assets/exit.png"
+          className="w-10">
+    
+              </img>
+        </div>
       </div>
-      
-    </div>
+    
   );
 };
 
