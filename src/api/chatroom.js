@@ -25,7 +25,7 @@ export const createChatroom = async (postId, accompanyRequestMemberId) => {
 };
 
 // 참여중인 채팅방 목록 조회
-export const getChatRoomLists = async () => {
+export const getChatRoomLists = async (accessToken) => {
   try {
     const response = await apiClient.get('chat-room/my-list', {
       headers: {
