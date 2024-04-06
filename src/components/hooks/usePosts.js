@@ -39,10 +39,12 @@ const usePosts = () => {
 };
 
 // 필터링 쿼리
-export const useFilterPosts = (filterInputs, page, size) => {
+//isTrueFilter 는 조건부 호출을 위한 인수
+export const useFilterPosts = (filterInputs, page, size, isTrueFilter) => {
   const filterPosts = useQuery({
     queryKey: ['filterPost', filterInputs],
     queryFn: () => getKeywordFilterPost(filterInputs, page, size),
+    enabled: !!isTrueFilter,
   });
 
   return { filterPosts };

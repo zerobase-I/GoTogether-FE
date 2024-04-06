@@ -33,7 +33,7 @@ const PostBox = ({ searchInput, onSearchClick }) => {
 
   const {
     filterPosts: { data: filterPostData, isLoading: isFilterDataLoading },
-  } = useFilterPosts(filterInputs, currentPage - 1, postPerPage);
+  } = useFilterPosts(filterInputs, currentPage - 1, postPerPage, isTrueFilter);
 
   if (isLoading || isFilterDataLoading) return <Loading />;
   if (isError) return <p>{error.message}</p>;

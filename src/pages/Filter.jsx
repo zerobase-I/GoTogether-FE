@@ -5,7 +5,7 @@ import RadioBtnSingle from '../components/Ui/RadioBtnSingle';
 import SelectCountry from '../components/SelectCountry';
 import moment from 'moment';
 import RadioBtn from '../components/RadioBtn';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState, useResetRecoilState, useSetRecoilState } from 'recoil';
 import { filterItem } from '../recoil/filterItem';
 import { isFilter } from '../recoil/isFilter';
 import { useGoToPage } from '../utils/utils';
@@ -13,6 +13,7 @@ import { useGoToPage } from '../utils/utils';
 const Filter = () => {
   const [filterInputs, setFilterInputs] = useRecoilState(filterItem);
   const setIsFilter = useSetRecoilState(isFilter);
+  const resetFilterInputs = useResetRecoilState(filterItem);
 
   const handleChangeInfo = (e) => {
     const { name, value } = e.target;
@@ -45,14 +46,7 @@ const Filter = () => {
     //1.  filter 상태 off
     setIsFilter(false);
     //2. filterInputs 초기화
-    setFilterInputs({
-      travelCountry: 'KOREA',
-      travelCity: '',
-      startDate: '',
-      endDate: '',
-      postGenderType: '',
-      postCategory: '',
-    });
+    resetFilterInputs();
     goToHome();
   };
 
