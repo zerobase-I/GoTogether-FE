@@ -1,13 +1,11 @@
 import React from 'react';
-import { useRecoilValue } from 'recoil';
-import { UserInfoAtom } from '../recoil/userInfoAtom';
 
-const UserInfoDetail = () => {
+const OtherUserInfoDetail = ({ otherMemberInfo }) => {
   const { address, age, description, gender, instagramId, mbti } =
-    useRecoilValue(UserInfoAtom);
+    otherMemberInfo;
 
   return (
-    <section className="flex flex-col mt-10 p-4 bg-white shadow-md rounded-lg  mx-auto">
+    <section className=" flex flex-col mt-10 p-4 bg-white shadow-md rounded-lg mx-auto ">
       <div className="text-start mb-2">
         <span className="font-bold mr-2 text-gray-800">동행 점수:</span>
         {/* 점수가 있다면 여기에 표시 */}
@@ -40,4 +38,4 @@ const UserInfoDetail = () => {
   );
 };
 
-export default UserInfoDetail;
+export default OtherUserInfoDetail;

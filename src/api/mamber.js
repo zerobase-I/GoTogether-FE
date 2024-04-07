@@ -21,8 +21,11 @@ export const getMyMemberInfo = async () => {
 
 // 특정 회원 정보 조회 -> get
 export const getOtherMemberInfo = async (memberId) => {
+  console.log(memberId);
   try {
-    const response = await axios.get(`${BASE_URL}/member/profile/${memberId}`);
+    const response = await axios.get(
+      `${BASE_URL}/member/profile?memberId=${memberId}`,
+    );
 
     return response.data;
   } catch (error) {

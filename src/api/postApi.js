@@ -15,10 +15,10 @@ export const getPosts = async (page = 0, size = 10) => {
 };
 
 // 자신 또는 특정 회원이 작성한 게시물리스트 보기 -> 페이지네이션 백엔드 구현 -> 토큰
-export const getMyPosts = async (page = 0, size = 10, userId) => {
+export const getMyPosts = async (userId, page = 0, size = 5, postId) => {
   try {
     const response = await axios.get(
-      `${BASE_URL}/post/myPosts/${userId}?page=${page}&size=${size}`,
+      `${BASE_URL}/post/myPosts/${userId}?page=${page}&size=${size}&postId=`,
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,
