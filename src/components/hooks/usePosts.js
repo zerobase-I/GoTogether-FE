@@ -4,6 +4,7 @@ import {
   createPost,
   deletePost,
   getKeywordFilterPost,
+  getPosts,
   updatePost,
 } from '../../api/postApi';
 
@@ -36,6 +37,17 @@ const usePosts = () => {
     UpdatePostMutation,
     deletePostMutation,
   };
+};
+
+// 모든 게시물 가져오기
+export const useGetPostQuery = (currentPage, postPerPage) => {
+  const getPostQuery = useQuery({
+    queryKey: ['posts', currentPage, postPerPage],
+    queryFn: () => getPosts(currentPage, postPerPage),
+    keepPreviousData: true,
+  });
+
+  return { getPostQuery };
 };
 
 // 필터링 쿼리

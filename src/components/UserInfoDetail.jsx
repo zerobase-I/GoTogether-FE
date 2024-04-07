@@ -14,26 +14,26 @@ const UserInfoDetail = () => {
       </div>
       <div className="text-start mb-2">
         <span className="font-bold mr-2">성별:</span>
-        <span className="text-blue-500">{gender}</span>
+        <span className="text-blue-600">{gender}</span>
       </div>
       <div className="text-start mb-2">
         <span className="font-bold mr-2">나이:</span>
-        <span className="text-blue-500">{age}</span>
+        <span className="text-blue-600">{age}</span>
       </div>
       <div className="text-start mb-2">
         <span className="font-bold mr-2">위치:</span>
-        <span className="text-blue-500">{address}</span>
+        <span className="text-blue-600">{address}</span>
       </div>
       <div className="text-start mb-2">
         <span className="font-bold mr-2">MBTI:</span>
-        <span className="text-blue-500">{mbti}</span>
+        <span className="text-blue-600">{mbti}</span>
       </div>
       <div className="text-start mb-2">
         <span className="font-bold mr-2">인스타그램 아이디:</span>
-        <span className="text-blue-500">{instagramId}</span>
+        <span className="text-blue-600">{instagramId}</span>
       </div>
       <div className="block mt-4">
-        <span className="font-bold mr-2">자기소개:</span>
+        <span className="font-bold mr-2">🤍 자기소개 🤍</span>
       </div>
       <p className="mt-2 text-gray-700">{description}</p>
     </section>

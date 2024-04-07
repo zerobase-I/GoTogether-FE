@@ -11,6 +11,7 @@ import { isFilter } from '../recoil/isFilter';
 import { useGoToPage } from '../utils/utils';
 
 const Filter = () => {
+  const { goToHome } = useGoToPage();
   const [filterInputs, setFilterInputs] = useRecoilState(filterItem);
   const setIsFilter = useSetRecoilState(isFilter);
   const resetFilterInputs = useResetRecoilState(filterItem);
@@ -33,19 +34,13 @@ const Filter = () => {
     }));
   };
 
-  const { goToHome } = useGoToPage();
   const handleFilterSetClick = () => {
-    console.log('filter 클릭');
-    // filter 상태 on
     setIsFilter(true);
     goToHome();
   };
 
   const handleFilterCancelClick = () => {
-    console.log('filter 해제');
-    //1.  filter 상태 off
     setIsFilter(false);
-    //2. filterInputs 초기화
     resetFilterInputs();
     goToHome();
   };

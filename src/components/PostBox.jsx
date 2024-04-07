@@ -7,7 +7,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getPosts } from '../api/postApi';
 import { useRecoilValue } from 'recoil';
 import { isFilter } from '../recoil/isFilter';
-import { useFilterPosts } from './hooks/usePosts';
+import { useFilterPosts, useGetPostQuery } from './hooks/usePosts';
 import { filterItem } from '../recoil/filterItem';
 
 const PostBox = ({ searchInput, onSearchClick }) => {
@@ -20,16 +20,10 @@ const PostBox = ({ searchInput, onSearchClick }) => {
 
   //쿼리 키는 가져오는 데이터를 고유하게 설명하므로
   //쿼리 함수에서 사용하는 변경되는 모든 변수를 포함해야 한다.
+
   const {
-    data: postsData,
-    error,
-    isError,
-    isLoading,
-  } = useQuery({
-    queryKey: ['posts', currentPage - 1, postPerPage],
-    queryFn: () => getPosts(currentPage - 1, postPerPage),
-    keepPreviousData: true,
-  });
+    getPostQuery: { data: postsData, error, isError, isLoading },
+  } = useGetPostQuery(currentPage - 1, postPerPage);
 
   const {
     filterPosts: { data: filterPostData, isLoading: isFilterDataLoading },

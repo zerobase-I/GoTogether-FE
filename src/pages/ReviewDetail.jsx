@@ -7,6 +7,7 @@ import { UserInfoAtom } from '../recoil/userInfoAtom';
 import Loading from '../components/Loading';
 import { sampleImage } from '../components/config/sampleImg';
 import { characteristic } from '../components/config/data';
+import { LuHeart } from 'react-icons/lu';
 
 const ReviewDetail = () => {
   const {
@@ -21,7 +22,7 @@ const ReviewDetail = () => {
 
   console.log();
   return (
-    <section className="mb-20">
+    <section className="mb-20 mx-4 mt-4">
       <div className="overflow-y-auto">
         <div className="flex justify-between items-center">
           <div className="flex items-center">
@@ -43,11 +44,12 @@ const ReviewDetail = () => {
           </div>
         </div>
 
-        <div className="w-full bg-gray-300 mt-5">
-          <p className="p-7 text-nowrap text-left text-sm sm:text-lg md:text-xl lg:text-2xl xl:text-3xl">
-            내가 받은 후기들이에요! 더 많은 후기와 점수를 받아
+        <div className="w-full bg-gray-100 mt-4 rounded-md">
+          <p className="p-5 text-nowrap text-center text-sm sm:text-lg md:text-xl lg:text-2xl xl:text-3xl">
+            🤍 내가 받은 동행 후기들이에요 🤍
             <br />
-            동행 점수를 높여 신뢰를 얻어보세요!
+            <br />
+            🤍 동행 점수를 받아, 신뢰도 높여보세요 🤍
           </p>
         </div>
 
@@ -74,7 +76,7 @@ const ReviewDetail = () => {
                   </span>
                 </div>
                 <div>
-                  <div className="bg-blue-400 w-48 p-4 rounded-md">
+                  <div className="bg-blue-500 w-48 p-4 rounded-md">
                     {item[1]}
                   </div>
                 </div>

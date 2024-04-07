@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import { useAccompany } from '../components/hooks/useAccompany';
 
 import Loading from '../components/Loading';
-import { sampleImgHands } from '../components/config/sampleImg';
+import {
+  sampleImageProfile,
+  sampleImgHands,
+} from '../components/config/sampleImg';
 import { createChatroom, enterChatRoom } from '../api/chatroom';
 
 const TravelRequestList = () => {
@@ -98,72 +101,86 @@ const TravelRequestList = () => {
           {isError && <>{error.message}</>}
 
           {activeTab === 'send'
-            ? Array.isArray(requestList) &&
-              requestList.map((list) => (
-                <li
-                  key={list.id}
-                  className="bg-white p-2 flex justify-between items-center  gap-1 rounded-md align-middle shadow-md hover:shadow-lg cursor-pointer transition duration-300 ease-in-out"
-                >
-                  <img
-                    src={sampleImgHands}
-                    alt="Profile"
-                    className="w-16 h-16 md:w-20 md:h-20 rounded-full"
-                  />
-                  <p className="font-semibold text-sm text-gray-500">
-                    {list.postTitle}
-                  </p>
-                  <p className="btn btn-outline btn-warning ">
-                    수락 대기중 . . .
-                  </p>
-                </li>
-              ))
-            : Array.isArray(receiveList) &&
-              receiveList.map((list) => (
-                <li
-                  key={list.id}
-                  className="bg-white p-4 flex justify-between items-center gap-1 rounded-md align-middle shadow-md hover:shadow-lg cursor-pointer transition duration-300 ease-in-out"
-                >
-                  <div className="flex basis-40 items-center">
-                    <img
-                      src={list.profileImage}
-                      alt="Profile"
-                      className="w-12 h-12 rounded-full mr-2 md:mr-4"
-                    />
-                    <div className="">
-                      <p className="text-xs md:text-base text-black font-semi-bold">
-                        {list.nickname}
+            ? Array.isArray(requestList) && (
+                <>
+                  <div>
+                    <p className="mr-10 font-semibold">글 제목</p>
+                  </div>
+                  {requestList.map((list) => (
+                    <li
+                      key={list.id}
+                      className="bg-white p-2 flex justify-between items-center  gap-1 rounded-md align-middle shadow-md hover:shadow-lg cursor-pointer transition duration-300 ease-in-out"
+                    >
+                      <img
+                        src={sampleImgHands}
+                        alt="Profile"
+                        className="w-16 h-16 md:w-20 md:h-20 rounded-full"
+                      />
+                      <p className="font-semibold text-sm text-gray-500 basis-36 whitespace-nowrap overflow-hidden text-ellipsis">
+                        {list.postTitle}
                       </p>
-                      <p className="text-xs ">{list.mbti}</p>
-                    </div>
+                      <p className="btn btn-outline btn-warning ">
+                        수락 대기중 . . .
+                      </p>
+                    </li>
+                  ))}
+                </>
+              )
+            : Array.isArray(receiveList) && (
+                <>
+                  <div className="flex justify-between mx-4 font-semibold">
+                    <p>유저 이름</p>
+                    <p className="mr-14">글 제목 </p>
+                    <p></p>
                   </div>
-                  <p className="font-semibold text-gray-500  text-xs md:text-base mr-4 whitespace-nowrap overflow-hidden text-ellipsis">
-                    {list.postTitle}
-                  </p>
+                  {receiveList.map((list) => (
+                    <li
+                      key={list.id}
+                      className="bg-white p-4 flex justify-between items-center gap-1 rounded-md align-middle shadow-md hover:shadow-lg cursor-pointer transition duration-300 ease-in-out"
+                    >
+                      <div className="flex basis-40 items-center">
+                        <img
+                          src={sampleImageProfile || list.profileImage}
+                          alt="Profile"
+                          className="w-12 h-12 rounded-full mr-2 md:mr-4"
+                        />
+                        <div className="basis-20 ss:basis-40">
+                          <p className="text-start text-sm md:text-base text-black font-semi-bold">
+                            {list.nickname}
+                          </p>
+                          <p className="text-xs text-center ">{list.mbti}</p>
+                        </div>
+                      </div>
+                      <p className="text-start font-semibold text-gray-500 basis-20 ss:basis-60  text-xs md:text-base mr-4 whitespace-nowrap overflow-hidden text-ellipsis">
+                        {list.postTitle}
+                      </p>
 
-                  <div className="flex items-center">
-                    <div className="flex justify-center gap-2 ">
-                      <button
-                        className="btn btn-outline btn-info bg-transparent text-blue-500 rounded text-sx p-3 "
-                        onClick={() =>
-                          handleApproveBtnClick(
-                            list.id, //동행요청 고유 아이디
-                            list.postId, // 게시글 id
-                            list.requestMemberId, //요청 멤버 id
-                          )
-                        }
-                      >
-                        수락
-                      </button>
-                      <button
-                        className="btn btn-outline btn-error bg-transparent text-red-500 rounded p-3"
-                        onClick={() => handleRejectBtnClick(list.id)}
-                      >
-                        거절
-                      </button>
-                    </div>
-                  </div>
-                </li>
-              ))}
+                      <div className="flex items-center">
+                        <div className="flex justify-center gap-2 ">
+                          <button
+                            className="btn btn-outline btn-info bg-transparent text-blue-500 rounded text-sx p-3 "
+                            onClick={() =>
+                              handleApproveBtnClick(
+                                list.id, //동행요청 고유 아이디
+                                list.postId, // 게시글 id
+                                list.requestMemberId, //요청 멤버 id
+                              )
+                            }
+                          >
+                            수락
+                          </button>
+                          <button
+                            className="btn btn-outline btn-error bg-transparent text-red-500 rounded p-3"
+                            onClick={() => handleRejectBtnClick(list.id)}
+                          >
+                            거절
+                          </button>
+                        </div>
+                      </div>
+                    </li>
+                  ))}
+                </>
+              )}
         </ul>
       </div>
     </div>

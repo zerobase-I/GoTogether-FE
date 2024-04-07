@@ -13,10 +13,10 @@ const UserInfo = () => {
   const { nickname, profileImageUrl } = useRecoilValue(UserInfoAtom);
 
   return (
-    <section className="flex justify-between mb-2">
+    <section className="flex justify-between mb-4">
       <div className="flex items-end">
         <div className="avatar">
-          <div className="w-40 rounded-full md:w-60 relative">
+          <div className="w-40 rounded-full md:w-60 relative  ring ring-primary ring-offset-base-100 ring-offset-2 bg-blue-600 shadow-lg shadow-blue-500/50">
             <Link to="/editprofile">
               <img src={profileImageUrl || sampleImageProfile} />
               <TbPencilSearch className="absolute top-28 right-8 md:absolute md:top-44 md:right-10 text-2xl" />
@@ -24,7 +24,7 @@ const UserInfo = () => {
           </div>
         </div>
         <div>
-          <span className="text-xl self-start">{nickname}</span>
+          <span className="text-xl self-start font-black">{nickname}</span>
           <div className="flex">
             <GiCrossMark className="text-2xl mr-2" />
             <Link to="/reviewdetail">

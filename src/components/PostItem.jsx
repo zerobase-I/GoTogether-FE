@@ -28,11 +28,11 @@ const PostItem = ({
 
   return (
     <section
-      className="overflow-hidden mb-4 mt-8 shadow transition duration-200 ease-in-out transform hover:shadow-md rounded-lg cursor-pointer"
+      className="pt-2 overflow-hidden mb-4 mt-4 ss:mt-6 shadow transition duration-200 ease-in-out transform hover:shadow-md rounded-lg cursor-pointer"
       onClick={() => navigate(`/postlists/${id}`, { state: { post } })}
     >
-      <div className="flex  pt-2 rounded-b-2xl">
-        <div className="flex w-full">
+      <div className="flex   rounded-b-2xl">
+        <div className="flex">
           <div className=" w-40 h-32 md:w-60 md:h-full overflow-hidden">
             <img
               className="w-44 h-full md:w-60 md:h-40  object-cover rounded-2xl "
@@ -41,7 +41,7 @@ const PostItem = ({
             />
           </div>
 
-          <div className="flex flex-col items-start justify-between w-full  mr-1 ">
+          <div className="flex flex-col items-start justify-between   mr-1 ">
             <div className="flex w-full flex-col md:flex-row-reverse justify-end ">
               <div className="flex text-sm mt-1">
                 <span className="badge badge-secondary mr-1 text-xs ml-1 ">
@@ -51,9 +51,11 @@ const PostItem = ({
                   {category || postCategory}
                 </span>
               </div>
-              <h3 className="text-start  text-base md:text-2xl ml-4 mt-1 font-extrabold">
-                {title}
-              </h3>
+              <div className="w-6/12 ss:w-fit">
+                <h3 className=" text-start  text-base md:text-2xl ml-4 mt-1 font-extrabold whitespace-nowrap overflow-hidden  text-ellipsis">
+                  {title}
+                </h3>
+              </div>
             </div>
 
             <span className="text-sm md:text-base ml-4 mt-1 flex w-full">
@@ -68,9 +70,11 @@ const PostItem = ({
               {travelCity}({travelCountry})
             </div>
 
-            <span className="mt-1 block w-7/12 text-left ml-4 mb-2 text-gray-400 text-xs md:text-sm  max-h-9  whitespace-nowrap overflow-hidden   text-ellipsis">
-              {content}
-            </span>
+            <div className="w-screen">
+              <span className="mt-1 w-5/12 ss:w-7/12 md:w-5/12 block  text-left ml-4 mb-2 text-gray-400 text-xs md:text-sm  max-h-9  whitespace-nowrap overflow-hidden  text-ellipsis">
+                {content}
+              </span>
+            </div>
           </div>
         </div>
       </div>
