@@ -11,7 +11,7 @@ const PostBox = ({ searchInput, onSearchClick }) => {
   const postPerPage = 5; //한 페이지에서 보여줄 post 개수
   const [filteredResults, setFilteredResults] = useState([]);
 
-  console.log(searchInput);
+  //  console.log(searchInput);
 
   //쿼리 키는 가져오는 데이터를 고유하게 설명하므로
   //쿼리 함수에서 사용하는 변경되는 모든 변수를 포함해야 한다.
@@ -39,8 +39,8 @@ const PostBox = ({ searchInput, onSearchClick }) => {
       return data.title.toLowerCase().includes(searchInput.toLowerCase());
     });
 
-  console.log(postsData);
-  console.log(filterData);
+  //console.log(postsData);
+  //console.log(filterData);
 
   return (
     <article className="mb-20">

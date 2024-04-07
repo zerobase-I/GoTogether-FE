@@ -26,7 +26,7 @@ import KakaoRedirectHandler from './pages/KakaoRedirectHandler.jsx';
 import App from './routes/App.js';
 import FirstPage from './routes/FirstPage.jsx';
 import ProtectedRoute from './routes/ProtectedRoute.jsx';
-
+import OtherMember from './pages/OtherMember.jsx';
 
 /* async function enableMocking() {
   if (process.env.NODE_ENV !== 'development') {
@@ -51,6 +51,7 @@ const router = createBrowserRouter([
       { path: '', element: <Home /> },
       { path: 'chatlist', element: <ChatList /> },
       { path: 'mypage', element: <MyPage /> },
+      { path: 'othermember/:id', element: <OtherMember /> },
       { path: 'travelrequestlist', element: <TravelRequestList /> },
       { path: 'postLists/:id', element: <PostList /> },
       { path: 'updatePostList/:id', element: <UpdatePostList /> },
