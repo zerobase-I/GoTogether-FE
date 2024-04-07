@@ -1,22 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { getChatRoomLists } from '../api/chatroom.js';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,useLocation } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { TokenAtom } from '/src/recoil/tokenAtom.js';
 
 const ChatList = () => {
   const tokenInfo = useRecoilValue(TokenAtom);
   const navigate = useNavigate();
+  const location = useLocation();
   const [chatRooms, setChatRooms] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
 
   useEffect(() => {
+  if (tokenInfo.accessToken) {
     const fetchData = async () => {
       setIsLoading(true);
       setIsError(false);
       try {
-        const data = await getChatRoomLists();
+        const data = await getChatRoomLists(tokenInfo.accessToken); // 수정된 부분
         setChatRooms(data);
       } catch (error) {
         console.error(error);
@@ -26,11 +28,12 @@ const ChatList = () => {
       }
     };
     fetchData();
-  }, [tokenInfo]);
-  useEffect(() => {
-    console.log(chatRooms);
-  }, [chatRooms]);
-  if (isLoading) return <div>Loading...</div>;
+  } else {
+    setIsLoading(false);
+  }
+}, [tokenInfo.accessToken, location.key]);
+
+   if (isLoading) return <div>Loading...</div>; // 로딩 중일 때 로딩 표시
   if (isError) return <div>Error: 데이터를 불러올 수 없습니다.</div>;
 
   return (
