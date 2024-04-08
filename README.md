@@ -1,30 +1,8 @@
-# React + TypeScript + Vite
+# 🚀 같이가요
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+## 🍀 프로젝트 소개
+여행을 함께 하고 싶은 사람들을 찾아보세요! 
+✅  여행지, 일정, 성별 등 여러 조건을 고려하여 적절한 동행자를 찾아보세요.
+✅  실시간 채팅으로 여러 사람들과 소통하며 정보를 공유하고 계획을 만들어보세요.
+✅  이벤트 발생 시 알림으로 요청, 수락, 메시지 등 중요한 정보를 놓치지 않고 확인해보세요.
+✅  여행이 종료된 후 동행후기를 남겨보세요.
