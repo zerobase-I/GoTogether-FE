@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { getMyReviewInfo } from '../../api/mamber';
+import { getMyReviewInfo } from '../../api/member';
 
 const useMember = (memberId) => {
   const getMyReviewQuery = useQuery({
