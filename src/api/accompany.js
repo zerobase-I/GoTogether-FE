@@ -1,14 +1,9 @@
-import axios from 'axios';
-import { BASE_URL, accessToken } from '../components/config/data';
+import { baseTokenAxios } from '../components/config/api';
 
 // 내가 보낸 동행 요청 목록
 export const getRequestAccompanyList = async () => {
   try {
-    const response = await axios.get(`${BASE_URL}/accompany/request/send`, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
+    const response = await baseTokenAxios.get(`/accompany/request/send`);
 
     return response.data;
   } catch (error) {
@@ -19,11 +14,7 @@ export const getRequestAccompanyList = async () => {
 //내가 받은 동행 요청 목록
 export const getReceiveAccompanyList = async () => {
   try {
-    const response = await axios.get(`${BASE_URL}/accompany/request/receive`, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
+    const response = await baseTokenAxios.get(`/accompany/request/receive`);
 
     return response.data;
   } catch (error) {
@@ -34,18 +25,10 @@ export const getReceiveAccompanyList = async () => {
 //게시글에서 동행요청 보내기
 export const postAccompanyRequest = async ({ postId, postAuthorId }) => {
   try {
-    await axios.post(
-      `${BASE_URL}/accompany/request/send/${postId}`,
-      {
-        postId: postId,
-        requestedMemberId: postAuthorId,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      },
-    );
+    await baseTokenAxios.post(`/accompany/request/send/${postId}`, {
+      postId: postId,
+      requestedMemberId: postAuthorId,
+    });
 
     return;
   } catch (error) {
@@ -57,15 +40,7 @@ export const postAccompanyRequest = async ({ postId, postAuthorId }) => {
 export const postAccompanyCancel = async (requestId) => {
   console.log(`동행요청취소 requestId ${requestId}`);
   try {
-    await axios.post(
-      `${BASE_URL}/accompany/request/cancel/${requestId}`,
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      },
-    );
+    await baseTokenAxios.post(`/accompany/request/cancel/${requestId}`, {});
   } catch (error) {
     console.error(error);
   }
@@ -74,14 +49,9 @@ export const postAccompanyCancel = async (requestId) => {
 //travelrequestlist 페이지 - 동행 요청 승인하기
 export const postApproveAccompany = async (requestListId) => {
   try {
-    const response = await axios.post(
-      `${BASE_URL}/accompany/request/approve/${requestListId}`,
+    const response = await baseTokenAxios.post(
+      `/accompany/request/approve/${requestListId}`,
       {},
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      },
     );
 
     // 채팅방 있을경우, 채팅방 번호 / 없을경우 null 또는 undefined
@@ -97,15 +67,7 @@ export const postApproveAccompany = async (requestListId) => {
 //travelrequestlist 페이지 - 동행 요청 거절하기
 export const postRejectAccompany = async (requestListId) => {
   try {
-    await axios.post(
-      `${BASE_URL}/accompany/request/reject/${requestListId}`,
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      },
-    );
+    await baseTokenAxios.post(`/accompany/request/reject/${requestListId}`, {});
   } catch (error) {
     console.error(error);
   }
@@ -115,11 +77,7 @@ export const postRejectAccompany = async (requestListId) => {
 export const getReviewerList = async (postId) => {
   console.log(postId);
   try {
-    const response = await axios.get(`${BASE_URL}/accompany/review/${postId}`, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
+    const response = await baseTokenAxios.get(`/accompany/review/${postId}`);
 
     return response.data;
   } catch (error) {
@@ -130,11 +88,7 @@ export const getReviewerList = async (postId) => {
 // 동행 후기 작성
 export const writeCompanionReview = async (reviews) => {
   try {
-    await axios.post(`${BASE_URL}/accompany/review/submit`, reviews, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
+    await baseTokenAxios.post(`/accompany/review/submit`, reviews);
   } catch (error) {
     console.error(error);
   }

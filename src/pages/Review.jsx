@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import UserInfoSimple from './UserInfoSimple';
 import { useGetReviewerList } from '../components/hooks/useAccompany';
-import { Navigate, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import Loading from '../components/Loading';
 import { sampleImage } from '../components/config/sampleImg';
 import { useGoToPage } from '../utils/utils';
@@ -53,7 +53,7 @@ const Review = () => {
     adaptability: false,
   });
 
-  const { goToHome } = useGoToPage();
+  const { goToAlarm } = useGoToPage();
 
   const {
     ReviewerList: { data: reviewerList, isLoading, isError, error },
@@ -114,7 +114,7 @@ const Review = () => {
         alert('리뷰 남기기요청이 네트워크 문제로 실패했습니다.!');
       },
     });
-    goToHome();
+    goToAlarm();
   };
 
   return (

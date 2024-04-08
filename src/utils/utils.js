@@ -8,5 +8,9 @@ export const useGoToPage = () => {
     navigate('/');
   };
 
-  return { goToHome, navigate };
+  const goToAlarm = () => {
+    navigate('/alarm');
+  };
+
+  return { navigate, goToHome, goToAlarm };
 };

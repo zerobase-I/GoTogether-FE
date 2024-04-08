@@ -23,18 +23,19 @@ const Auth = () => {
 
         <div className="relative text-center animate-bounce">
           <div className="inline-block mb-7 bg-gray-200 border-none rounded-full p-4 shadow-md w-1/3">
-            <p className="text-xs font-semibold">3초만에 시작하기</p>
+            <p className="text-xs font-semibold">5초만에 시작하기</p>
             <div className="absolute border border-gray-200 h-6 w-6 -rotate-45 bg-gray-200 bottom-5 left-1/2 transform -translate-x-3 translate-y-0"></div>
           </div>
         </div>
 
-        <button onClick={handleKakaoLogin}
-          className="btn mb-2 rounded-md relative block w-full px-3 py-1 border-none
-           bg-yellow-300 text-black rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">카카오 로그인</button>
+        <img onClick={handleKakaoLogin}
+          src="/src/assets/KakaoLoginBtn.png"
+          className="rounded-md relative block w-full h-16 mb-2 border-none
+            text-black rounded-t-md  focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"></img>
        
         <Link to="/member/login">
-          <button className="btn mb-2 rounded-md relative block w-full px-3 py-1 border-none text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">
-            이메일로 로그인
+          <button className="btn flex justify-start gap-4 mb-2 h-16 text-base rounded-md relative w-full px-3 py-2 border-none text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">
+           <img src="/src/assets/loginLogo.png" className="ml-1 w-8 mr-24"/> 이메일 로그인
           </button>
         </Link>
         <div className="flex justify-between align-middle items-center mt-10">

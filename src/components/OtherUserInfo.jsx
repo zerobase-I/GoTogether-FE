@@ -5,15 +5,21 @@ import { GiCrossMark } from 'react-icons/gi';
 import { BiSolidAlarmExclamation } from 'react-icons/bi';
 import { Link } from 'react-router-dom';
 import { TbPencilSearch } from 'react-icons/tb';
+
+import { sampleImageProfile } from './config/sampleImg';
 import { useRecoilValue } from 'recoil';
 import { UserInfoAtom } from '../recoil/userInfoAtom';
-import { sampleImageProfile } from './config/sampleImg';
 
-const UserInfo = () => {
-  const { nickname, profileImageUrl } = useRecoilValue(UserInfoAtom);
+const OtherUserInfo = ({ otherMemberInfo }) => {
+  const { id: loginUserId } = useRecoilValue(UserInfoAtom);
+
+  console.log(otherMemberInfo);
+
+  const { profileImageUrl, nickname, id: otherMemberId } = otherMemberInfo;
+  console.log(nickname);
 
   return (
-    <section className="flex justify-between mb-4">
+    <section className="flex justify-between mb-2">
       <div className="flex items-end">
         <div className="avatar">
           <div className="w-40 rounded-full md:w-60 relative  ring ring-primary ring-offset-base-100 ring-offset-2 bg-blue-600 shadow-lg shadow-blue-500/50">
@@ -24,26 +30,32 @@ const UserInfo = () => {
           </div>
         </div>
         <div>
-          <span className="text-xl self-start font-black">{nickname}</span>
+          <span className="text-xl self-start">{nickname}</span>
           <div className="flex">
             <GiCrossMark className="text-2xl mr-2" />
-            <Link to="/reviewdetail">
-              <AiOutlineTrademark className="text-2xl" />
-            </Link>
+            {otherMemberId === loginUserId && (
+              <Link to="/reviewdetail">
+                <AiOutlineTrademark className="text-2xl" />
+              </Link>
+            )}
           </div>
         </div>
       </div>
 
       <div className="flex items-end">
-        <Link to="/alarm">
-          <BiSolidAlarmExclamation className="text-2xl mr-2" />
-        </Link>
-        <Link to="/createpost">
-          <HiOutlinePencilSquare className="text-2xl" />
-        </Link>
+        {otherMemberId === loginUserId && (
+          <Link to="/alarm">
+            <BiSolidAlarmExclamation className="text-2xl mr-2" />
+          </Link>
+        )}
+        {otherMemberId === loginUserId && (
+          <Link to="/createpost">
+            <HiOutlinePencilSquare className="text-2xl" />
+          </Link>
+        )}
       </div>
     </section>
   );
 };
 
-export default UserInfo;
+export default OtherUserInfo;

@@ -124,7 +124,7 @@ const Login = () => {
                   href="#"
                   className="font-medium text-blue-500 hover:text-indigo-500"
                 >
-                  Forgot your password?
+                  비밀번호 재설정
                 </a>
               </div>
             </div>

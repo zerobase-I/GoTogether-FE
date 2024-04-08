@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { accessToken } from '../components/config/data';
+import { accessToken } from '../components/config/api';
 
 const apiClient = axios.create({
   baseURL: 'https://gotogether.site/api/',
