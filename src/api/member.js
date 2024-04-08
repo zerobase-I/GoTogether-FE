@@ -1,17 +1,9 @@
-import axios from 'axios';
-
-const BASE_URL = `https://gotogether.site/api`;
+import { baseAxios, baseTokenAxios } from '../components/config/api';
 
 //나의 회원 정보 조회 -> get / 토큰
 export const getMyMemberInfo = async () => {
-  const accessToken = localStorage.getItem('accessToken');
-
   try {
-    const response = await axios.get(`${BASE_URL}/member/myProfile`, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
+    const response = await baseTokenAxios.get(`/member/myProfile`);
 
     return response.data;
   } catch (error) {
@@ -21,8 +13,11 @@ export const getMyMemberInfo = async () => {
 
 // 특정 회원 정보 조회 -> get
 export const getOtherMemberInfo = async (memberId) => {
+  console.log(memberId);
   try {
-    const response = await axios.get(`${BASE_URL}/member/profile/${memberId}`);
+    const response = await baseAxios.get(
+      `/member/profile?memberId=${memberId}`,
+    );
 
     return response.data;
   } catch (error) {
@@ -41,9 +36,7 @@ export const getOtherMemberInfo = async (memberId) => {
 // 평가 조회
 export const getMyReviewInfo = async (memberId) => {
   try {
-    const response = await axios.get(
-      `${BASE_URL}/member/assessment/${memberId}`,
-    );
+    const response = await baseAxios.get(`/member/assessment/${memberId}`);
 
     return response.data;
   } catch (error) {

@@ -30,8 +30,10 @@ const PostList = () => {
       post: {
         title,
         category,
+        postCategory,
         startDate,
         endDate,
+        postGenderType,
         gender,
         travelCountry,
         travelCity,
@@ -75,6 +77,10 @@ const PostList = () => {
   }, []);
 
   useEffect(() => {
+    console.log(post);
+  }, []);
+
+  useEffect(() => {
     if (chatRoomLists) {
       console.log(chatRoomLists);
       const isChatRoom =
@@ -93,11 +99,10 @@ const PostList = () => {
         chatRoomLists.filter((list) => list.postId === postId);
 
       if (participantPosts.length > 0) {
-        console.log(123);
         setParticipantPosts(true);
       }
     }
-    console.log(chatRoomId);
+    //console.log(chatRoomId);
   }, [chatRoomLists, postId, chatRoomId]);
 
   const {
@@ -105,7 +110,7 @@ const PostList = () => {
   } = useChatParticipantList(chatRoomId && chatRoomId);
 
   useEffect(() => {
-    console.log(chatRoomParticipantList);
+    //  console.log(chatRoomParticipantList);
   }, [chatRoomParticipantList]);
 
   useEffect(() => {
@@ -156,7 +161,6 @@ const PostList = () => {
         },
       );
     } else {
-      console.log(cancelId);
       setIsBtnClick(true);
       requestCancelAccompany.mutate(cancelId, {
         onSuccess: () => {
@@ -219,15 +223,19 @@ const PostList = () => {
         <figure className="h-50 w-full">
           <img
             className="w-60"
-            src={imagesUrl && imagesUrl.length > 0 ? imagesUrl : sampleImage}
+            src={imagesUrl && imagesUrl.length > 0 ? imagesUrl[0] : sampleImage}
             alt="샘플이미지"
           />
         </figure>
 
         <div className="card-body">
           <div className="flex justify-end ">
-            <div className="badge badge-secondary mr-1">{gender}</div>
-            <span className="badge  badge-primary ">{category}</span>
+            <div className="badge badge-secondary mr-1">
+              {gender || postGenderType}
+            </div>
+            <span className="badge  badge-primary ">
+              {category || postCategory}
+            </span>
           </div>
           <h2 className="card-title flex flex-col">{title}</h2>
           <section>
@@ -240,7 +248,15 @@ const PostList = () => {
               {chatRoomParticipantList ? (
                 chatRoomParticipantList.map((item) => {
                   return (
-                    <div key={item.memberId} className="flex">
+                    <div
+                      key={item.memberId}
+                      className="flex cursor-pointer"
+                      onClick={() =>
+                        navigate(`/othermember/${item.memberId}`, {
+                          state: item.memberId,
+                        })
+                      }
+                    >
                       <div className="mr-4">
                         <img
                           src={item.profileUrl || sampleImageProfile}
@@ -253,7 +269,14 @@ const PostList = () => {
                   );
                 })
               ) : (
-                <div className="flex">
+                <div
+                  className="flex cursor-pointer"
+                  onClick={() =>
+                    navigate(`/othermember/${postAuthorId}`, {
+                      state: postAuthorId,
+                    })
+                  }
+                >
                   <div className="mr-4">
                     <img
                       src={sampleImageProfile}
@@ -291,10 +314,12 @@ const PostList = () => {
               /{recruitsPeople}
             </p>
             <p className="test-sm mb-1">
-              모집성별:&nbsp; &nbsp;{gender} <br />
+              모집성별:&nbsp; &nbsp;{gender || postGenderType} <br />
               모집나이:&nbsp; &nbsp;{minimumAge} ~ {maximumAge}
             </p>
-            <p className="test-sm">카테고리:&nbsp; &nbsp;{category}</p>
+            <p className="test-sm">
+              카테고리:&nbsp; &nbsp;{category || postCategory}
+            </p>
             <p className="test-sm mt-1">
               예상금액:&nbsp; &nbsp;{estimatedTravelExpense}
             </p>

@@ -1,13 +1,18 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { getMyReviewInfo } from '../../api/member';
+import { getMyReviewInfo, getOtherMemberInfo } from '../../api/mamber';
 
 const useMember = (memberId) => {
   const getMyReviewQuery = useQuery({
     queryKey: ['myreview'],
     queryFn: () => getMyReviewInfo(memberId),
   });
-  return { getMyReviewQuery };
+
+  const getOtherMemberInfoQuery = useQuery({
+    queryKey: ['otherMember'],
+    queryFn: () => getOtherMemberInfo(memberId),
+  });
+  return { getMyReviewQuery, getOtherMemberInfoQuery };
 };
 
 export default useMember;

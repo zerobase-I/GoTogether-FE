@@ -32,14 +32,14 @@ const ReactCalendar = ({ onDateChange, startDate, endDate }) => {
 
   // craetePost -> undefined
   // updatePost -> 이전 날짜 2024-03-28T00:00:00 2024-03-29T00:00:00 형식
-  console.log(startDate, endDate);
+  //console.log(startDate, endDate);
 
   // craetePost 에서 Invalid date Invalid date
   //updatePost -> 2024,3,28 2024,3,28 형식
-  console.log(
+  /* console.log(
     moment(startDate).format('YYYY,M,D'),
     moment(startDate).format('YYYY,M,D'),
-  );
+  ); */
 
   return (
     <section className="mb-6">
@@ -47,7 +47,7 @@ const ReactCalendar = ({ onDateChange, startDate, endDate }) => {
         <span className="text-xl w-full text-left font-semibold">
           날짜를 선택하세요
         </span>
-        <div className="calendar-container mt-2">
+        <div className="calendar-container mt-2 ">
           <Calendar
             onChange={handleDateChange}
             value={date}

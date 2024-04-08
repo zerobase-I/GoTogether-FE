@@ -17,8 +17,8 @@ const UpdatePostList = () => {
   const [success, setSuccess] = useState(); // 업로드 성공/ 실패 상태
   const {
     state: {
+      post,
       post: {
-        postId,
         title,
         category,
         startDate,
@@ -31,31 +31,28 @@ const UpdatePostList = () => {
         recruitsPeople,
         estimatedTravelExpense,
         content,
+        id: postId,
         imagesUrl,
       },
     },
   } = useLocation();
 
-  console.log(postId);
-
   const [inputs, setInputs] = useState({
     travelCountry: travelCountry,
     travelCity: travelCity,
-    startDate: startDate,
-    endDate: endDate,
-    gender: gender,
-    minimumAge: minimumAge,
-    maximumAge: maximumAge,
+    postGenderType: gender,
+    postCategory: category,
     recruitsPeople: recruitsPeople,
     estimatedTravelExpense: estimatedTravelExpense,
-    category: category,
+    minimumAge: minimumAge,
+    maximumAge: maximumAge,
+    startDate: startDate,
+    endDate: endDate,
     title: title,
     content: content,
-    newImages: '',
-    imageIdsToDelete: '',
+    /*     newImages: imagesUrl,
+    imageIdsToDelete: imagesUrl, */
   });
-
-  console.log(inputs);
 
   const { UpdatePostMutation } = usePosts();
   const { goToHome } = useGoToPage();
@@ -63,23 +60,28 @@ const UpdatePostList = () => {
   // inputs 변경시 테스트 코드
   useEffect(() => {
     console.log(inputs);
+    console.log(post);
   }, [inputs]);
+
+  useEffect(() => {
+    inputs.travelCity = travelCity && travelCity;
+  });
 
   const handleDateChange = (dates) => {
     setInputs(() => ({
       ...inputs,
-      startDate: moment(dates[0].toDateString()).format('MM-DD-YYYY'),
-      endDate: moment(dates[1].toDateString()).format('MM-DD-YYYY'),
+      startDate: moment(dates[0].toDateString()).format('YYYY-MM-DDTHH:mm:ss'),
+      endDate: moment(dates[1].toDateString()).format('YYYY-MM-DDTHH:mm:ss'),
     }));
   };
 
-  const handleFileChange = (files) => {
+  /*   const handleFileChange = (files) => {
     setInputs(() => ({
       ...inputs,
       newImages: files,
     }));
   };
-
+ */
   const handleQuillTextChange = (text) => {
     setInputs(() => ({
       ...inputs,
@@ -114,9 +116,9 @@ const UpdatePostList = () => {
     const formData = new FormData();
 
     for (const key in inputs) {
-      if (key === 'image' && inputs.image && inputs.image.length) {
-        for (let i = 0; i < inputs.image.length; i++) {
-          formData.append('image', inputs.image[i]);
+      if (key === 'newImages' && inputs.newImages && inputs.newImages.length) {
+        for (let i = 0; i < inputs.newImages.length; i++) {
+          formData.append('newImages', inputs.newImages[i]);
         }
       } else {
         formData.append(key, inputs[key]);
@@ -168,9 +170,9 @@ const UpdatePostList = () => {
                 <RadioBtn
                   key={Object.keys(gender)}
                   option={gender}
+                  beforeGender={inputs.gender}
                   name="postGenderType"
                   onChange={handleChangeInfo}
-                  beforeGender={inputs.gender}
                 />
               );
             })}
@@ -200,7 +202,7 @@ const UpdatePostList = () => {
             <div className="w-full">
               <span className="text-gray-400">최대나이</span>
               <input
-                className="input input-bordered input-info w-full  border-blue-500 border-2 ml-2"
+                className="input input-bordered input-info w-full  border-blue-500 border-2 ml-2 "
                 type="number"
                 placeholder="최대 나이 (100세 이하)"
                 min={18}
@@ -238,7 +240,7 @@ const UpdatePostList = () => {
             {categoryLists.map((category) => (
               <RadioBtnSingle
                 option={category}
-                name="category"
+                name="postCategory"
                 key={Object.keys(category)}
                 onChange={handleChangeInfo}
               />
@@ -274,7 +276,7 @@ const UpdatePostList = () => {
             placeholder="제목 "
             required
             minLength="4"
-            maxLength="40"
+            maxLength="30"
             name="title"
             onChange={handleChangeInfo}
             value={inputs.title}
@@ -285,7 +287,7 @@ const UpdatePostList = () => {
           />
         </section>
 
-        <section className="mb-16">
+        {/*    <section className="mb-16">
           <label
             className="text-xl w-full text-left font-semibold  mb-2 flex flex-col"
             id="upLoadFile"
@@ -295,10 +297,10 @@ const UpdatePostList = () => {
             </span>
             <ImageUpload2
               onFileChange={handleFileChange}
-              value={inputs.image}
+              value={inputs.newImages}
             />
           </label>
-        </section>
+        </section> */}
         <p>{success}</p>
         <button type="submit" className="btn btn-outline btn-info w-full mb-20">
           수정하기

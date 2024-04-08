@@ -1,14 +1,9 @@
-import axios from 'axios';
-import { BASE_URL, accessToken } from '../components/config/data';
+import { baseTokenAxios } from '../components/config/api';
 
 // 받음 알림 조회
 export const inQuiryNotification = async () => {
   try {
-    const response = await axios.get(`${BASE_URL}/notification`, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
+    const response = await baseTokenAxios.get(`/notification`);
 
     return response.data;
   } catch (error) {
@@ -19,11 +14,7 @@ export const inQuiryNotification = async () => {
 // 알림 구독
 export const subscribeNotification = async () => {
   try {
-    await axios.get(`${BASE_URL}/notification/subscribe`, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
+    await baseTokenAxios.get(`/notification/subscribe`);
   } catch (error) {
     console.error(error);
   }
@@ -33,15 +24,7 @@ export const subscribeNotification = async () => {
 export const checkedNotification = async (notificationId) => {
   console.log(notificationId);
   try {
-    await axios.post(
-      `${BASE_URL}/notification/${notificationId}`,
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      },
-    );
+    await baseTokenAxios.post(`/notification/${notificationId}`, {});
   } catch (error) {
     console.error(error);
   }
