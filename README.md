@@ -35,9 +35,37 @@
 <div>
 <img src="https://img.shields.io/badge/표시할이름-색상?style=for-the-badge&logo=기술스택아이콘&logoColor=white">
 <img src="https://img.shields.io/badge/React-색상?style=for-the-badge&logo=React&logoColor=white">
+<img src="https://img.shields.io/badge/Recoil-green?style=for-the-badge&logo=Recoil&logoColor=white">
 <img src="https://img.shields.io/badge/React Query-blue?style=for-the-badge&logo=React Query&logoColor=white">
 <img src="https://img.shields.io/badge/JavaScript-black?style=for-the-badge&logo=JavaScript&logoColor=white">
 <img src="https://img.shields.io/badge/TailwindCSS-yellow?style=for-the-badge&logo=TailwindCSS&logoColor=white">
-<img src="https://img.shields.io/badge/Vercel-red?style=for-the-badge&logo=Vercel&logoColor=white">
-<img src="https://img.shields.io/badge/Recoil-green?style=for-the-badge&logo=Recoil&logoColor=white">
+<img src="https://img.shields.io/badge/DaisyUI-red?style=for-the-badge&logo=DaisyUI&logoColor=white">
 </div>
+
+### Back-End
+<div>
+<img src="https://img.shields.io/badge/JAVA-yellow?style=for-the-badge&logo=JAVA&logoColor=white">
+<img src="https://img.shields.io/badge/MariaDB-yellow?style=for-the-badge&logo=MariaDB&logoColor=white">
+<img src="https://img.shields.io/badge/Redis-yellow?style=for-the-badge&logo=Redis&logoColor=white">
+<img src="https://img.shields.io/badge/OAuth-yellow?style=for-the-badge&logo=OAuth&logoColor=white">
+<img src="https://img.shields.io/badge/Spring Security-yellow?style=for-the-badge&logo=Spring Security&logoColor=white">
+</div>
+
+### Production & deploy
+<div>
+<img src="https://img.shields.io/badge/Vercel-red?style=for-the-badge&logo=Vercel&logoColor=white">
+<img src="https://img.shields.io/badge/github-black?style=for-the-badge&logo=github&logoColor=white">
+</div>
+
+### Collaboration tool
+<div>
+<img src="https://img.shields.io/badge/slack-black?style=for-the-badge&logo=slack&logoColor=white">
+<img src="https://img.shields.io/badge/notion-black?style=for-the-badge&logo=notion&logoColor=white">
+</div>
+
+## API 명세서
+https://www.notion.so/API-7cc78ca1be34401586f87aba532b82c9?pvs=4
+
+## Wireframe + flowchart
+https://www.canva.com/design/DAF9Urai_p4/XhBa4EbFF7rxAkbj3yWFRQ/edit?utm_content=DAF9Urai_p4&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
+
