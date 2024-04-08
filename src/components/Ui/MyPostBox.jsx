@@ -23,7 +23,7 @@ const MyPostBox = ({ memberId }) => {
   } = useQuery({
     queryKey: ['myPosts', currentPage - 1],
     queryFn: () =>
-      getMyPosts(loginUserId || memberId, currentPage - 1, postPerPage, 3),
+      getMyPosts(memberId || loginUserId, currentPage - 1, postPerPage, 3),
     keepPreviousData: true,
   });
 

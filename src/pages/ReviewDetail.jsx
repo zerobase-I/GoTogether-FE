@@ -10,7 +10,7 @@ import { characteristic } from '../components/config/data';
 
 const ReviewDetail = () => {
   const {
-    name,
+    nickname,
     id: loginUserMemberId,
     profileImageUrl,
   } = useRecoilValue(UserInfoAtom);
@@ -21,9 +21,9 @@ const ReviewDetail = () => {
 
   console.log();
   return (
-    <section className="mb-20">
+    <section className="mb-20 mx-4 mt-4 ">
       <div className="overflow-y-auto">
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center  ">
           <div className="flex items-center">
             <div className="avatar">
               <div className="w-24 ml-10 mt-5 rounded-full">
@@ -31,7 +31,9 @@ const ReviewDetail = () => {
               </div>
             </div>
 
-            <span className="text-xl ml-5 flex justify-start">{name}</span>
+            <span className="text-xl ml-4 mt-20 flex justify-start">
+              {nickname}
+            </span>
           </div>
 
           <div className="flex justify-end pr-10 w-1/4">
@@ -43,11 +45,12 @@ const ReviewDetail = () => {
           </div>
         </div>
 
-        <div className="w-full bg-gray-300 mt-5">
-          <p className="p-7 text-nowrap text-left text-sm sm:text-lg md:text-xl lg:text-2xl xl:text-3xl">
-            내가 받은 후기들이에요! 더 많은 후기와 점수를 받아
+        <div className="w-full bg-gray-100 mt-4 rounded-md">
+          <p className="p-5 text-nowrap text-center text-sm sm:text-lg md:text-xl lg:text-2xl xl:text-3xl">
+            🤍 내가 받은 동행 후기들이에요 🤍
             <br />
-            동행 점수를 높여 신뢰를 얻어보세요!
+            <br />
+            🤍 동행 점수를 받아, 신뢰도 높여보세요 🤍
           </p>
         </div>
 
@@ -56,9 +59,11 @@ const ReviewDetail = () => {
           {isError && <p>{error.message}</p>}
           {myReview && console.log(Object.entries(myReview))}
           {myReview && console.log(myReview)}
-          <div className="text-2xl mt-4 mb-2">
+          <div className="text-3xl ss:text-4xl mt-4 mb-2">
             나의 동행 점수 :{' '}
-            <span className="text-red-700">{myReview && myReview.rating}</span>
+            <span className="text-red-700">
+              {(myReview && myReview.rating) || 5}
+            </span>
           </div>
           {characteristic.map((item) => {
             return (
@@ -74,8 +79,8 @@ const ReviewDetail = () => {
                   </span>
                 </div>
                 <div>
-                  <div className="bg-blue-400 w-48 p-4 rounded-md">
-                    {item[1]}
+                  <div className="bg-blue-500 w-48 p-4 rounded-md">
+                    <span className="text-white">{item[1]}</span>
                   </div>
                 </div>
               </div>

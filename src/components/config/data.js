@@ -24,7 +24,3 @@ export const characteristic = [
 ];
 
 export const genders = [{ ALL: '모두' }, { MAN: '남자' }, { WOMAN: '여자' }];
-
-export const accessToken = localStorage.getItem('accessToken');
-
-export const BASE_URL = `https://gotogether.site/api`;

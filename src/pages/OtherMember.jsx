@@ -17,14 +17,21 @@ const OtherMember = () => {
     getOtherMemberInfoQuery: { data: otherMemberInfo, isLoading },
   } = useMember(id);
 
-  if (isLoading) return <Loading />;
+  const {
+    getMyReviewQuery: { data: otherMemberReview, isLoading: reviewLoading },
+  } = useMember(id);
 
-  console.log(otherMemberInfo);
+  if (isLoading || reviewLoading) return <Loading />;
+
+  console.log(otherMemberReview);
   return (
     <main className="mt-3 pb-3 flex flex-col mx-4">
       <article>
         <OtherUserInfo otherMemberInfo={otherMemberInfo && otherMemberInfo} />
-        <OtherUserInfoDetail otherMemberInfo={otherMemberInfo} />
+        <OtherUserInfoDetail
+          otherMemberInfo={otherMemberInfo}
+          rating={otherMemberReview.rating}
+        />
         <section className="mt-9 border-t">
           <h3>
             {loginUserId === id && (

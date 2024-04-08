@@ -234,10 +234,10 @@ const CreatePost = () => {
           <input
             className="input input-bordered input-info w-full max-w-full mb-1 border-blue-500 border-2"
             type="text"
-            placeholder="제목 "
+            placeholder="제목 (최대20자) "
             required
             minLength="4"
-            maxLength="40"
+            maxLength="20"
             name="title"
             onChange={handleChangeInfo}
           />

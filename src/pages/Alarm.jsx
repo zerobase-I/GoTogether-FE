@@ -18,8 +18,8 @@ const Alarm = () => {
   console.log(notificationList);
 
   return (
-    <main className="mb-40">
-      <h2 className="text-2xl mt-10">알림창 </h2>
+    <main className="mb-40 mx-4 mt-4">
+      <h2 className="text-2xl ">알림창 </h2>
       {notificationList?.map((list) => {
         return (
           <AlarmBox

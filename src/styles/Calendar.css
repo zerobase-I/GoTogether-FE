@@ -2,7 +2,7 @@
 
 .react-calendar {
   margin: 0 auto;
-  width: max-content;
+  width: inherit;
   max-width: 100%;
   background-color: #fff;
   color: #222;
