@@ -7,11 +7,10 @@ import { UserInfoAtom } from '../recoil/userInfoAtom';
 import Loading from '../components/Loading';
 import { sampleImage } from '../components/config/sampleImg';
 import { characteristic } from '../components/config/data';
-import { LuHeart } from 'react-icons/lu';
 
 const ReviewDetail = () => {
   const {
-    name,
+    nickname,
     id: loginUserMemberId,
     profileImageUrl,
   } = useRecoilValue(UserInfoAtom);
@@ -22,9 +21,9 @@ const ReviewDetail = () => {
 
   console.log();
   return (
-    <section className="mb-20 mx-4 mt-4">
+    <section className="mb-20 mx-4 mt-4 ">
       <div className="overflow-y-auto">
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center  ">
           <div className="flex items-center">
             <div className="avatar">
               <div className="w-24 ml-10 mt-5 rounded-full">
@@ -32,7 +31,9 @@ const ReviewDetail = () => {
               </div>
             </div>
 
-            <span className="text-xl ml-5 flex justify-start">{name}</span>
+            <span className="text-xl ml-4 mt-20 flex justify-start">
+              {nickname}
+            </span>
           </div>
 
           <div className="flex justify-end pr-10 w-1/4">
@@ -58,9 +59,11 @@ const ReviewDetail = () => {
           {isError && <p>{error.message}</p>}
           {myReview && console.log(Object.entries(myReview))}
           {myReview && console.log(myReview)}
-          <div className="text-2xl mt-4 mb-2">
+          <div className="text-3xl ss:text-4xl mt-4 mb-2">
             나의 동행 점수 :{' '}
-            <span className="text-red-700">{myReview && myReview.rating}</span>
+            <span className="text-red-700">
+              {(myReview && myReview.rating) || 5}
+            </span>
           </div>
           {characteristic.map((item) => {
             return (
@@ -77,7 +80,7 @@ const ReviewDetail = () => {
                 </div>
                 <div>
                   <div className="bg-blue-500 w-48 p-4 rounded-md">
-                    {item[1]}
+                    <span className="text-white">{item[1]}</span>
                   </div>
                 </div>
               </div>

@@ -47,7 +47,7 @@ const ReactCalendar = ({ onDateChange, startDate, endDate }) => {
         <span className="text-xl w-full text-left font-semibold">
           날짜를 선택하세요
         </span>
-        <div className="calendar-container mt-2">
+        <div className="calendar-container mt-2 ">
           <Calendar
             onChange={handleDateChange}
             value={date}

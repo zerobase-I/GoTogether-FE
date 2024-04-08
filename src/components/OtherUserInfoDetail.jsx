@@ -1,6 +1,6 @@
 import React from 'react';
 
-const OtherUserInfoDetail = ({ otherMemberInfo }) => {
+const OtherUserInfoDetail = ({ otherMemberInfo, rating }) => {
   const { address, age, description, gender, instagramId, mbti } =
     otherMemberInfo;
 
@@ -8,7 +8,7 @@ const OtherUserInfoDetail = ({ otherMemberInfo }) => {
     <section className=" flex flex-col mt-10 p-4 bg-white shadow-md rounded-lg mx-auto ">
       <div className="text-start mb-2">
         <span className="font-bold mr-2 text-gray-800">동행 점수:</span>
-        {/* 점수가 있다면 여기에 표시 */}
+        <span className="text-red-500"> {rating || 5}</span>
       </div>
       <div className="text-start mb-2">
         <span className="font-bold mr-2">성별:</span>

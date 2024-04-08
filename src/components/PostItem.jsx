@@ -59,19 +59,18 @@ const PostItem = ({
             </div>
 
             <span className="text-sm md:text-base ml-4 mt-1 flex w-full">
-              <MdCalendarMonth />
-              &nbsp;
+              <MdCalendarMonth className="mr-1" />
               {moment(startDate).format('YYYY-MM-DD')} ~{' '}
               {moment(endDate).format('YYYY-MM-DD')}
             </span>
 
             <div className="flex text-xs text-gray-500">
-              <GiCommercialAirplane className="ml-4" />
+              <GiCommercialAirplane className="ml-4 mr-1" />
               {travelCity}({travelCountry})
             </div>
 
             <div className="w-screen">
-              <span className="mt-1 w-5/12 ss:w-7/12 md:w-5/12 block  text-left ml-4 mb-2 text-gray-400 text-xs md:text-sm  max-h-9  whitespace-nowrap overflow-hidden  text-ellipsis">
+              <span className="mt-0 ml-4 mb-2 w-5/12 ss:w-7/12 md:w-5/12 block  text-left  text-gray-400 text-xs md:text-sm  max-h-9  whitespace-nowrap overflow-hidden  text-ellipsis">
                 {content}
               </span>
             </div>

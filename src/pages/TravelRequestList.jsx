@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useAccompany } from '../components/hooks/useAccompany';
-
 import Loading from '../components/Loading';
 import {
   sampleImageProfile,
@@ -23,9 +22,9 @@ const TravelRequestList = () => {
       error,
       data: receiveList,
     },
+    approveAccompany,
+    rejectAccompany,
   } = useAccompany();
-
-  const { approveAccompany, rejectAccompany } = useAccompany();
 
   const handleApproveBtnClick = async (
     requestListId,
@@ -95,7 +94,7 @@ const TravelRequestList = () => {
         </button>
       </div>
       <div className="border-t-2 border-gray-500 my-4 w-100%"></div>
-      <div className="grid grid-cols-1 gap-8 mt-4 mx-4">
+      <div className="grid grid-cols-1 gap-8 mt-4 mx-4 mb-20">
         <ul className="space-y-4">
           {isRequestListLoading && isReceiveListLoading && <Loading />}
           {isError && <>{error.message}</>}
@@ -109,7 +108,7 @@ const TravelRequestList = () => {
                   {requestList.map((list) => (
                     <li
                       key={list.id}
-                      className="bg-white p-2 flex justify-between items-center  gap-1 rounded-md align-middle shadow-md hover:shadow-lg cursor-pointer transition duration-300 ease-in-out"
+                      className="py-8 bg-white p-2 flex justify-between items-center  gap-1 rounded-md align-middle shadow-md hover:shadow-lg cursor-pointer transition duration-300 ease-in-out"
                     >
                       <img
                         src={sampleImgHands}
@@ -119,7 +118,7 @@ const TravelRequestList = () => {
                       <p className="font-semibold text-sm text-gray-500 basis-36 whitespace-nowrap overflow-hidden text-ellipsis">
                         {list.postTitle}
                       </p>
-                      <p className="btn btn-outline btn-warning ">
+                      <p className="btn btn-outline btn-warning ss:p-6 ss:pb-9">
                         수락 대기중 . . .
                       </p>
                     </li>
@@ -136,13 +135,13 @@ const TravelRequestList = () => {
                   {receiveList.map((list) => (
                     <li
                       key={list.id}
-                      className="bg-white p-4 flex justify-between items-center gap-1 rounded-md align-middle shadow-md hover:shadow-lg cursor-pointer transition duration-300 ease-in-out"
+                      className="bg-white p-6 flex justify-between items-center gap-1 rounded-md align-middle shadow-md hover:shadow-lg cursor-pointer transition duration-300 ease-in-out"
                     >
                       <div className="flex basis-40 items-center">
                         <img
                           src={sampleImageProfile || list.profileImage}
                           alt="Profile"
-                          className="w-12 h-12 rounded-full mr-2 md:mr-4"
+                          className="w-12 h-12 md:w-20 md:h-20 rounded-full mr-2 md:mr-4"
                         />
                         <div className="basis-20 ss:basis-40">
                           <p className="text-start text-sm md:text-base text-black font-semi-bold">
@@ -158,7 +157,7 @@ const TravelRequestList = () => {
                       <div className="flex items-center">
                         <div className="flex justify-center gap-2 ">
                           <button
-                            className="btn btn-outline btn-info bg-transparent text-blue-500 rounded text-sx p-3 "
+                            className="btn btn-outline btn-info bg-transparent text-blue-500 rounded text-sx p-3 ss:p-6 ss:pb-9"
                             onClick={() =>
                               handleApproveBtnClick(
                                 list.id, //동행요청 고유 아이디
@@ -170,7 +169,7 @@ const TravelRequestList = () => {
                             수락
                           </button>
                           <button
-                            className="btn btn-outline btn-error bg-transparent text-red-500 rounded p-3"
+                            className="btn btn-outline btn-error bg-transparent text-red-500 rounded p-3 ss:p-6 ss:pb-9"
                             onClick={() => handleRejectBtnClick(list.id)}
                           >
                             거절

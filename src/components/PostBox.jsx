@@ -46,7 +46,6 @@ const PostBox = ({ searchInput, onSearchClick }) => {
   console.log(filterData); */
 
   if (isTrueFilter) {
-    // console.log(filterPostData && filterPostData);
     return (
       <article className="mb-20">
         {filterPostData && filterPostData.content.length > 0 ? (

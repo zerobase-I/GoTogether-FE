@@ -22,7 +22,7 @@ const OtherUserInfo = ({ otherMemberInfo }) => {
     <section className="flex justify-between mb-2">
       <div className="flex items-end">
         <div className="avatar">
-          <div className="w-40 rounded-full md:w-60 relative">
+          <div className="w-40 rounded-full md:w-60 relative  ring ring-primary ring-offset-base-100 ring-offset-2 bg-blue-600 shadow-lg shadow-blue-500/50">
             <Link to="/editprofile">
               <img src={profileImageUrl || sampleImageProfile} />
               <TbPencilSearch className="absolute top-28 right-8 md:absolute md:top-44 md:right-10 text-2xl" />

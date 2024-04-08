@@ -2,7 +2,7 @@ import React from 'react';
 import { useRecoilValue } from 'recoil';
 import { UserInfoAtom } from '../recoil/userInfoAtom';
 
-const UserInfoDetail = () => {
+const UserInfoDetail = ({ rating }) => {
   const { address, age, description, gender, instagramId, mbti } =
     useRecoilValue(UserInfoAtom);
 
@@ -10,22 +10,22 @@ const UserInfoDetail = () => {
     <section className="flex flex-col mt-10 p-4 bg-white shadow-md rounded-lg  mx-auto">
       <div className="text-start mb-2">
         <span className="font-bold mr-2 text-gray-800">동행 점수:</span>
-        {/* 점수가 있다면 여기에 표시 */}
+        <span className="text-red-500"> {rating || 5}</span>
       </div>
       <div className="text-start mb-2">
-        <span className="font-bold mr-2">성별:</span>
+        <span className="font-bold mr-2">나의 성별:</span>
         <span className="text-blue-600">{gender}</span>
       </div>
       <div className="text-start mb-2">
-        <span className="font-bold mr-2">나이:</span>
+        <span className="font-bold mr-2">나의 나이:</span>
         <span className="text-blue-600">{age}</span>
       </div>
       <div className="text-start mb-2">
-        <span className="font-bold mr-2">위치:</span>
+        <span className="font-bold mr-2">나의위치:</span>
         <span className="text-blue-600">{address}</span>
       </div>
       <div className="text-start mb-2">
-        <span className="font-bold mr-2">MBTI:</span>
+        <span className="font-bold mr-2">나의 MBTI:</span>
         <span className="text-blue-600">{mbti}</span>
       </div>
       <div className="text-start mb-2">
