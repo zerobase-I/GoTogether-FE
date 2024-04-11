@@ -14,7 +14,6 @@ const MyPostBox = ({ memberId }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const postPerPage = 5; //한 페이지에서 보여줄 post 개수
 
-  console.log(memberId);
   const {
     data: postsData,
     error,
@@ -29,7 +28,6 @@ const MyPostBox = ({ memberId }) => {
 
   if (isLoading) return <Loading />;
   if (isError) return <p>{error.message}</p>;
-  console.log(postsData);
 
   const handlePageChange = (currentPage) => {
     setCurrentPage(currentPage);

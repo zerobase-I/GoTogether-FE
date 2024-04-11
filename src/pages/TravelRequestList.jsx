@@ -74,7 +74,7 @@ const TravelRequestList = () => {
   console.log(receiveList && receiveList);
 
   return (
-    <div className="container mx-auto py-8 px-4">
+    <main className="container mx-auto mt-4 px-4">
       <h1 className="text-3xl text-center text-gray-800 font-bold mb-6">
         동행 요청 내역
       </h1>
@@ -182,7 +182,7 @@ const TravelRequestList = () => {
               )}
         </ul>
       </div>
-    </div>
+    </main>
   );
 };
 

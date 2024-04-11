@@ -32,7 +32,6 @@ const UpdatePostList = () => {
         estimatedTravelExpense,
         content,
         id: postId,
-        imagesUrl,
       },
     },
   } = useLocation();

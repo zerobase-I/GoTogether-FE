@@ -2,6 +2,7 @@ import React from 'react';
 import AlarmBox from '../components/AlarmBox';
 import useNotification from '../components/hooks/useNotification';
 import Loading from '../components/Loading';
+import useSSE from '../components/hooks/useSSE';
 
 const Alarm = () => {
   const {
