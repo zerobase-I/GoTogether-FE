@@ -222,7 +222,7 @@ const PostList = () => {
       <div className="card bg-base-100 shadow-xl mx-1">
         <figure className="h-50 w-full">
           <img
-            className="w-60"
+            className="w-96"
             src={imagesUrl && imagesUrl.length > 0 ? imagesUrl[0] : sampleImage}
             alt="샘플이미지"
           />

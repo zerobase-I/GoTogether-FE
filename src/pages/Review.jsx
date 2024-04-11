@@ -118,16 +118,18 @@ const Review = () => {
   };
 
   return (
-    <main className="mx-4">
-      <h2 className="text-2xl mt-10">동행 후기를 남겨주세요🥰</h2>
+    <main className="mx-4 mt-4">
+      <h2 className="text-3xl text-center text-gray-800 font-bold">
+        동행 후기를 남겨주세요🥰
+      </h2>
       <UserInfoSimple />
-      <section className="mt-10 bg-gray-300 py-5 rounded-md">
-        <span className="text-sm text-gray-700">
+      <section className="mt-10 bg-gray-300 py-5 rounded-md mb-8">
+        <span className="text-xl text-gray-700">
           후기를 남겨주시면 상대방의 동행 점수가 올라갑니다.
         </span>
         <br />
         <span className="text-sm text-gray-700">
-          즐거운 여행을 다녀오셨다면 키워드를 남겨주세요❤
+          ❤ 즐거운 여행을 다녀오셨다면 키워드를 남겨주세요 ❤
         </span>
       </section>
       <form onSubmit={handleSubmit} className="mb-24">

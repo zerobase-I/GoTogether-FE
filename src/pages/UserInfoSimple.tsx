@@ -5,7 +5,7 @@ import { UserInfoAtom } from '../recoil/userInfoAtom';
 import { sampleImageProfile } from '../components/config/sampleImg';
 
 const UserInfoSimple = () => {
-  const { name, profileImageUrl } = useRecoilValue(UserInfoAtom);
+  const { nickname, profileImageUrl } = useRecoilValue(UserInfoAtom);
   return (
     <div className="flex justify-between items-center">
       <div className="flex items-center">
@@ -15,7 +15,7 @@ const UserInfoSimple = () => {
           </div>
         </div>
 
-        <span className="text-xl ml-5 flex justify-start">{name}</span>
+        <span className="text-xl ml-5 flex justify-start">{nickname}</span>
       </div>
 
       <div className="flex justify-end pr-10 w-1/4">

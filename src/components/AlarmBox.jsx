@@ -23,7 +23,7 @@ const AlarmBox = ({ notificationId, postTitle, postId }) => {
   };
 
   return (
-    <section className=" mb-4 mt-4 mx-4  shadow-lg rounded-md ">
+    <section className=" mb-4 mt-4 mx-4  shadow-lg rounded-md  cursor-pointer">
       <div onClick={handleClick}>
         <div className="flex justify-between">
           <img

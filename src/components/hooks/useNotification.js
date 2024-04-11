@@ -4,6 +4,7 @@ import {
   inQuiryNotification,
 } from '../../api/notification';
 
+//받음 알림 조회
 const useNotification = () => {
   const inQuiryNotificationQuery = useQuery({
     queryKey: ['inQuiryNotification'],

@@ -13,7 +13,6 @@ export const getMyMemberInfo = async () => {
 
 // 특정 회원 정보 조회 -> get
 export const getOtherMemberInfo = async (memberId) => {
-  console.log(memberId);
   try {
     const response = await baseAxios.get(
       `/member/profile?memberId=${memberId}`,

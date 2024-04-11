@@ -17,8 +17,6 @@ const MyPage = () => {
   if (isLoading) return <Loading />;
   if (isError) return <p>{error.message}</p>;
 
-  console.log(myReview);
-
   return (
     <main className="mt-3 pb-3 flex flex-col mx-4">
       <article>
