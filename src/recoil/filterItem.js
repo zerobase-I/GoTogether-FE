@@ -1,4 +1,6 @@
 import { atom } from 'recoil';
+import { recoilPersist } from 'recoil-persist';
+const { persistAtom } = recoilPersist();
 
 export const filterItem = atom({
   key: 'filterItem',
@@ -10,4 +12,5 @@ export const filterItem = atom({
     postGenderType: '',
     postCategory: '',
   },
+  effects_UNSTABLE: [persistAtom],
 });
