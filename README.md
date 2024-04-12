@@ -95,8 +95,13 @@ https://www.notion.so/API-7cc78ca1be34401586f87aba532b82c9?pvs=4
 https://www.canva.com/design/DAF9Urai_p4/XhBa4EbFF7rxAkbj3yWFRQ/edit?utm_content=DAF9Urai_p4&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
 
 ## 📜 주요 기능
-요약
-회원가입 / 로그인 / 게시글(CRUD) / 채팅방 / 동행요청/취소 / 알림 + 동행 후기 / 게시글 필터 / 다른사람 정보확인 / 반응형
+* 요약
+  
+회원가입 / 로그인 / 채팅방
+
+게시글(CRUD) / 동행요청/취소 / 알림 + 동행 후기 / 게시글 필터 / 다른사람 정보확인
+
+반응형
 
 ### 1. 게시글 CUUD
 1. Create / Update
