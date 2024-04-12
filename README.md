@@ -120,6 +120,9 @@ https://www.canva.com/design/DAF9Urai_p4/XhBa4EbFF7rxAkbj3yWFRQ/edit?utm_content
 ### 동행요청 / 취소 
 ![post_requestaccompany](https://github.com/zerobase-I/GoTogether-BE/assets/105304446/368a6937-c227-4f2f-9d23-812f69df29bb)
 
+### 동행후기남기기
+![동행후기](https://github.com/zerobase-I/GoTogether-BE/assets/105304446/e43d8755-c894-49bc-b9ae-068ac00ae7e4)
+
 ### 반응형 
 ![반응형 2](https://github.com/zerobase-I/GoTogether-BE/assets/105304446/a8f4d8b5-394f-47ba-a154-fac24b3d4708)
 
