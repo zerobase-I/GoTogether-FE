@@ -37,11 +37,7 @@ const PostItem = ({
           <div className=" w-40 h-32 md:w-60 md:h-full overflow-hidden">
             <img
               className="w-44 h-full md:w-60 md:h-40  object-cover rounded-2xl "
-              src={
-                (imagesUrl && imagesUrl[0]) ||
-                (images && images[0].url) ||
-                sampleImage
-              }
+              src={imagesUrl?.[0] || images?.[0]?.url || sampleImage}
               alt="여행사진"
             />
           </div>
