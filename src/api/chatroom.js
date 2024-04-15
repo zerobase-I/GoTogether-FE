@@ -43,15 +43,16 @@ export const getChatRoomLists = async () => {
 // 채팅방 퇴장을 처리하는 함수
 export const exitChatRoom = async (accessToken, chatRoomId) => {
   try {
-    apiClient.defaults.headers.common['Authorization'] =
-      `Bearer ${accessToken}`;
-
-    const response = await apiClient.delete(`chat-room/exit/${chatRoomId}`, {});
-    console.log(response.data);
+    const response = await apiClient.delete(`chat-room/exit/${chatRoomId}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`
+      }
+    });
+    console.log('Chat room exit successful:', response.data);
     return response.data; // 서버로부터 받은 응답 데이터를 반환합니다.
   } catch (error) {
-    console.error('Chat room entry failed:', error);
-    throw error;
+    console.error('Chat room exit failed:', error.response ? error.response.data : error);
+    throw error; // 오류를 호출 측에 전파
   }
 };
 

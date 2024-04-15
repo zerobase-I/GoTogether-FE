@@ -27,6 +27,7 @@ import App from './routes/App.js';
 import FirstPage from './routes/FirstPage.jsx';
 import ProtectedRoute from './routes/ProtectedRoute.jsx';
 import OtherMember from './pages/OtherMember.jsx';
+import ChangePwd from './components/ChangePwd.jsx';
 
 /* async function enableMocking() {
   if (process.env.NODE_ENV !== 'development') {
@@ -75,6 +76,10 @@ const router = createBrowserRouter([
       {
         path: 'login',
         element: <Login />,
+      },
+      {
+        path: 'changePwd',
+        element: <ChangePwd />,
       },
       {
         path: 'signup',

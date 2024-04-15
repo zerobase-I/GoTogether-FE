@@ -7,9 +7,9 @@ export const apiClient = axios.create({
 
 export const updateMyProfile = async (accessToken, formData) => {
   try {
-    const response = await apiClient.put('/member/myProfile', formData, {
+    const response = await apiClient.patch('/member/myProfile', formData, {
       headers: {
-        'Content-Type': 'multipart/form-data',
+        // 'Content-Type': 'multipart/form-data',
         // 명시적으로 받은 accessToken을 Authorization 헤더에 추가합니다.
         'Authorization': `Bearer ${accessToken}`
       }

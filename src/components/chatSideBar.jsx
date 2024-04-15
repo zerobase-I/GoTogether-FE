@@ -17,8 +17,6 @@ const handleExitChatRoom = async () => {
       alert('로그인 정보가 없습니다.');
       return;
     }
-
-    // confirm을 사용하여 사용자의 의사를 확인
     const isConfirmed = confirm('채팅방에서 퇴장하시겠습니까?');
     if (isConfirmed) {
       try {
