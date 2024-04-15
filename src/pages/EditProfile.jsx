@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { getMyMemberInfo } from '/src/api/member.js';
 import { updateMyProfile } from '/src/api/editProfile.js';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { TokenAtom } from '/src/recoil/tokenAtom.js';
+import { UserInfoAtom } from '/src/recoil/userInfoAtom.js';
 import { useQuery } from '@tanstack/react-query';
 
 
 const EditProfile = () => {
+  const navigate = useNavigate();
   const { accessToken } = useRecoilValue(TokenAtom);
+  const setUserInfo = useSetRecoilState(UserInfoAtom);
 
   const { data: profileData, isLoading, error } = useQuery({
     queryKey: ['profileData'],
@@ -58,8 +62,11 @@ const EditProfile = () => {
   }
 
   try {
-    await updateMyProfile(accessToken, formData);
+     const updatedProfile = await updateMyProfile(accessToken, formData); // 업데이트된 프로필 정보 받아오기
+    setUserInfo(updatedProfile); // Recoil 상태 업데이트
+    localStorage.setItem('userDetails', JSON.stringify(updatedProfile)); // 로컬 스토리지에 저장
     alert('프로필이 성공적으로 업데이트되었습니다.');
+    navigate('/mypage')
   } catch (error) {
     console.error('프로필 업데이트 실패:', error);
     alert('프로필 업데이트에 실패했습니다.');
@@ -98,20 +105,6 @@ const EditProfile = () => {
           />
         </label>
         
-        <label className="input input-bordered flex items-center gap-2 mb-2">
-          비밀번호변경
-          <input
-            type="password"
-            name="password"
-            className="grow w-36"
-            placeholder="입력"
-            // editableProfileData에서 해당 필드의 값을 찾아 사용합니다.
-            value={editableProfileData.password ||''}
-            onChange={handleChange}
-          />
-          <span className="badge badge-info">Optional</span>
-        </label>
-
         <label className="input input-bordered flex items-center gap-2 mb-2">
             이름 변경:
           <input

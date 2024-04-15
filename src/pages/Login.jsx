@@ -119,13 +119,8 @@ const Login = () => {
                   Remember me
                 </label>
               </div>
-              <div className="text-sm">
-                <a
-                  href="#"
-                  className="font-medium text-blue-500 hover:text-indigo-500"
-                >
-                  비밀번호 재설정
-                </a>
+              <div className="text-sm text-blue-500">
+                <Link to="/member/changePwd">비밀번호 재설정</Link>
               </div>
             </div>
             {error && <p className="text-red-500">{error}</p>}
