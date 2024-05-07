@@ -12,32 +12,35 @@
 ---
     
 
+
 ## 🧑‍🤝‍🧑 팀원소개
 <table>
   <tbody>
     <tr>
-      <td align="center"><a href="https://github.com/ITK-SHIN"><img src="![내사진](https://github.com/zerobase-I/GoTogether-FE/assets/105304446/5dd9e9e2-6f39-4b0c-b1bb-2d3b29d3a2ab)" width="150px;" height='150px' alt=""/><br /><sub><b>FE 팀원 : 신상우</b></sub></a><br /></td>
-      <td align="center"><a href=""><img src="![pack PNG](https://github.com/zerobase-I/GoTogether-FE/assets/105304446/24976a91-9fba-4649-8122-49901103d2a0)" width="150px;" height='150px'" alt=""/><br /><sub><b>FE 팀원 : 박민서</b></sub></a><br /></td>
-        <td align="center"><a href=""><img src="https://www.notion.so/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2Fd11adb76-8834-4a15-b78c-3b8ddbfff796%2Fcb4d4791-36dd-4b5d-b47d-2bc4841a9704%2F%25EC%2582%25AC%25EC%25A7%2584_%25EC%2588%2598%25EC%25A0%2595.jpg?table=block&id=92c78cf3-dd5a-4fe9-a952-ae8d1cfcb43c&spaceId=d11adb76-8834-4a15-b78c-3b8ddbfff796&width=2000&userId=39d7dfc1-4560-42c9-a699-fb934247e0a2&cache=v2"  width="150px;" height='150px' alt=""/><br /><sub><b>BE 팀장 : 이정우</b></sub></a><br /></td>
-      <td align="center"><a href=""><img src="https://file.notion.so/f/f/d11adb76-8834-4a15-b78c-3b8ddbfff796/4435c6da-268e-4f9c-b0cf-ee4593277329/Untitled.jpeg?id=019f3c32-8935-431c-8745-35f6c18868ad&table=block&spaceId=d11adb76-8834-4a15-b78c-3b8ddbfff796&expirationTimestamp=1712995200000&signature=icjZ8PytAQxXISFsV6mUz5Ze7Wjbacknc7_ZnMdwQhY&downloadName=Untitled.jpeg"  width="150px;" height='150px' alt=""/><br /><sub><b>BE 팀원 : 하남규</b></sub></a><br /></td>
-      <td align="center"><a href=""><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS6GgyJrNvEmZkS0tQmz3-Dkn8UohxLwvymPj1O9zsNKA&s"  width="150px;" height='150px' alt=""/><br /><sub><b>BE 팀원 : 양수경</b></sub></a><br /></td>
+    <td align="center"><a href="https://github.com/ITK-SHIN"><img src="https://github.com/zerobase-I/GoTogether-FE/assets/105304446/355b6aed-d51d-4e1b-a71a-56f213bdeca1" width="150px;" height='150px' alt=""/><br /><sub><b>FE 팀원 : 신상우</b></sub></a><br /></td>
+    <td align="center"><a href="https://github.com/Luison1472"><img src="https://github.com/zerobase-I/GoTogether-FE/assets/105304446/24976a91-9fba-4649-8122-49901103d2a0" width="150px;" height='150px'" alt=""/><br /><sub><b>FE 팀원 : 박민서</b></sub></a><br /></td>
+    <td align="center"><a href="https://github.com/2JeongwooLee?tab=overview&from=2024-05-01&to=2024-05-08"><img src="https://github.com/zerobase-I/GoTogether-FE/assets/105304446/83c7d0a9-7839-4ae3-8288-ea749a1f5928"  width="150px;" height='150px' alt=""/><br /><sub><b>BE 팀장 : 이정우</b></sub></a><br /></td>
+      <td align="center"><a href="https://github.com/Namgyu11"><img src="https://github.com/zerobase-I/GoTogether-FE/assets/105304446/905e26d9-0c45-4b89-95a9-5d3a13d8925a"  width="150px;" height='150px' alt=""/><br /><sub><b>BE 팀원 : 하남규</b></sub></a><br /></td>
+      <td align="center"><a href="https://github.com/qoreh?tab=overview&from=2024-05-01&to=2024-05-08"><img src="https://github.com/zerobase-I/GoTogether-FE/assets/105304446/bf94de77-d631-465b-94a5-7a602283d0f3"  width="150px;" height='150px' alt=""/><br /><sub><b>BE 팀원 : 양수경</b></sub></a><br /></td>
     </tr>
   </tbody>
 </table>
 
 ## 🚩 FE_ 역할분담
 ✅ 공통
-1. 반응형 구현
+- Figma 를 통한 wireframe 작업 
+- 반응형 구현 (480px , 768px, 1200px)
+  
    
-1️⃣  신상우
+🤵🏼 신상우의 기능구현
 1. 게시글 CRUD
-2. 동행요청/취소
-3. 알림 + 동행후기
-4. 게시글 필터
-5. 다른회원 정보확인
-6. 라우팅
+2. 동행요청/취소  (게시글 상세페이지)
+3. 알림요청/응답 + 동행후기
+4. 게시글 필터 (recoil 통한 filter item 설정)
+5. 다른회원 정보확인 페이지
+6. react-router v6.22.1로 전체적 라우팅 설정
 
-2️⃣ 박민서
+🤵🏼 박민서의 기능구현
 1. 일반 회원가입
 2. 일반 로그인
 3. 카카오 로그인 및 회원가입
@@ -99,7 +102,7 @@ https://www.notion.so/API-7cc78ca1be34401586f87aba532b82c9?pvs=4
 https://www.canva.com/design/DAF9Urai_p4/XhBa4EbFF7rxAkbj3yWFRQ/edit?utm_content=DAF9Urai_p4&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
 
 ## 📜 주요 기능
-* 요약
+* 전체 기능 요약
   
 회원가입 / 로그인 / 채팅방
 
@@ -107,31 +110,31 @@ https://www.canva.com/design/DAF9Urai_p4/XhBa4EbFF7rxAkbj3yWFRQ/edit?utm_content
 
 반응형
 
-### 1. 게시글 CUUD
-1. Create / Update
+### Create + Update / DELETE / pagenation 구현 (순서대로)
 
-![post_create](https://github.com/zerobase-I/GoTogether-BE/assets/105304446/34873e9c-db1b-4ce8-a6f4-a72e2c815da0)
+<div>
+ <img src="https://github.com/zerobase-I/GoTogether-BE/assets/105304446/34873e9c-db1b-4ce8-a6f4-a72e2c815da0" width="300px" align="center"/>
+ <img src="https://github.com/zerobase-I/GoTogether-BE/assets/105304446/cfdaab48-3079-4c48-a172-8c6144cecb33" width="300px"/>
+ <img src="https://github.com/zerobase-I/GoTogether-BE/assets/105304446/872d2faf-4fce-4bdd-82a5-9213db5b4d69" width="300px"/>
+</div>
 
-2. DELETE
 
-![post_삭제](https://github.com/zerobase-I/GoTogether-BE/assets/105304446/cfdaab48-3079-4c48-a172-8c6144cecb33)
+### filter 기능 / 다른사람정보보기 / 동행요청 + 취소 (순서대로)
 
-3. READ - pagenation 구현
-   
-![post_read_pagenation](https://github.com/zerobase-I/GoTogether-BE/assets/105304446/872d2faf-4fce-4bdd-82a5-9213db5b4d69)
+<div>
+ <img src="https://github.com/zerobase-I/GoTogether-BE/assets/105304446/0c68addf-5c14-48cc-a48c-7bf700d1c8ed" width="300px"/>
+ <img src="https://github.com/zerobase-I/GoTogether-BE/assets/105304446/679600be-e086-4e2a-96ea-d444c0f3fb75" width="300px"/>
+ <img src="https://github.com/zerobase-I/GoTogether-BE/assets/105304446/368a6937-c227-4f2f-9d23-812f69df29bb" width="300px"/>
+</div>
 
-### filter 기능
-![filter기능](https://github.com/zerobase-I/GoTogether-BE/assets/105304446/0c68addf-5c14-48cc-a48c-7bf700d1c8ed)
 
-### 다른사람 정보보기
-![다른사람정보보기page](https://github.com/zerobase-I/GoTogether-BE/assets/105304446/679600be-e086-4e2a-96ea-d444c0f3fb75)
+### 동행후기남기기 / 반응형 (순서대로)
 
-### 동행요청 / 취소 
-![post_requestaccompany](https://github.com/zerobase-I/GoTogether-BE/assets/105304446/368a6937-c227-4f2f-9d23-812f69df29bb)
+<div>
+ <img src="https://github.com/zerobase-I/GoTogether-BE/assets/105304446/e43d8755-c894-49bc-b9ae-068ac00ae7e4" width="500px"/>
+ <img src="https://github.com/zerobase-I/GoTogether-BE/assets/105304446/a8f4d8b5-394f-47ba-a154-fac24b3d4708" width="500px"/>
+</div>
 
-### 동행후기남기기
-![동행후기](https://github.com/zerobase-I/GoTogether-BE/assets/105304446/e43d8755-c894-49bc-b9ae-068ac00ae7e4)
 
-### 반응형 
-![반응형 2](https://github.com/zerobase-I/GoTogether-BE/assets/105304446/a8f4d8b5-394f-47ba-a154-fac24b3d4708)
+
 
