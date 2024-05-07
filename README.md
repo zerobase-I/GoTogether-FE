@@ -1,19 +1,20 @@
 # 🚀 같이가요 _ FE 
 ## 목차
 1. 팀원소개
-2. 프로젝트 소개
-3. Archiecture
-4. ERD
-5. 기술스택
-6. API 명세서
-7. Wireframe + flowchart
-8. Project Structure
-9. 주요기능 + 영상시연
+2. FE_ 역할분담
+3. 배포주소
+4. 프로젝트 소개
+5. Archiecture
+6. ERD
+7. 기술스택 & 사용 라이브러리
+8. API 명세서
+9. Wireframe + flowchart
+10. 주요 기능 영상
 ---
     
 
 
-## 🧑‍🤝‍🧑 팀원소개
+## 🧑‍🤝‍🧑 1. 팀원소개
 <table>
   <tbody>
     <tr>
@@ -26,29 +27,49 @@
   </tbody>
 </table>
 
-## 🚩 FE_ 역할분담
+## 🚩 2. FE_ 역할분담
 ✅ 공통
 - Figma 를 통한 wireframe 작업 
 - 반응형 구현 (480px , 768px, 1200px)
-  
-   
-🤵🏼 신상우의 기능구현
-1. 게시글 CRUD
-2. 동행요청/취소  (게시글 상세페이지)
-3. 알림요청/응답 + 동행후기
-4. 게시글 필터 (recoil 통한 filter item 설정)
-5. 다른회원 정보확인 페이지
-6. react-router v6.22.1로 전체적 라우팅 설정
 
-🤵🏼 박민서의 기능구현
-1. 일반 회원가입
-2. 일반 로그인
-3. 카카오 로그인 및 회원가입
-4. 채팅방
-5. home _ protected Route 설정
-6. 프로필 수정
-7. 비밀번호 재설정
-8. Recoil Token, UserDetail 전역 상태 지정
+
+<table>
+  <tbody>
+    <tr>
+      <td valign="top">
+        <strong>🤵🏼 신상우의 기능구현</strong>
+        <ul>
+          <li>1. 게시글 CRUD</li>
+          <li>2. 동행요청/취소 (게시글 상세페이지)</li>
+          <li>3. 알림요청/응답 + 동행후기</li>
+          <li>4. 게시글 필터 (recoil 통한 filter item 설정)</li>
+          <li>5. 다른회원 정보확인 페이지</li>
+          <li>6. react-router v6.22.1로 전체적 라우팅 설정</li>
+        </ul>
+      </td>
+      <td valign="top">
+        <strong>🤵🏼 박민서의 기능구현</strong>
+        <ul>
+          <li>1. 일반/ 카카오 회원가입</li>
+          <li>2. 일반/ 카카오 로그인</li>
+          <li>3. 채팅방</li>
+          <li>4. home _ protected Route 설정</li>
+          <li>5. 프로필 수정</li>
+          <li>6. 비밀번호 재설정</li>
+          <li>7. Recoil Token, UserDetail 전역 상태 지정</li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+## 🔍 배포 주소
+👉 현재 백엔드 서버 종료로 인해 서비스 이용 불가능 합니다. 
+
+[Font-end vercel 배포사이트](https://go-together-frontend.vercel.app/)
+
+👉 현재 백엔드 서버 종료로 인해 서비스 이용 불가능 합니다. 
 
 
 ## 🍀 프로젝트 소개
@@ -68,7 +89,7 @@
 ## ERD 
 ![같이가요ERD](https://github.com/zerobase-I/GoTogether-FE/assets/105304446/5a3f0346-4428-4146-af31-e3c5be66d472)
 
-## 🛰 기술 스택
+## 🛰 기술 스택 & 사용 라이브러리
 ### Front-End
 <div>
 <img src="https://img.shields.io/badge/React-색상?style=for-the-badge&logo=React&logoColor=white">
@@ -95,20 +116,40 @@
 <img src="https://img.shields.io/badge/notion-black?style=for-the-badge&logo=notion&logoColor=white">
 </div>
 
+### 사용 라이브러리
+<table>
+  <tbody>
+    <tr>
+      <td>1. react-dom</td>
+      <td>2. react-router-dom</td>
+      <td>3. tailwind CSS</td>
+      <td>4. react-calendar (캘린더)</td>
+    </tr>
+    <tr>
+      <td>5. react-icon</td>
+      <td>6. react Quill (에디터)</td>
+      <td>7. daisyUi</td>
+      <td>8. MSW (목업)</td>
+    </tr>
+    <tr>
+      <td>9. react-query (v3.6)</td>
+      <td>10. moment (날짜관련)</td>
+      <td>11. recoil(상태관리)</td>
+      <td>12. WebSocket (채팅방)</td>
+    </tr>
+    <tr>
+      <td colspan="4">13. Stomp.js (채팅방)</td>
+    </tr>
+  </tbody>
+</table>
+
 ## API 명세서
 https://www.notion.so/API-7cc78ca1be34401586f87aba532b82c9?pvs=4
 
 ## Wireframe + flowchart
 https://www.canva.com/design/DAF9Urai_p4/XhBa4EbFF7rxAkbj3yWFRQ/edit?utm_content=DAF9Urai_p4&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
 
-## 📜 주요 기능
-* 전체 기능 요약
-  
-회원가입 / 로그인 / 채팅방
-
-게시글(CRUD) / 동행요청/취소 / 알림 + 동행 후기 / 게시글 필터 / 다른사람 정보확인
-
-반응형
+## ❤ 주요 기능 영상
 
 ### Create + Update / DELETE / pagenation 구현 (순서대로)
 
