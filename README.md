@@ -156,26 +156,26 @@ https://www.canva.com/design/DAF9Urai_p4/XhBa4EbFF7rxAkbj3yWFRQ/edit?utm_content
 ### Create + Update / DELETE / pagenation 구현 (순서대로)
 
 <div>
- <img src="https://github.com/zerobase-I/GoTogether-BE/assets/105304446/34873e9c-db1b-4ce8-a6f4-a72e2c815da0" width="250px" align="center"/>
- <img src="https://github.com/zerobase-I/GoTogether-BE/assets/105304446/cfdaab48-3079-4c48-a172-8c6144cecb33" width="250px"/>
- <img src="https://github.com/zerobase-I/GoTogether-BE/assets/105304446/872d2faf-4fce-4bdd-82a5-9213db5b4d69" width="250px"/>
+ <img src="https://github.com/zerobase-I/GoTogether-BE/assets/105304446/34873e9c-db1b-4ce8-a6f4-a72e2c815da0" width="260px" align="center"/>
+ <img src="https://github.com/zerobase-I/GoTogether-BE/assets/105304446/cfdaab48-3079-4c48-a172-8c6144cecb33" width="260px"/>
+ <img src="https://github.com/zerobase-I/GoTogether-BE/assets/105304446/872d2faf-4fce-4bdd-82a5-9213db5b4d69" width="260px"/>
 </div>
 
 
 ### filter 기능 / 다른사람정보보기 / 동행요청 + 취소 (순서대로)
 
 <div>
- <img src="https://github.com/zerobase-I/GoTogether-BE/assets/105304446/0c68addf-5c14-48cc-a48c-7bf700d1c8ed" width="250px"/>
- <img src="https://github.com/zerobase-I/GoTogether-BE/assets/105304446/679600be-e086-4e2a-96ea-d444c0f3fb75" width="250px"/>
- <img src="https://github.com/zerobase-I/GoTogether-BE/assets/105304446/368a6937-c227-4f2f-9d23-812f69df29bb" width="250px"/>
+ <img src="https://github.com/zerobase-I/GoTogether-BE/assets/105304446/0c68addf-5c14-48cc-a48c-7bf700d1c8ed" width="260px"/>
+ <img src="https://github.com/zerobase-I/GoTogether-BE/assets/105304446/679600be-e086-4e2a-96ea-d444c0f3fb75" width="260px"/>
+ <img src="https://github.com/zerobase-I/GoTogether-BE/assets/105304446/368a6937-c227-4f2f-9d23-812f69df29bb" width="260px"/>
 </div>
 
 
 ### 동행후기남기기 / 반응형 (순서대로)
 
 <div>
- <img src="https://github.com/zerobase-I/GoTogether-BE/assets/105304446/e43d8755-c894-49bc-b9ae-068ac00ae7e4" width="375px"/>
- <img src="https://github.com/zerobase-I/GoTogether-BE/assets/105304446/a8f4d8b5-394f-47ba-a154-fac24b3d4708" width="375px"/>
+ <img src="https://github.com/zerobase-I/GoTogether-BE/assets/105304446/e43d8755-c894-49bc-b9ae-068ac00ae7e4" width="390px"/>
+ <img src="https://github.com/zerobase-I/GoTogether-BE/assets/105304446/a8f4d8b5-394f-47ba-a154-fac24b3d4708" width="390px"/>
 </div>
 
 
